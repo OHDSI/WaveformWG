@@ -36,8 +36,7 @@ jobs:
           libcurl4-openssl-dev \
           libssl-dev \
           libxml2-dev \
-          pandoc \
-          pandoc-citeproc
+          pandoc
 
     - name: Install R packages
       run: |

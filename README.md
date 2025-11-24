@@ -83,7 +83,7 @@ open docs/index.html
 
 See [BUILD.md](BUILD.md) for detailed build instructions.
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 WaveformWG/
@@ -99,17 +99,17 @@ WaveformWG/
 └── README.md                     # This file
 ```
 
-## 📧 Contact
+## Contact
 
 - **Email**: jared.houghtaling@tuftsmedicine.org
 - **GitHub Issues**: [Report bugs or request features](https://github.com/OHDSI/WaveformWG/issues)
 - **Teams**: OHDSI Waveform Working Group channel
 
-## 📜 License
+## License
 
 This work is licensed under the [Apache License 2.0](LICENSE.md).
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 The OHDSI Waveform Working Group is grateful for support from:
 - CHoRUS Bridge2AI
