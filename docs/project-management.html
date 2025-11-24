@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="project-management" class="section level1">
+<h1><strong>Project Management</strong></h1>
+<p><br></p>
+<div id="working-group-structure" class="section level2">
+<h2><strong>Working Group Structure</strong></h2>
+<div id="leadership" class="section level3">
+<h3><strong>Leadership</strong></h3>
+<ul>
+<li><strong>Lead</strong>: Jared Houghtaling (Tufts Medicine) - <a
+href="mailto:jared.houghtaling@tuftsmedicine.org"
+class="email">jared.houghtaling@tuftsmedicine.org</a></li>
+<li><strong>Co-Leads</strong>: Polina Talapova (Tufts Medicine), Brian
+Gow (MIT)</li>
+</ul>
+</div>
+<div id="contributors" class="section level3">
+<h3><strong>Contributors</strong></h3>
+<p>The Waveform Working Group welcomes contributions from: - Data
+engineers implementing the extension - Clinical researchers using
+waveform data - Vocabulary experts mapping concepts - Software
+developers building tools - Standards experts ensuring compliance</p>
+<p><br></p>
+</div>
+</div>
+<div id="collaboration-platforms" class="section level2">
+<h2><strong>Collaboration Platforms</strong></h2>
+<div id="github" class="section level3">
+<h3><strong>GitHub</strong></h3>
+<p>Primary platform for code, documentation, and issue tracking:</p>
+<ul>
+<li><strong>Repository</strong>: <a
+href="https://github.com/OHDSI/WaveformWG">OHDSI/WaveformWG</a></li>
+<li><strong>Issues</strong>: Track bugs, feature requests, and
+discussions</li>
+<li><strong>Pull Requests</strong>: Contribute documentation and
+code</li>
+<li><strong>Discussions</strong>: Community Q&amp;A and design
+conversations</li>
+</ul>
+</div>
+<div id="microsoft-teams" class="section level3">
+<h3><strong>Microsoft Teams</strong></h3>
+<p>Real-time communication and meeting coordination:</p>
+<ul>
+<li><strong>Channel</strong>: OHDSI Waveform Working Group</li>
+<li><strong>Meetings</strong>: Working group calls and office hours</li>
+<li><strong>File Sharing</strong>: Meeting notes, slides, and
+drafts</li>
+</ul>
+</div>
+<div id="ohdsi-forums" class="section level3">
+<h3><strong>OHDSI Forums</strong></h3>
+<p>Broader community discussions:</p>
+<ul>
+<li><strong>Forums</strong>: <a
+href="http://forums.ohdsi.org/c/developers">http://forums.ohdsi.org/c/developers</a></li>
+<li><strong>Topics</strong>: Implementation questions, use case
+discussions</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="meeting-schedule" class="section level2">
+<h2><strong>Meeting Schedule</strong></h2>
+<div id="working-group-calls" class="section level3">
+<h3><strong>Working Group Calls</strong></h3>
+<ul>
+<li><strong>Frequency</strong>: Regular meetings (schedule varies based
+on activity)</li>
+<li><strong>Platform</strong>: Microsoft Teams</li>
+<li><strong>Contact</strong>: <a
+href="mailto:jared.houghtaling@tuftsmedicine.org"
+class="email">jared.houghtaling@tuftsmedicine.org</a> for meeting
+invitations</li>
+</ul>
+</div>
+<div id="meeting-format" class="section level3">
+<h3><strong>Meeting Format</strong></h3>
+<p>Typical agenda (60 minutes):</p>
+<ol style="list-style-type: decimal">
+<li><strong>Introductions</strong> (5 min)
+<ul>
+<li>New members introduce themselves</li>
+<li>Share background and interests</li>
+</ul></li>
+<li><strong>GitHub Issue Review</strong> (10-15 min)
+<ul>
+<li>Review open issues and pull requests</li>
+<li>Prioritize upcoming work</li>
+<li>Identify blockers</li>
+</ul></li>
+<li><strong>Project Updates</strong> (2 min per person)
+<ul>
+<li>What I completed since last meeting</li>
+<li>What I’m working on now</li>
+<li>What’s blocking me</li>
+</ul></li>
+<li><strong>Discussion Topics</strong> (25-30 min)
+<ul>
+<li>Technical design decisions</li>
+<li>Use case presentations</li>
+<li>Implementation challenges</li>
+<li>Vocabulary development</li>
+</ul></li>
+<li><strong>Action Items</strong> (5 min)
+<ul>
+<li>Assign tasks for next sprint</li>
+<li>Schedule follow-up meetings</li>
+<li>Document decisions</li>
+</ul></li>
+</ol>
+</div>
+<div id="chorus-office-hours" class="section level3">
+<h3><strong>CHoRUS Office Hours</strong></h3>
+<p>The working group also participates in CHoRUS Bridge2AI Standards
+Office Hours:</p>
+<ul>
+<li><strong>Focus</strong>: Multimodal data standards including
+waveforms</li>
+<li><strong>Resources</strong>: See <a href="office-hours.html">Office
+Hours</a> for recordings</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="issue-tracking" class="section level2">
+<h2><strong>Issue Tracking</strong></h2>
+<div id="issue-types" class="section level3">
+<h3><strong>Issue Types</strong></h3>
+<p>We use GitHub labels to categorize work:</p>
+<ul>
+<li><strong><code>enhancement</code></strong>: New feature requests</li>
+<li><strong><code>bug</code></strong>: Software defects or specification
+errors</li>
+<li><strong><code>documentation</code></strong>: Documentation
+improvements</li>
+<li><strong><code>question</code></strong>: Questions from
+community</li>
+<li><strong><code>use-case</code></strong>: Research use case
+proposals</li>
+<li><strong><code>vocabulary</code></strong>: Vocabulary mapping
+work</li>
+<li><strong><code>good first issue</code></strong>: Beginner-friendly
+tasks</li>
+</ul>
+</div>
+<div id="issue-lifecycle" class="section level3">
+<h3><strong>Issue Lifecycle</strong></h3>
+<pre><code>┌────────┐
+│  New   │  ← Issue created
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│ Triage │  ← Leadership reviews and labels
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│  Open  │  ← Ready for work
+└───┬────┘
+    │
+    ▼
+┌─────────────┐
+│ In Progress │  ← Assigned to contributor
+└───┬─────────┘
+    │
+    ▼
+┌────────┐
+│ Review │  ← Pull request submitted
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│ Closed │  ← Merged or resolved
+└────────┘</code></pre>
+</div>
+<div id="creating-issues" class="section level3">
+<h3><strong>Creating Issues</strong></h3>
+<p>When creating an issue, please include:</p>
+<ul>
+<li><strong>Clear title</strong>: Concise description of the issue</li>
+<li><strong>Context</strong>: Background information and motivation</li>
+<li><strong>Specifics</strong>: Detailed description of the problem or
+request</li>
+<li><strong>Examples</strong>: Code snippets, error messages, or use
+cases</li>
+<li><strong>Environment</strong>: Relevant system information (if
+applicable)</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="contributing" class="section level2">
+<h2><strong>Contributing</strong></h2>
+<div id="how-to-contribute" class="section level3">
+<h3><strong>How to Contribute</strong></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Browse open issues</strong>: Find something that interests
+you</li>
+<li><strong>Comment on the issue</strong>: Express interest and ask
+questions</li>
+<li><strong>Fork the repository</strong>: Create your own copy</li>
+<li><strong>Make changes</strong>: Implement the fix or feature</li>
+<li><strong>Submit a pull request</strong>: Describe your changes</li>
+<li><strong>Respond to feedback</strong>: Work with reviewers to
+refine</li>
+</ol>
+</div>
+<div id="contribution-guidelines" class="section level3">
+<h3><strong>Contribution Guidelines</strong></h3>
+<ul>
+<li><strong>Documentation</strong>: All RMarkdown files should be clear
+and well-structured</li>
+<li><strong>Code Style</strong>: Follow OMOP CDM conventions for table
+and field names</li>
+<li><strong>Testing</strong>: Validate changes with example data</li>
+<li><strong>Communication</strong>: Keep the community informed of your
+progress</li>
+</ul>
+</div>
+<div id="what-to-contribute" class="section level3">
+<h3><strong>What to Contribute</strong></h3>
+<p><strong>Documentation</strong>: - Implementation guides and tutorials
+- Example queries and analyses - FAQ entries - Glossary definitions</p>
+<p><strong>Specifications</strong>: - Table schema refinements -
+Vocabulary concept proposals - Data quality checks - Constraint
+definitions</p>
+<p><strong>Tools &amp; Code</strong>: - ETL utilities (parsers,
+converters) - Validation scripts - Visualization tools - Example
+notebooks</p>
+<p><strong>Use Cases</strong>: - Research applications - Implementation
+case studies - Best practices - Lessons learned</p>
+<p><br></p>
+</div>
+</div>
+<div id="roadmap" class="section level2">
+<h2><strong>Roadmap</strong></h2>
+<div id="current-priorities" class="section level3">
+<h3><strong>Current Priorities</strong></h3>
+<div id="q1-2026-specification-finalization" class="section level4">
+<h4><strong>Q1 2026: Specification Finalization</strong></h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Finalize table schemas based on
+community feedback</label></li>
+<li><label><input type="checkbox" />Develop comprehensive data quality
+framework</label></li>
+<li><label><input type="checkbox" />Create vocabulary concept proposals
+for OMOP vocabulary team</label></li>
+<li><label><input type="checkbox" />Publish formal specification
+document</label></li>
+</ul>
+</div>
+<div id="q2-2026-reference-implementations" class="section level4">
+<h4><strong>Q2 2026: Reference Implementations</strong></h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Develop reference ETL for common
+formats (EDF, WFDB)</label></li>
+<li><label><input type="checkbox" />Create sample datasets with
+documentation</label></li>
+<li><label><input type="checkbox" />Build validation tools</label></li>
+<li><label><input type="checkbox" />Publish Jupyter notebook
+examples</label></li>
+</ul>
+</div>
+<div id="q3-2026-community-adoption" class="section level4">
+<h4><strong>Q3 2026: Community Adoption</strong></h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Support early adopter
+institutions</label></li>
+<li><label><input type="checkbox" />Host implementation
+workshops</label></li>
+<li><label><input type="checkbox" />Gather feedback from real-world
+implementations</label></li>
+<li><label><input type="checkbox" />Refine specifications based on
+lessons learned</label></li>
+</ul>
+</div>
+<div id="q4-2026-integration-scaling" class="section level4">
+<h4><strong>Q4 2026: Integration &amp; Scaling</strong></h4>
+<ul class="task-list">
+<li><label><input type="checkbox" />Integrate with OHDSI HADES
+packages</label></li>
+<li><label><input type="checkbox" />Develop performance optimization
+guidance</label></li>
+<li><label><input type="checkbox" />Create multi-site study
+templates</label></li>
+<li><label><input type="checkbox" />Publish validation study
+results</label></li>
+</ul>
+</div>
+</div>
+<div id="long-term-goals" class="section level3">
+<h3><strong>Long-Term Goals</strong></h3>
+<ul>
+<li><strong>Vocabulary Integration</strong>: Incorporate waveform
+concepts into core OMOP vocabulary</li>
+<li><strong>Tool Ecosystem</strong>: Comprehensive suite of ETL,
+validation, and analysis tools</li>
+<li><strong>Multi-Site Studies</strong>: Enable federated research
+across institutions</li>
+<li><strong>AI/ML Integration</strong>: Support standardized feature
+extraction for machine learning</li>
+<li><strong>Real-Time Capabilities</strong>: Extend to support streaming
+waveform data</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="decision-making-process" class="section level2">
+<h2><strong>Decision-Making Process</strong></h2>
+<div id="proposal-process" class="section level3">
+<h3><strong>Proposal Process</strong></h3>
+<p>For significant changes (schema modifications, new tables, etc.):</p>
+<ol style="list-style-type: decimal">
+<li><strong>Create RFC Issue</strong>: Propose change with detailed
+rationale</li>
+<li><strong>Community Discussion</strong>: Gather feedback and
+alternatives</li>
+<li><strong>Working Group Review</strong>: Discuss at meeting</li>
+<li><strong>Consensus Building</strong>: Address concerns and refine
+proposal</li>
+<li><strong>Decision</strong>: Leadership makes final decision based on
+consensus</li>
+<li><strong>Implementation</strong>: Assign work and track progress</li>
+</ol>
+</div>
+<div id="consensus-principles" class="section level3">
+<h3><strong>Consensus Principles</strong></h3>
+<ul>
+<li><strong>Transparency</strong>: All discussions happen in public
+forums</li>
+<li><strong>Inclusivity</strong>: All voices are heard and
+considered</li>
+<li><strong>Evidence-Based</strong>: Decisions grounded in use cases and
+data</li>
+<li><strong>Reversibility</strong>: Willing to revise based on new
+information</li>
+<li><strong>Documentation</strong>: All decisions are documented</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="communication-guidelines" class="section level2">
+<h2><strong>Communication Guidelines</strong></h2>
+<div id="best-practices" class="section level3">
+<h3><strong>Best Practices</strong></h3>
+<ul>
+<li><strong>Be respectful</strong>: Treat all community members with
+respect</li>
+<li><strong>Be constructive</strong>: Offer solutions, not just
+criticism</li>
+<li><strong>Be clear</strong>: Use plain language and provide
+examples</li>
+<li><strong>Be patient</strong>: Remember that contributors are
+volunteers</li>
+<li><strong>Be responsive</strong>: Reply to questions and feedback
+promptly</li>
+</ul>
+</div>
+<div id="where-to-ask-questions" class="section level3">
+<h3><strong>Where to Ask Questions</strong></h3>
+<ul>
+<li><strong>GitHub Issues</strong>: Specific technical questions about
+the specification</li>
+<li><strong>GitHub Discussions</strong>: General questions and
+brainstorming</li>
+<li><strong>Teams</strong>: Real-time questions during meetings</li>
+<li><strong>OHDSI Forums</strong>: Questions for the broader OHDSI
+community</li>
+<li><strong>Email</strong>: Direct questions to working group
+leadership</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="resources-for-new-contributors" class="section level2">
+<h2><strong>Resources for New Contributors</strong></h2>
+<div id="getting-started" class="section level3">
+<h3><strong>Getting Started</strong></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Read the documentation</strong>: Start with <a
+href="get-started.html">Getting Started</a></li>
+<li><strong>Join Teams</strong>: Get access to the Waveform WG
+channel</li>
+<li><strong>Attend a meeting</strong>: Introduce yourself and learn
+about current work</li>
+<li><strong>Pick an issue</strong>: Find a <code>good first issue</code>
+to work on</li>
+<li><strong>Ask for help</strong>: Don’t hesitate to reach out with
+questions</li>
+</ol>
+</div>
+<div id="learning-resources" class="section level3">
+<h3><strong>Learning Resources</strong></h3>
+<p><strong>OMOP CDM</strong>: - <a
+href="https://ohdsi.github.io/CommonDataModel/">OMOP CDM
+Documentation</a> - <a
+href="https://ohdsi.github.io/TheBookOfOhdsi/">The Book of OHDSI</a></p>
+<p><strong>Waveform Processing</strong>: - <a
+href="https://physionet.org/about/tutorials/">PhysioNet Tutorials</a> -
+<a href="https://physionet.org/content/wfdb/10.7.0/">WFDB Applications
+Guide</a></p>
+<p><strong>Standards</strong>: - <a
+href="https://www.edfplus.info/">EDF/EDF+ Specification</a> - <a
+href="https://www.hl7.org/">HL7 Standards</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="acknowledgments" class="section level2">
+<h2><strong>Acknowledgments</strong></h2>
+<p>The OHDSI Waveform Working Group is grateful for:</p>
+<ul>
+<li><strong>CHoRUS Bridge2AI</strong>: Supporting multimodal data
+standards development</li>
+<li><strong>OHDSI Community</strong>: Providing the foundation and
+ecosystem</li>
+<li><strong>Early Adopters</strong>: Sites implementing and providing
+feedback</li>
+<li><strong>Contributors</strong>: Everyone who has contributed time and
+expertise</li>
+</ul>
+<p><br></p>
+</div>
+<div id="contact" class="section level2">
+<h2><strong>Contact</strong></h2>
+<ul>
+<li><strong>Email</strong>: <a
+href="mailto:jared.houghtaling@tuftsmedicine.org"
+class="email">jared.houghtaling@tuftsmedicine.org</a></li>
+<li><strong>GitHub</strong>: <a
+href="https://github.com/OHDSI/WaveformWG">OHDSI/WaveformWG</a></li>
+<li><strong>Teams</strong>: OHDSI Waveform Working Group channel</li>
+<li><strong>Forums</strong>: <a
+href="http://forums.ohdsi.org/c/developers">OHDSI Forums -
+Developers</a></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

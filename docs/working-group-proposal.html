@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="working-group-proposal" class="section level1">
+<h1><strong>Working Group Proposal</strong></h1>
+<p><br></p>
+<div id="overview" class="section level2">
+<h2><strong>Overview</strong></h2>
+<p>This page summarizes the formal proposal to launch the OHDSI Waveform
+Working Group. The complete proposal document is available in the
+Resources section of this repository.</p>
+<p><br></p>
+</div>
+<div id="mission-statement" class="section level2">
+<h2><strong>Mission Statement</strong></h2>
+<p>To enable integration of physiological waveform data (e.g., ECG, EEG,
+arterial blood pressure) with electronic health records in the OMOP
+Common Data Model, supporting observational research, AI model
+development, and clinical decision support.</p>
+<p><br></p>
+</div>
+<div id="background-motivation" class="section level2">
+<h2><strong>Background &amp; Motivation</strong></h2>
+<div id="the-challenge" class="section level3">
+<h3><strong>The Challenge</strong></h3>
+<p>Physiological waveform data represents a rich source of information
+about patient health status, yet this data remains largely siloed from
+electronic health records used in observational research. Current
+challenges include:</p>
+<ul>
+<li><strong>Format Heterogeneity</strong>: Dozens of proprietary and
+open formats make data sharing difficult</li>
+<li><strong>Temporal Misalignment</strong>: Synchronizing continuous
+waveform data with discrete clinical events</li>
+<li><strong>Metadata Loss</strong>: Signal characteristics often not
+preserved during data transfers</li>
+<li><strong>Limited Integration</strong>: Waveform data typically stored
+separately from EHR systems</li>
+<li><strong>Reproducibility Gaps</strong>: Lack of standardized feature
+definitions across institutions</li>
+</ul>
+</div>
+<div id="the-opportunity" class="section level3">
+<h3><strong>The Opportunity</strong></h3>
+<p>The OMOP Common Data Model has successfully standardized clinical
+data across hundreds of institutions worldwide. Extending OMOP to
+include physiological waveforms would enable:</p>
+<ul>
+<li><strong>Multi-Site Studies</strong>: Federated research using
+harmonized waveform representations</li>
+<li><strong>Integrated Analytics</strong>: Seamless analysis combining
+waveforms with diagnoses, medications, procedures, and outcomes</li>
+<li><strong>AI/ML Development</strong>: Training and validation of
+predictive models across institutions</li>
+<li><strong>Reproducible Science</strong>: Standardized feature
+definitions enable cross-institution validation</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="proposed-scope" class="section level2">
+<h2><strong>Proposed Scope</strong></h2>
+<div id="in-scope" class="section level3">
+<h3><strong>In Scope</strong></h3>
+<p>The working group will focus on:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Schema Development</strong>
+<ul>
+<li>Define OMOP CDM extensions for waveform data</li>
+<li>Specify table schemas, relationships, and constraints</li>
+<li>Ensure compatibility with core OMOP principles</li>
+</ul></li>
+<li><strong>Vocabulary Development</strong>
+<ul>
+<li>Develop concepts for waveform types (ECG, EEG, ABP, etc.)</li>
+<li>Map signal channels and derived features</li>
+<li>Coordinate with OMOP vocabulary team</li>
+</ul></li>
+<li><strong>Implementation Guidance</strong>
+<ul>
+<li>Create ETL specifications and best practices</li>
+<li>Develop reference implementations for common formats</li>
+<li>Provide data quality and validation frameworks</li>
+</ul></li>
+<li><strong>Tool Development</strong>
+<ul>
+<li>Build ETL utilities and converters</li>
+<li>Create visualization and analysis tools</li>
+<li>Integrate with OHDSI HADES packages</li>
+</ul></li>
+<li><strong>Community Support</strong>
+<ul>
+<li>Support institutions implementing the extension</li>
+<li>Facilitate use case development</li>
+<li>Enable multi-site collaborative studies</li>
+</ul></li>
+</ol>
+</div>
+<div id="out-of-scope" class="section level3">
+<h3><strong>Out of Scope</strong></h3>
+<p>The working group will NOT:</p>
+<ul>
+<li>Develop new waveform file formats</li>
+<li>Provide clinical interpretation services</li>
+<li>Maintain proprietary device integrations</li>
+<li>Offer individualized consulting services</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="deliverables" class="section level2">
+<h2><strong>Deliverables</strong></h2>
+<div id="phase-1-foundation-months-1-6" class="section level3">
+<h3><strong>Phase 1: Foundation (Months 1-6)</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Formalize working group structure
+and governance</label></li>
+<li><label><input type="checkbox" />Finalize 4-table waveform extension
+specification</label></li>
+<li><label><input type="checkbox" />Develop initial vocabulary
+concepts</label></li>
+<li><label><input type="checkbox" />Create implementation guide and
+documentation website</label></li>
+<li><label><input type="checkbox" />Establish GitHub repository and
+collaboration infrastructure</label></li>
+</ul>
+</div>
+<div id="phase-2-implementation-months-7-12" class="section level3">
+<h3><strong>Phase 2: Implementation (Months 7-12)</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Develop reference ETL for common
+formats (EDF, WFDB)</label></li>
+<li><label><input type="checkbox" />Create data quality validation
+tools</label></li>
+<li><label><input type="checkbox" />Build sample datasets with
+documentation</label></li>
+<li><label><input type="checkbox" />Publish Jupyter notebook
+examples</label></li>
+<li><label><input type="checkbox" />Support early adopter
+implementations</label></li>
+</ul>
+</div>
+<div id="phase-3-adoption-months-13-18" class="section level3">
+<h3><strong>Phase 3: Adoption (Months 13-18)</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />Conduct multi-site validation
+study</label></li>
+<li><label><input type="checkbox" />Present at OHDSI symposium and
+publish results</label></li>
+<li><label><input type="checkbox" />Integrate waveform concepts into
+core OMOP vocabulary</label></li>
+<li><label><input type="checkbox" />Expand tool ecosystem</label></li>
+<li><label><input type="checkbox" />Enable federated network
+studies</label></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="governance-structure" class="section level2">
+<h2><strong>Governance Structure</strong></h2>
+<div id="leadership-team" class="section level3">
+<h3><strong>Leadership Team</strong></h3>
+<ul>
+<li><strong>Working Group Lead</strong>: Responsible for overall
+direction and coordination</li>
+<li><strong>Co-Leads</strong>: Support specific workstreams (vocabulary,
+tools, implementation)</li>
+<li><strong>Technical Advisory Board</strong>: Provide expertise on
+standards and integration</li>
+</ul>
+</div>
+<div id="collaboration-model" class="section level3">
+<h3><strong>Collaboration Model</strong></h3>
+<ul>
+<li><strong>Open Participation</strong>: All OHDSI community members
+welcome</li>
+<li><strong>Consensus-Based Decisions</strong>: Major changes require
+community discussion</li>
+<li><strong>Transparency</strong>: All work conducted in public forums
+(GitHub, Teams)</li>
+<li><strong>Use-Case Driven</strong>: Development priorities guided by
+research needs</li>
+</ul>
+</div>
+<div id="meeting-cadence" class="section level3">
+<h3><strong>Meeting Cadence</strong></h3>
+<ul>
+<li><strong>Monthly Working Group Calls</strong>: Progress updates and
+technical discussions</li>
+<li><strong>Office Hours</strong>: Ad-hoc support for implementers</li>
+<li><strong>Annual Symposium Presentations</strong>: Share results with
+broader OHDSI community</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="resource-requirements" class="section level2">
+<h2><strong>Resource Requirements</strong></h2>
+<div id="personnel" class="section level3">
+<h3><strong>Personnel</strong></h3>
+<ul>
+<li><strong>Working Group Leadership</strong>: 20% FTE (coordination,
+specification development)</li>
+<li><strong>Technical Contributors</strong>: Variable (community
+volunteers + funded developers)</li>
+<li><strong>Vocabulary Experts</strong>: 10% FTE (concept development
+and mapping)</li>
+</ul>
+</div>
+<div id="infrastructure" class="section level3">
+<h3><strong>Infrastructure</strong></h3>
+<ul>
+<li><strong>GitHub Repository</strong>: Provided by OHDSI</li>
+<li><strong>Microsoft Teams</strong>: Provided by OHDSI</li>
+<li><strong>Documentation Hosting</strong>: GitHub Pages (free)</li>
+<li><strong>Compute Resources</strong>: Minimal (static website, code
+repositories)</li>
+</ul>
+</div>
+<div id="funding" class="section level3">
+<h3><strong>Funding</strong></h3>
+<ul>
+<li><strong>Initial Development</strong>: Supported by CHoRUS
+Bridge2AI</li>
+<li><strong>Ongoing Maintenance</strong>: Community volunteers +
+grant-supported developers</li>
+<li><strong>Travel</strong>: Conference attendance for presentations
+(seek funding as available)</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="success-metrics" class="section level2">
+<h2><strong>Success Metrics</strong></h2>
+<div id="year-1" class="section level3">
+<h3><strong>Year 1</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />5+ institutions actively
+implementing the waveform extension</label></li>
+<li><label><input type="checkbox" />1000+ GitHub repository
+stars/forks</label></li>
+<li><label><input type="checkbox" />50+ active working group
+participants</label></li>
+<li><label><input type="checkbox" />3+ presentations at OHDSI
+events</label></li>
+<li><label><input type="checkbox" />1+ peer-reviewed
+publication</label></li>
+</ul>
+</div>
+<div id="year-2" class="section level3">
+<h3><strong>Year 2</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />15+ institutions with production
+implementations</label></li>
+<li><label><input type="checkbox" />3+ multi-site network studies using
+waveform data</label></li>
+<li><label><input type="checkbox" />Integration with 2+ OHDSI HADES
+packages</label></li>
+<li><label><input type="checkbox" />10+ contributed ETL tools and
+converters</label></li>
+<li><label><input type="checkbox" />Waveform concepts integrated into
+core OMOP vocabulary</label></li>
+</ul>
+</div>
+<div id="year-3" class="section level3">
+<h3><strong>Year 3</strong></h3>
+<ul class="task-list">
+<li><label><input type="checkbox" />30+ institutions in waveform
+network</label></li>
+<li><label><input type="checkbox" />Federated learning infrastructure
+operational</label></li>
+<li><label><input type="checkbox" />10+ published studies using
+standardized waveform data</label></li>
+<li><label><input type="checkbox" />Automated data quality monitoring
+across network</label></li>
+<li><label><input type="checkbox" />Real-time waveform ingestion
+support</label></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="risk-mitigation" class="section level2">
+<h2><strong>Risk Mitigation</strong></h2>
+<div id="risk-low-adoption" class="section level3">
+<h3><strong>Risk: Low Adoption</strong></h3>
+<p><strong>Mitigation</strong>: - Focus on high-impact use cases (ICU,
+cardiology) - Provide comprehensive implementation support - Demonstrate
+value through multi-site studies - Build easy-to-use tools and
+templates</p>
+</div>
+<div id="risk-technical-complexity" class="section level3">
+<h3><strong>Risk: Technical Complexity</strong></h3>
+<p><strong>Mitigation</strong>: - Develop reference implementations -
+Provide step-by-step guides and video tutorials - Offer office hours and
+implementation support - Start simple and iterate based on feedback</p>
+</div>
+<div id="risk-vocabulary-challenges" class="section level3">
+<h3><strong>Risk: Vocabulary Challenges</strong></h3>
+<p><strong>Mitigation</strong>: - Engage OMOP vocabulary team early -
+Leverage existing standards (LOINC, SNOMED) - Use 2-billion concept
+range for waveform-specific terms - Plan for gradual vocabulary
+maturation</p>
+</div>
+<div id="risk-data-privacy-concerns" class="section level3">
+<h3><strong>Risk: Data Privacy Concerns</strong></h3>
+<p><strong>Mitigation</strong>: - Provide clear de-identification
+guidance - Support aggregated feature sharing (not raw waveforms) -
+Align with OHDSI’s existing privacy frameworks - Develop
+privacy-preserving analysis methods</p>
+<p><br></p>
+</div>
+</div>
+<div id="alignment-with-ohdsi-strategy" class="section level2">
+<h2><strong>Alignment with OHDSI Strategy</strong></h2>
+<p>The Waveform Working Group aligns with OHDSI’s strategic
+priorities:</p>
+<div id="expand-data-coverage" class="section level3">
+<h3><strong>1. Expand Data Coverage</strong></h3>
+<p>Waveform data complements existing OMOP tables, enabling more
+comprehensive observational research.</p>
+</div>
+<div id="enable-new-research" class="section level3">
+<h3><strong>2. Enable New Research</strong></h3>
+<p>Integration of waveforms with EHR data enables novel research
+questions in critical care, cardiology, neurology, and AI/ML.</p>
+</div>
+<div id="foster-collaboration" class="section level3">
+<h3><strong>3. Foster Collaboration</strong></h3>
+<p>The working group brings together data engineers, clinicians,
+researchers, and standards experts.</p>
+</div>
+<div id="maintain-standards-excellence" class="section level3">
+<h3><strong>4. Maintain Standards Excellence</strong></h3>
+<p>The extension follows OMOP CDM principles and integrates with
+existing vocabulary and tools.</p>
+</div>
+<div id="support-global-health" class="section level3">
+<h3><strong>5. Support Global Health</strong></h3>
+<p>Standardized waveform data can improve care delivery worldwide,
+especially in resource-limited settings.</p>
+<p><br></p>
+</div>
+</div>
+<div id="next-steps" class="section level2">
+<h2><strong>Next Steps</strong></h2>
+<div id="immediate-month-1" class="section level3">
+<h3><strong>Immediate (Month 1)</strong></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Formalize Working Group</strong>: Announce formation to
+OHDSI community</li>
+<li><strong>Establish GitHub</strong>: Set up repository and initial
+documentation</li>
+<li><strong>Recruit Participants</strong>: Invite interested community
+members</li>
+<li><strong>Schedule Meetings</strong>: Set up regular working group
+calls</li>
+</ol>
+</div>
+<div id="short-term-months-2-3" class="section level3">
+<h3><strong>Short-Term (Months 2-3)</strong></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Finalize Specification</strong>: Complete 4-table schema
+based on community feedback</li>
+<li><strong>Launch Website</strong>: Publish documentation and
+implementation guides</li>
+<li><strong>Develop Vocabulary</strong>: Submit initial concept
+proposals</li>
+<li><strong>Identify Early Adopters</strong>: Support first
+implementations</li>
+</ol>
+</div>
+<div id="medium-term-months-4-6" class="section level3">
+<h3><strong>Medium-Term (Months 4-6)</strong></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Build Tools</strong>: Develop reference ETL and validation
+utilities</li>
+<li><strong>Create Examples</strong>: Publish sample datasets and
+analysis notebooks</li>
+<li><strong>Present at Symposium</strong>: Share progress with OHDSI
+community</li>
+<li><strong>Expand Participation</strong>: Grow working group
+membership</li>
+</ol>
+<p><br></p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2><strong>Conclusion</strong></h2>
+<p>The OHDSI Waveform Working Group represents a natural evolution of
+the OMOP CDM to encompass multimodal physiological data. By
+standardizing waveform integration, we can unlock new research
+opportunities, enable multi-site collaboration, and ultimately improve
+patient care through better evidence generation.</p>
+<p>We invite the OHDSI community to join us in this exciting effort.</p>
+<p><br></p>
+</div>
+<div id="contact-more-information" class="section level2">
+<h2><strong>Contact &amp; More Information</strong></h2>
+<ul>
+<li><strong>Email</strong>: <a href="mailto:houghtaling@ohdsi.org"
+class="email">houghtaling@ohdsi.org</a></li>
+<li><strong>GitHub</strong>: <a
+href="https://github.com/OHDSI/WaveformWG">OHDSI/WaveformWG</a></li>
+<li><strong>Teams</strong>: OHDSI Waveform Working Group channel</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

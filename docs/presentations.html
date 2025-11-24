@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="publications-presentations" class="section level1">
+<h1><strong>Publications &amp; Presentations</strong></h1>
+<p><br></p>
+<div id="presentations" class="section level2">
+<h2><strong>2025 Presentations</strong></h2>
+<div id="multimodal-data-in-omop-ohdsi-europe-2025"
+class="section level3">
+<h3><strong>Multimodal Data in OMOP (OHDSI Europe 2025)</strong></h3>
+<p><strong>Presenter</strong>: Jared Houghtaling</p>
+<p><strong>Abstract</strong>: Presentation on integrating multimodal
+data including physiological waveforms into the OMOP Common Data
+Model.</p>
+<p><strong>Resources</strong>: - Slides: <a
+href="https://drive.google.com/file/d/1VLcTFWob12En8JeYDSGqmXK6mEBsiV-s/view">Houghtaling_MultimodalData_Europe2025.docx</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="reports-documentation" class="section level2">
+<h2><strong>2024 Reports &amp; Documentation</strong></h2>
+<div id="waveform-extension-report-ohdsi-symposium-2024"
+class="section level3">
+<h3><strong>Waveform Extension Report (OHDSI Symposium
+2024)</strong></h3>
+<p><strong>Authors</strong>: Jared Houghtaling, Polina Talapova, Brian
+Gow</p>
+<p><strong>Abstract</strong>: Comprehensive report on the design and
+implementation of the OMOP CDM Waveform Extension.</p>
+<p><strong>Resources</strong>: - Report: <a
+href="https://www.ohdsi.org/2025showcase-602/">Waveform Extension at
+2025 OHDSI Gloabl</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="related-publications" class="section level2">
+<h2><strong>Related Publications</strong></h2>
+<div id="chorus-multimodal-linkage-sop" class="section level3">
+<h3><strong>CHoRUS Multimodal Linkage SOP</strong></h3>
+<p><strong>Publication</strong>: CHoRUS Bridge2AI Standards Office</p>
+<p><strong>Description</strong>: Standard Operating Procedure for
+linking multimodal data (including waveforms) with electronic health
+records. This SOP introduced the waveform_registry table concept, which
+was later expanded into the 4-table Waveform Extension.</p>
+<p><strong>Link</strong>: <a
+href="https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/">https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/</a></p>
+<p><br></p>
+</div>
+</div>
+<div id="office-hours-sessions" class="section level2">
+<h2><strong>Office Hours Sessions</strong></h2>
+<p>Multiple recorded sessions discussing waveform extension
+implementation, available on the <a href="office-hours.html">Office
+Hours</a> page:</p>
+<ul>
+<li><strong>[03-13-25]</strong> Linking waveform and EHR data - Part
+1</li>
+<li><strong>[03-20-25]</strong> Linking waveform and EHR data - Part
+2</li>
+<li><strong>[04-17-25]</strong> Waveform linkage and site updates</li>
+<li><strong>[06-26-25]</strong> Implementation of OMOP CDM Waveform
+Extension SOP</li>
+<li><strong>[10-16-25]</strong> CHoRUS Bridge2AI Standards Office Hours
+Continued</li>
+<li><strong>[11-20-25]</strong> CHoRUS Bridge2AI Standards Office Hours
+Continued</li>
+</ul>
+<p>See <a href="office-hours.html">Office Hours</a> for full details and
+links to recordings.</p>
+<p><br></p>
+</div>
+<div id="related-ohdsi-publications" class="section level2">
+<h2><strong>Related OHDSI Publications</strong></h2>
+<div id="omop-cdm-documentation" class="section level3">
+<h3><strong>OMOP CDM Documentation</strong></h3>
+<ul>
+<li><a href="https://ohdsi.github.io/CommonDataModel/">OMOP CDM v5.4
+Specification</a></li>
+<li><a
+href="https://www.ohdsi.org/analytic-tools/athena-standardized-vocabularies/">OMOP
+Standardized Vocabularies</a></li>
+</ul>
+</div>
+<div id="ohdsi-gis-working-group" class="section level3">
+<h3><strong>OHDSI GIS Working Group</strong></h3>
+<p>The GIS Working Group has developed similar extensions for geospatial
+data integration with OMOP:</p>
+<ul>
+<li><a href="https://ohdsi.github.io/GIS/">OHDSI GIS Website</a></li>
+<li><a href="https://ohdsi.github.io/GIS/schema-extensions.html">GIS
+Schema Extensions</a></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="external-resources" class="section level2">
+<h2><strong>External Resources</strong></h2>
+<div id="physionet" class="section level3">
+<h3><strong>PhysioNet</strong></h3>
+<p>PhysioNet provides open-access physiological data and waveform
+processing tools:</p>
+<ul>
+<li><a href="https://physionet.org/">PhysioNet Database</a></li>
+<li><a href="https://physionet.org/content/wfdb/">WFDB Software
+Package</a></li>
+<li><a href="https://physionet.org/content/mimic4wdb/">MIMIC-IV Waveform
+Database</a></li>
+</ul>
+</div>
+<div id="waveform-standards" class="section level3">
+<h3><strong>Waveform Standards</strong></h3>
+<ul>
+<li><strong>EDF/EDF+</strong>: <a
+href="https://www.edfplus.info/">European Data Format
+Specification</a></li>
+<li><strong>HL7 aECG</strong>: <a
+href="https://www.hl7.org/implement/standards/product_brief.cfm?product_id=30">HL7
+Annotated ECG Standard</a></li>
+<li><strong>DICOM Waveform</strong>: <a
+href="https://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.10.9.html">DICOM
+Standard Part 3</a></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="cite-this-work" class="section level2">
+<h2><strong>Cite This Work</strong></h2>
+<p>If you use the OMOP CDM Waveform Extension in your research, please
+cite:</p>
+<p><strong>Houghtaling J, Talapova P, Gow B.</strong> “OMOP CDM Waveform
+Extension: Standardizing Physiological Waveform Data for Observational
+Research.” OHDSI Symposium 2024.</p>
+<p><strong>BibTeX</strong>:</p>
+<pre><code>@techreport{houghtaling2024waveform,
+  title={OMOP CDM Waveform Extension: Standardizing Physiological Waveform Data for Observational Research},
+  author={Houghtaling, Jared and Talapova, Polina and Gow, Brian},
+  year={2024},
+  institution={OHDSI},
+  url={https://github.com/OHDSI/WaveformWG}
+}</code></pre>
+<p><br></p>
+</div>
+<div id="upcoming-presentations" class="section level2">
+<h2><strong>Upcoming Presentations</strong></h2>
+<p>The working group welcomes opportunities to present at OHDSI
+symposia, conferences, and community calls. If you’d like to invite the
+team to present, please contact:</p>
+<ul>
+<li><strong>Email</strong>: <a
+href="mailto:jared.houghtaling@tuftsmedicine.org"
+class="email">jared.houghtaling@tuftsmedicine.org</a></li>
+<li><strong>GitHub</strong>: <a
+href="https://github.com/OHDSI/WaveformWG"><span
+class="citation">@OHDSI/WaveformWG</span></a></li>
+</ul>
+<p><br></p>
+</div>
+<div id="community-contributions" class="section level2">
+<h2><strong>Community Contributions</strong></h2>
+<p>We encourage community members to share their work using the Waveform
+Extension:</p>
+<ul>
+<li><strong>Implementation case studies</strong>: Share your ETL
+approach and lessons learned</li>
+<li><strong>Tool development</strong>: Present utilities, converters, or
+analysis pipelines</li>
+<li><strong>Research applications</strong>: Showcase studies using
+integrated waveform + EHR data</li>
+<li><strong>Validation studies</strong>: Report data quality metrics and
+conformance testing</li>
+</ul>
+<p>Submit presentation proposals via: - <strong>GitHub</strong>: <a
+href="https://github.com/OHDSI/WaveformWG/issues">Open an issue</a> with
+the “presentation” label - <strong>Email</strong>: <a
+href="mailto:jared.houghtaling@tuftsmedicine.org"
+class="email">jared.houghtaling@tuftsmedicine.org</a> -
+<strong>Teams</strong>: Post in the Waveform Working Group channel</p>
+<p><br></p>
+</div>
+<div id="stay-updated" class="section level2">
+<h2><strong>Stay Updated</strong></h2>
+<ul>
+<li><strong>GitHub</strong>: Watch the <a
+href="https://github.com/OHDSI/WaveformWG">WaveformWG repository</a> for
+announcements</li>
+<li><strong>Teams</strong>: Join the OHDSI Waveform Working Group
+channel</li>
+<li><strong>OHDSI Forums</strong>: <a
+href="http://forums.ohdsi.org/c/developers">Developer section</a></li>
+<li><strong>Twitter/X</strong>: Follow <a
+href="https://twitter.com/OHDSI"><span
+class="citation">@OHDSI</span></a> for community updates</li>
+</ul>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
