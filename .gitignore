@@ -1,0 +1,27 @@
+# R and RMarkdown
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Site build artifacts
+docs/.Rproj.user
+rmd/.Rproj.user
+
+# Temporary files
+*~
+*.tmp
+*.bak
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Log files
+*.log

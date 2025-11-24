@@ -1,0 +1,260 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Get Started**
+
+Welcome to the OHDSI Waveform Working Group! This page helps you get started whether you're implementing the Waveform Extension, joining the working group, or proposing a use case.
+
+<br>
+
+## **Quick Start: Understanding the Waveform Extension**
+
+The OMOP CDM Waveform Extension enables standardized integration of physiological waveform data with electronic health records. The extension consists of four interconnected tables:
+
+### **Implementation Overview**
+
+```
+1. waveform_occurrence    → Define the recording session context
+2. waveform_registry      → Register individual waveform files
+3. waveform_channel_metadata → Describe signal-level metadata
+4. waveform_feature       → Store derived features and measurements
+```
+
+**Prerequisites**:
+- OMOP CDM v5.4+ database
+- Physiological waveform data (ECG, EEG, ABP, etc.)
+- ETL development environment
+- Basic understanding of signal processing (recommended)
+
+**What you'll need**:
+- Raw waveform files with timestamps
+- Patient identifiers linkable to PERSON table
+- Visit/encounter context for acquisitions
+- Device and procedure metadata (if available)
+
+See the [Waveform Extension Implementation Guide](waveform-extension.html) for detailed ETL specifications.
+
+<br>
+
+## **Join the Working Group**
+
+### **Get Connected**
+
+1. **[Sign up for OHDSI Teams](https://forms.office.com/Pages/ResponsePage.aspx?id=lAAPoyCRq0q6TOVQkCOy1ZyG6Ud_r2tKuS0HcGnqiQZUQ05MOU9BSzEwOThZVjNQVVFGTDNZRENONiQlQCN0PWcu)**
+
+2. **Join the Waveform Working Group**
+   - Request access to the Waveform WG Teams channel
+   - Introduce yourself and share your interests
+
+3. **Attend Working Group Meetings**
+   - **Format**: Use case presentations, technical discussions, implementation Q&A
+   - **Contact**: jared.houghtaling@tuftsmedicine.org for meeting schedule
+
+4. **Introduce Yourself**
+   - Share your background (clinical, data engineering, research, etc.)
+   - Describe what types of waveform data you work with
+   - Explain what you hope to accomplish with the extension
+
+### **Start Contributing**
+
+**For Data Engineers**:
+- Review the [Implementation Guide](waveform-extension.html)
+- Check [Table Specifications](waveform-tables.html)
+- Share your ETL approach and challenges
+- Contribute reference implementations to GitHub
+
+**For Researchers**:
+- Propose use cases that require waveform data integration
+- Identify required features not yet in the specification
+- Share validation requirements
+- Collaborate on multi-site studies
+
+**For Developers**:
+- Build ETL tools for common waveform formats (EDF, WFDB, etc.)
+- Develop visualization tools
+- Create data quality checks
+- Contribute to vocabulary development
+
+**For Vocabulary Experts**:
+- Map waveform concepts to OMOP standard concepts
+- Standardize device and procedure terminology
+- Extend vocabularies for signal types and features
+
+<br>
+
+## **Implementation Steps**
+
+### **Phase 1: Planning**
+
+1. **Assess Your Data**
+   - Identify waveform data sources (file formats, storage locations)
+   - Determine linkage keys to OMOP PERSON and VISIT_OCCURRENCE
+   - Document device types and acquisition contexts
+   - Estimate data volumes and storage requirements
+
+2. **Define Scope**
+   - Which waveform types will you include? (ECG, EEG, ABP, etc.)
+   - Will you ingest historical data or only new acquisitions?
+   - What derived features do you need? (HR, HRV, respiratory rate, etc.)
+   - Do you need real-time ingestion or batch processing?
+
+3. **Set Up Infrastructure**
+   - Extend OMOP database schema with waveform tables
+   - Plan file storage strategy (object storage, file system, etc.)
+   - Set up ETL development environment
+   - Prepare test datasets
+
+### **Phase 2: Implementation**
+
+Follow the [Waveform Extension Implementation Guide](waveform-extension.html) to:
+
+1. **Populate waveform_occurrence**
+   - Extract recording session metadata
+   - Link to patients and visits
+   - Establish temporal boundaries
+
+2. **Populate waveform_registry**
+   - Register each waveform file
+   - Store source and target file paths
+   - Record file-level temporal information
+
+3. **Populate waveform_channel_metadata**
+   - Extract per-signal metadata (sampling rate, gain, units)
+   - Map channel names to standard concepts
+   - Link to device and procedure records
+
+4. **Populate waveform_feature** (optional)
+   - Apply feature extraction algorithms
+   - Store derived measurements
+   - Link to MEASUREMENT/OBSERVATION tables
+
+### **Phase 3: Validation**
+
+1. **Data Quality Checks**
+   - Verify referential integrity across tables
+   - Check temporal consistency
+   - Validate concept mappings
+   - Test file accessibility
+
+2. **Test Queries**
+   - Retrieve waveforms for specific patients/visits
+   - Join waveform features with clinical events
+   - Aggregate features across populations
+   - Test performance at scale
+
+3. **Share Results**
+   - Document implementation patterns
+   - Report data quality metrics
+   - Share ETL code (if possible)
+   - Provide feedback to working group
+
+<br>
+
+## **Common Use Cases**
+
+### **ICU Telemetry Integration**
+
+**Scenario**: Integrate continuous bedside monitor data (ECG, ABP, SpO2) with ICU EHR data
+
+**Implementation**:
+- Link telemetry sessions to ICU visits via timestamps
+- Register multi-channel waveform files (often EDF or proprietary formats)
+- Extract vital signs as features (HR, BP, RR, SpO2)
+- Align with medication administration and interventions
+
+**Applications**:
+- Early warning systems for hemodynamic instability
+- Medication effect analysis
+- ICU length of stay prediction
+
+### **Diagnostic ECG Studies**
+
+**Scenario**: Standardize 12-lead diagnostic ECG data from cardiology clinics
+
+**Implementation**:
+- Link ECGs to outpatient visits or procedures
+- Register ECG files (typically HL7 aECG, DICOM, or MUSE XML)
+- Extract automated measurements (QT, QRS, PR intervals)
+- Map ECG interpretations to OMOP concepts
+
+**Applications**:
+- QT prolongation risk assessment
+- Arrhythmia phenotyping
+- Medication safety surveillance
+
+### **EEG Analysis**
+
+**Scenario**: Enable neurological research with EEG and clinical data
+
+**Implementation**:
+- Link EEG studies to neurology encounters
+- Register multi-channel EEG files (often EDF+)
+- Extract power spectral features, entropy, or seizure annotations
+- Align with medication, imaging, and outcome data
+
+**Applications**:
+- Seizure prediction models
+- Sleep disorder research
+- Post-operative cognitive monitoring
+
+<br>
+
+## **Resources**
+
+### **Documentation**
+- [Waveform Extension Overview](waveform-extension-overview.html) - High-level introduction
+- [Implementation Guide](waveform-extension.html) - Detailed ETL specifications
+- [Table Specifications](waveform-tables.html) - Complete schema reference
+- [Office Hours](office-hours.html) - Recorded implementation discussions
+
+### **Repositories**
+- [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG) - Central working group repository
+- Example ETL code (coming soon)
+- Vocabulary mappings (coming soon)
+
+### **Related Projects**
+- [CHoRUS Multimodal SOP](https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/) - Multimodal data linkage guidance
+- [OHDSI GIS Working Group](https://ohdsi.github.io/GIS/) - Geospatial data integration
+- [WFDB Software Package](https://physionet.org/content/wfdb/) - Waveform processing tools
+
+<br>
+
+## **Getting Help**
+
+### **Questions?**
+
+- **Teams**: Post in the Waveform Working Group channel
+- **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues) or discussion
+- **Email**: jared.houghtaling@tuftsmedicine.org
+
+### **Technical Support**
+
+- **OHDSI Forums**: [Developer section](http://forums.ohdsi.org/c/developers)
+- **GitHub Issues**: [Report bugs/request features](https://github.com/OHDSI/WaveformWG/issues)
+- **Office Hours**: Join CHoRUS Bridge2AI Standards Office Hours for live Q&A
+
+### **New to Waveforms/OMOP/OHDSI?**
+
+Welcome! We support all skill levels:
+- Pair with experienced implementers
+- Start by reviewing existing implementations
+- Ask questions freely during meetings
+- Review the [OHDSI Community](https://www.ohdsi.org/get-involved/) resources
+- Explore PhysioNet datasets for learning
+
+<br>
+
+## **Contact**
+
+- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Teams**: OHDSI Waveform Working Group channel
+- **GitHub**: [@OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+
+<br>

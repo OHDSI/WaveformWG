@@ -1,0 +1,486 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Waveform Extension Table Specifications**
+
+<br>
+
+## **Table Overview**
+
+The OMOP CDM Waveform Extension consists of four tables that must be populated in order:
+
+1. **waveform_occurrence** - Clinical and temporal context
+2. **waveform_registry** - File-level metadata
+3. **waveform_channel_metadata** - Per-signal characteristics
+4. **waveform_feature** - Derived measurements
+
+<br>
+
+## **1. waveform_occurrence**
+
+### **Purpose**
+
+Establishes the clinical and temporal context for each waveform recording session. Provides the semantic and temporal anchor for all related waveform data.
+
+### **Schema**
+
+| Field                                | Data Type | Required | Description                                                                                     |
+|:------------------------------------:|:---------:|:--------:|:-----------------------------------------------------------------------------------------------:|
+| waveform_occurrence_id               | INTEGER   | Yes      | Unique identifier for each waveform acquisition event                                            |
+| waveform_occurrence_concept_id       | INTEGER   | Yes      | Standard concept for acquisition type (e.g., "ICU telemetry", "12-lead diagnostic ECG")         |
+| person_id                            | INTEGER   | Yes      | Foreign key to PERSON table                                                                      |
+| waveform_occurrence_start_datetime   | DATETIME  | Yes      | Start of the acquisition session                                                                |
+| waveform_occurrence_end_datetime     | DATETIME  | Yes      | End of the acquisition session                                                                  |
+| visit_occurrence_id                  | INTEGER   | Yes      | Foreign key to VISIT_OCCURRENCE table                                                            |
+| visit_detail_id                      | INTEGER   | Optional | Foreign key to VISIT_DETAIL table (for granular location context)                               |
+| preceding_waveform_occurrence_id     | INTEGER   | Optional | Foreign key to previous waveform_occurrence for sequential acquisitions                          |
+| waveform_format_concept_id           | INTEGER   | Optional | Standard concept for common file format (if applicable to entire session)                        |
+| waveform_occurrence_source_value     | VARCHAR   | Recommended | Raw session ID, accession number, or study instance UID from source system                      |
+| num_of_files                         | INTEGER   | Recommended | Count of files linked to this occurrence (populated after registry ingestion)                   |
+| waveform_format_source_value         | VARCHAR   | Optional | Raw format label from source system                                                             |
+
+### **Relationships**
+
+- **Parent Tables**: PERSON, VISIT_OCCURRENCE, VISIT_DETAIL
+- **Self-Referential**: preceding_waveform_occurrence_id → waveform_occurrence_id
+- **Child Tables**: waveform_registry (1:N)
+
+### **Constraints**
+
+- Primary Key: waveform_occurrence_id
+- Foreign Keys: person_id, visit_occurrence_id, visit_detail_id, preceding_waveform_occurrence_id
+- Check Constraints:
+  - waveform_occurrence_end_datetime >= waveform_occurrence_start_datetime
+  - num_of_files >= 0 (if populated)
+
+### **Example**
+
+```sql
+-- ICU telemetry session
+INSERT INTO waveform_occurrence (
+  waveform_occurrence_id,
+  waveform_occurrence_concept_id,
+  person_id,
+  waveform_occurrence_start_datetime,
+  waveform_occurrence_end_datetime,
+  visit_occurrence_id,
+  visit_detail_id,
+  waveform_occurrence_source_value,
+  num_of_files
+) VALUES (
+  1001,
+  2000000001, -- "ICU Continuous Monitoring"
+  12345,
+  '2025-01-15 08:00:00',
+  '2025-01-15 20:00:00',
+  67890,
+  456,
+  'TELEM-2025-01-15-001',
+  12
+);
+```
+
+<br>
+
+## **2. waveform_registry**
+
+### **Purpose**
+
+Registers individual waveform files with their storage locations, formats, and temporal boundaries. Links files to their acquisition context.
+
+### **Schema**
+
+| Field                          | Data Type | Required | Description                                                                                  |
+|:------------------------------:|:---------:|:--------:|:--------------------------------------------------------------------------------------------:|
+| waveform_registry_id           | INTEGER   | Yes      | Unique identifier for each waveform file                                                      |
+| waveform_occurrence_id         | INTEGER   | Yes      | Foreign key to waveform_occurrence                                                           |
+| waveform_feature_id            | INTEGER   | Optional | Foreign key to waveform_feature (if this file represents a derived feature)                   |
+| person_id                      | INTEGER   | Yes      | Foreign key to PERSON (inherited from waveform_occurrence)                                   |
+| waveform_file_start_datetime   | DATETIME  | Yes      | Start time of this specific file                                                             |
+| waveform_file_end_datetime     | DATETIME  | Yes      | End time of this specific file                                                               |
+| visit_occurrence_id            | INTEGER   | Yes      | Foreign key to VISIT_OCCURRENCE (inherited from waveform_occurrence)                         |
+| visit_detail_id                | INTEGER   | Optional | Foreign key to VISIT_DETAIL (inherited from waveform_occurrence)                             |
+| file_extension_concept_id      | INTEGER   | Recommended | Standard concept for file extension (e.g., .edf, .csv, .hea)                               |
+| file_extension_source_value    | VARCHAR   | Yes      | Raw file extension as extracted from filename                                                |
+| waveform_source_file_uri       | VARCHAR   | Optional | Original file path or URI from source system                                                 |
+| waveform_target_file_uri       | VARCHAR   | Yes      | Standardized file path or URI in transformed dataset (required for downstream access)        |
+
+### **Relationships**
+
+- **Parent Tables**: waveform_occurrence, waveform_feature (optional), PERSON, VISIT_OCCURRENCE, VISIT_DETAIL
+- **Child Tables**: waveform_channel_metadata (1:N)
+
+### **Constraints**
+
+- Primary Key: waveform_registry_id
+- Foreign Keys: waveform_occurrence_id, waveform_feature_id, person_id, visit_occurrence_id, visit_detail_id
+- Check Constraints:
+  - waveform_file_end_datetime >= waveform_file_start_datetime
+  - waveform_target_file_uri must be unique (or unique within occurrence)
+
+### **Example**
+
+```sql
+-- One file from 12-hour telemetry session
+INSERT INTO waveform_registry (
+  waveform_registry_id,
+  waveform_occurrence_id,
+  person_id,
+  waveform_file_start_datetime,
+  waveform_file_end_datetime,
+  visit_occurrence_id,
+  file_extension_concept_id,
+  file_extension_source_value,
+  waveform_source_file_uri,
+  waveform_target_file_uri
+) VALUES (
+  5001,
+  1001,
+  12345,
+  '2025-01-15 08:00:00',
+  '2025-01-15 09:00:00',
+  67890,
+  2000000010, -- ".edf"
+  '.edf',
+  '/source/patient_12345/2025-01-15/telemetry_0800.edf',
+  's3://omop-waveforms/registry_5001.edf'
+);
+```
+
+<br>
+
+## **3. waveform_channel_metadata**
+
+### **Purpose**
+
+Describes per-signal-channel metadata including sampling rates, gains, calibration factors, and signal quality indicators. Ensures proper interpretation of raw waveform signals.
+
+### **Schema**
+
+| Field                           | Data Type | Required            | Description                                                                            |
+|:-------------------------------:|:---------:|:-------------------:|:--------------------------------------------------------------------------------------:|
+| waveform_channel_metadata_id    | INTEGER   | Yes                 | Unique identifier for each metadata entry                                               |
+| waveform_registry_id            | INTEGER   | Yes                 | Foreign key to waveform_registry                                                       |
+| procedure_occurrence_id         | INTEGER   | Conditionally Required | Foreign key to PROCEDURE_OCCURRENCE (if tied to documented clinical procedure)        |
+| device_exposure_id              | INTEGER   | Optional            | Foreign key to DEVICE_EXPOSURE (if acquisition device is known)                        |
+| waveform_channel_source_value   | VARCHAR   | Recommended         | Channel label from raw file (e.g., "Lead II", "ECG I", "SpO2", "ABP")                 |
+| channel_concept_id              | INTEGER   | Yes                 | Standard concept for channel/signal type                                               |
+| metadata_source_value           | VARCHAR   | Yes                 | Metadata type (e.g., "sampling_rate", "gain", "calibration_factor")                   |
+| metadata_concept_id             | INTEGER   | Yes                 | Standard concept for metadata type                                                     |
+| value_as_number                 | FLOAT     | Optional            | Numeric metadata value (e.g., 500 for sampling rate)                                   |
+| value_as_concept_id             | INTEGER   | Optional            | Categorical metadata value as concept (e.g., "High Quality")                           |
+| value_as_string                 | VARCHAR   | Optional            | Non-numeric metadata value (e.g., "DC coupling")                                       |
+| unit_concept_id                 | INTEGER   | Recommended         | Standard concept for units (e.g., Hz, mmHg, mV)                                        |
+| unit_source_value               | VARCHAR   | Recommended         | Raw unit string from source (e.g., "Hz", "mmHg", "uV")                                 |
+
+### **Relationships**
+
+- **Parent Tables**: waveform_registry, PROCEDURE_OCCURRENCE, DEVICE_EXPOSURE
+- **Child Tables**: waveform_feature (1:N)
+
+### **Constraints**
+
+- Primary Key: waveform_channel_metadata_id
+- Foreign Keys: waveform_registry_id, procedure_occurrence_id, device_exposure_id
+- Check Constraints:
+  - At least one of value_as_number, value_as_concept_id, or value_as_string must be populated
+
+### **Example**
+
+```sql
+-- Sampling rate for Lead II ECG channel
+INSERT INTO waveform_channel_metadata (
+  waveform_channel_metadata_id,
+  waveform_registry_id,
+  waveform_channel_source_value,
+  channel_concept_id,
+  metadata_source_value,
+  metadata_concept_id,
+  value_as_number,
+  unit_concept_id,
+  unit_source_value
+) VALUES (
+  10001,
+  5001,
+  'Lead II',
+  2000000020, -- "ECG Lead II"
+  'sampling_rate',
+  2000000030, -- "Sampling Rate"
+  500,
+  8504, -- Hz (OMOP standard unit concept)
+  'Hz'
+);
+```
+
+<br>
+
+## **4. waveform_feature**
+
+### **Purpose**
+
+Stores measurements and features derived from waveform signals. Supports both traditional signal processing features and AI-derived embeddings. Links features back to specific channels, files, and time windows.
+
+### **Schema**
+
+| Field                              | Data Type | Required            | Description                                                                                     |
+|:----------------------------------:|:---------:|:-------------------:|:-----------------------------------------------------------------------------------------------:|
+| waveform_feature_id                | INTEGER   | Yes                 | Unique identifier for each derived feature                                                       |
+| waveform_occurrence_id             | INTEGER   | Yes                 | Foreign key to waveform_occurrence                                                              |
+| waveform_registry_id               | INTEGER   | Yes                 | Foreign key to waveform_registry (specific file)                                                |
+| waveform_channel_metadata_id       | INTEGER   | Yes                 | Foreign key to waveform_channel_metadata (specific channel)                                     |
+| measurement_id                     | INTEGER   | Conditionally Required | Foreign key to MEASUREMENT (if feature maps to standard measurement)                           |
+| observation_id                     | INTEGER   | Conditionally Required | Foreign key to OBSERVATION (if feature maps to standard observation)                           |
+| algorithm_concept_id               | INTEGER   | Yes                 | Standard concept for derivation method (e.g., "Bazett's formula", "SDNN")                      |
+| algorithm_source_value             | VARCHAR   | Recommended         | Descriptive name of algorithm/software (e.g., "Kubios HRV 3.4")                                |
+| anatomic_site_concept_id           | INTEGER   | Optional            | Standard concept for anatomical site (if known)                                                 |
+| waveform_feature_start_timestamp   | TIME      | Recommended         | Start time of temporal window for feature derivation                                            |
+| waveform_feature_end_timestamp     | TIME      | Recommended         | End time of temporal window for feature derivation                                              |
+| is_feature_overflow                | BOOLEAN   | Optional            | TRUE if feature spans multiple files/occurrences/channels                                       |
+| value_as_number                    | FLOAT     | Recommended         | Numeric feature value (e.g., HR = 75 bpm)                                                       |
+| value_as_concept_id                | INTEGER   | Recommended         | Categorical feature value (e.g., "Low signal quality")                                          |
+| value_as_string                    | VARCHAR   | Optional            | Descriptive feature value (e.g., "artifact detected")                                           |
+| value_is_a_registry_file           | BOOLEAN   | Optional            | TRUE if feature value is stored as a file in waveform_registry                                  |
+| unit_concept_id                    | INTEGER   | Recommended if numeric | Standard concept for units (e.g., bpm, ms, Hz)                                                |
+| unit_source_value                  | VARCHAR   | Recommended if numeric | Raw unit string from source                                                                    |
+
+### **Relationships**
+
+- **Parent Tables**: waveform_occurrence, waveform_registry, waveform_channel_metadata, MEASUREMENT, OBSERVATION
+- **Self-Referential**: Can link back to waveform_registry via `value_is_a_registry_file` flag
+
+### **Constraints**
+
+- Primary Key: waveform_feature_id
+- Foreign Keys: waveform_occurrence_id, waveform_registry_id, waveform_channel_metadata_id, measurement_id, observation_id
+- Check Constraints:
+  - At least one of value_as_number, value_as_concept_id, or value_as_string must be populated
+  - waveform_feature_end_timestamp >= waveform_feature_start_timestamp (if both populated)
+
+### **Example**
+
+```sql
+-- Heart rate derived from Lead II ECG
+INSERT INTO waveform_feature (
+  waveform_feature_id,
+  waveform_occurrence_id,
+  waveform_registry_id,
+  waveform_channel_metadata_id,
+  algorithm_concept_id,
+  algorithm_source_value,
+  waveform_feature_start_timestamp,
+  waveform_feature_end_timestamp,
+  value_as_number,
+  unit_concept_id,
+  unit_source_value
+) VALUES (
+  20001,
+  1001,
+  5001,
+  10001,
+  2000000040, -- "Peak Detection Algorithm"
+  'Pan-Tompkins QRS Detection',
+  '08:00:00',
+  '09:00:00',
+  75,
+  8541, -- beats/min (OMOP standard unit)
+  'bpm'
+);
+```
+
+<br>
+
+## **Entity-Relationship Diagram**
+
+```
+┌────────────┐         ┌────────────────────┐
+│   PERSON   │◄────────│ waveform_occurrence│
+└────────────┘         └──────────┬─────────┘
+                                  │
+┌──────────────────┐              │
+│ VISIT_OCCURRENCE │◄─────────────┤
+└──────────────────┘              │
+                                  │ 1:N
+┌──────────────┐                  │
+│ VISIT_DETAIL │◄─────────────────┤
+└──────────────┘                  │
+                                  ▼
+                       ┌──────────────────┐
+                       │ waveform_registry│
+                       └─────────┬────────┘
+                                 │
+                                 │ 1:N
+                                 ▼
+               ┌──────────────────────────────┐
+               │ waveform_channel_metadata    │
+               └──────────┬───────────────────┘
+                          │
+┌──────────────────────┐  │ 1:N
+│ PROCEDURE_OCCURRENCE │◄─┤
+└──────────────────────┘  │
+                          │
+┌──────────────────┐      │
+│ DEVICE_EXPOSURE  │◄─────┤
+└──────────────────┘      │
+                          ▼
+                   ┌────────────────┐       ┌──────────────┐
+                   │ waveform_feature│──────►│ MEASUREMENT  │
+                   └────────────────┘       └──────────────┘
+                          │
+                          │                  ┌──────────────┐
+                          └─────────────────►│ OBSERVATION  │
+                                             └──────────────┘
+```
+
+<br>
+
+## **DDL Examples**
+
+### **PostgreSQL**
+
+```sql
+-- waveform_occurrence table
+CREATE TABLE waveform_occurrence (
+  waveform_occurrence_id INTEGER PRIMARY KEY,
+  waveform_occurrence_concept_id INTEGER NOT NULL,
+  person_id INTEGER NOT NULL,
+  waveform_occurrence_start_datetime TIMESTAMP NOT NULL,
+  waveform_occurrence_end_datetime TIMESTAMP NOT NULL,
+  visit_occurrence_id INTEGER NOT NULL,
+  visit_detail_id INTEGER,
+  preceding_waveform_occurrence_id INTEGER,
+  waveform_format_concept_id INTEGER,
+  waveform_occurrence_source_value VARCHAR(255),
+  num_of_files INTEGER,
+  waveform_format_source_value VARCHAR(50),
+  CONSTRAINT fk_wo_person FOREIGN KEY (person_id) REFERENCES person(person_id),
+  CONSTRAINT fk_wo_visit FOREIGN KEY (visit_occurrence_id) REFERENCES visit_occurrence(visit_occurrence_id),
+  CONSTRAINT fk_wo_visit_detail FOREIGN KEY (visit_detail_id) REFERENCES visit_detail(visit_detail_id),
+  CONSTRAINT fk_wo_preceding FOREIGN KEY (preceding_waveform_occurrence_id) REFERENCES waveform_occurrence(waveform_occurrence_id),
+  CONSTRAINT chk_wo_dates CHECK (waveform_occurrence_end_datetime >= waveform_occurrence_start_datetime)
+);
+
+CREATE INDEX idx_wo_person ON waveform_occurrence(person_id);
+CREATE INDEX idx_wo_visit ON waveform_occurrence(visit_occurrence_id);
+CREATE INDEX idx_wo_dates ON waveform_occurrence(waveform_occurrence_start_datetime, waveform_occurrence_end_datetime);
+```
+
+<br>
+
+## **Common Queries**
+
+### **Retrieve all waveforms for a specific patient**
+
+```sql
+SELECT
+  wo.waveform_occurrence_id,
+  wo.waveform_occurrence_start_datetime,
+  wo.waveform_occurrence_end_datetime,
+  wr.waveform_target_file_uri,
+  wr.file_extension_source_value
+FROM waveform_occurrence wo
+JOIN waveform_registry wr ON wo.waveform_occurrence_id = wr.waveform_occurrence_id
+WHERE wo.person_id = 12345
+ORDER BY wo.waveform_occurrence_start_datetime;
+```
+
+### **Get heart rate features for an ICU visit**
+
+```sql
+SELECT
+  wf.waveform_feature_start_timestamp,
+  wf.value_as_number AS heart_rate,
+  wf.unit_source_value
+FROM waveform_feature wf
+JOIN waveform_occurrence wo ON wf.waveform_occurrence_id = wo.waveform_occurrence_id
+WHERE wo.visit_occurrence_id = 67890
+  AND wf.algorithm_source_value LIKE '%Heart Rate%'
+ORDER BY wf.waveform_feature_start_timestamp;
+```
+
+### **Join waveform features with medication exposures**
+
+```sql
+SELECT
+  p.person_id,
+  de.drug_exposure_start_datetime,
+  c.concept_name AS drug_name,
+  wf.waveform_feature_start_timestamp,
+  wf.value_as_number AS qtc_interval,
+  wf.unit_source_value
+FROM drug_exposure de
+JOIN person p ON de.person_id = p.person_id
+JOIN concept c ON de.drug_concept_id = c.concept_id
+LEFT JOIN waveform_feature wf
+  ON de.person_id = wf.waveform_occurrence_id
+  AND wf.algorithm_source_value LIKE '%QTc%'
+  AND wf.waveform_feature_start_timestamp BETWEEN
+      de.drug_exposure_start_datetime AND
+      COALESCE(de.drug_exposure_end_datetime, de.drug_exposure_start_datetime + INTERVAL '7 days')
+WHERE c.concept_name LIKE '%Azithromycin%'
+ORDER BY p.person_id, de.drug_exposure_start_datetime;
+```
+
+<br>
+
+## **Data Quality Checks**
+
+### **Referential Integrity**
+
+```sql
+-- Check for orphaned waveform_registry entries
+SELECT COUNT(*)
+FROM waveform_registry wr
+LEFT JOIN waveform_occurrence wo ON wr.waveform_occurrence_id = wo.waveform_occurrence_id
+WHERE wo.waveform_occurrence_id IS NULL;
+```
+
+### **Temporal Consistency**
+
+```sql
+-- Check for file timestamps outside occurrence boundaries
+SELECT
+  wr.waveform_registry_id,
+  wr.waveform_file_start_datetime,
+  wr.waveform_file_end_datetime,
+  wo.waveform_occurrence_start_datetime,
+  wo.waveform_occurrence_end_datetime
+FROM waveform_registry wr
+JOIN waveform_occurrence wo ON wr.waveform_occurrence_id = wo.waveform_occurrence_id
+WHERE wr.waveform_file_start_datetime < wo.waveform_occurrence_start_datetime
+   OR wr.waveform_file_end_datetime > wo.waveform_occurrence_end_datetime;
+```
+
+### **Completeness**
+
+```sql
+-- Check for missing required metadata
+SELECT
+  wcm.waveform_channel_metadata_id,
+  wcm.waveform_channel_source_value,
+  wcm.metadata_source_value,
+  wcm.value_as_number,
+  wcm.value_as_concept_id,
+  wcm.value_as_string
+FROM waveform_channel_metadata wcm
+WHERE wcm.value_as_number IS NULL
+  AND wcm.value_as_concept_id IS NULL
+  AND wcm.value_as_string IS NULL;
+```
+
+<br>
+
+## **Additional Resources**
+
+- [Implementation Guide](waveform-extension.html) - Detailed ETL specifications
+- [Getting Started](get-started.html) - Step-by-step implementation instructions
+- [Waveform Extension Overview](waveform-extension-overview.html) - High-level architecture
+- [Office Hours](office-hours.html) - Recorded implementation discussions
+
+<br>

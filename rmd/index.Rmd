@@ -1,0 +1,161 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **OHDSI Waveform Working Group**
+
+<br>
+
+## **Mission**
+
+To enable integration of physiological waveform data (e.g., ECG, EEG, arterial blood pressure) with electronic health records in the OMOP Common Data Model, supporting observational research, AI model development, and clinical decision support.
+
+<br>
+
+## **Collaboration Approach**
+
+Like most of OHDSI, we use GitHub and MS Teams for collaboration, version control, and project management. We review progress and discuss technical challenges at regular working group meetings. Leaders of specific projects within the Waveform Working Group schedule subgroup meetings for focused development work.
+
+All are welcome. We'd love to work with you. If you are new and considering using the Waveform Extension for research or contributing to the group's work, we will schedule a meeting with you to help you figure out what manner of participation makes sense for you.
+
+New to OHDSI? First sign up for an OHDSI MS Teams account [here](https://forms.office.com/Pages/ResponsePage.aspx?id=lAAPoyCRq0q6TOVQkCOy1ZyG6Ud_r2tKuS0HcGnqiQZUQ05MOU9BSzEwOThZVjNQVVFGTDNZRENONiQlQCN0PWcu).
+
+Already have an OHDSI Teams account? Great. Just reach out to join the Waveform Working Group channel.
+
+The main workgroup calls are scheduled regularly on MS Teams. Please reach out for the current meeting schedule and Teams link.
+
+<br>
+
+## **Waveform Extension Overview**
+
+The OMOP CDM Waveform Extension provides a standardized approach for integrating physiological waveform data with EHR data in the OMOP Common Data Model. The extension consists of four key tables:
+
+### **Core Tables**
+
+#### **waveform_occurrence**
+Defines the clinical and temporal context for each waveform recording session. This table establishes the semantic anchor for all related waveform data, linking acquisitions to patients, visits, and clinical procedures.
+
+#### **waveform_registry**
+Registers individual waveform files with their metadata, storage locations, and temporal boundaries. Each file is linked to a waveform_occurrence and tracks the transformation from raw source files to standardized storage formats.
+
+#### **waveform_channel_metadata**
+Describes per-signal-channel metadata including sampling rates, calibration factors, gains, and signal quality indicators. This table ensures proper interpretation of raw waveform signals across different acquisition devices and formats.
+
+#### **waveform_feature**
+Stores derived features computed from waveform signals, such as heart rate variability metrics, QT intervals, respiratory rate, or AI-extracted features. Links features back to specific channels and time windows, enabling integration with OMOP MEASUREMENT and OBSERVATION tables.
+
+### **Key Capabilities**
+
+- **Temporal Alignment**: Precise synchronization between waveform data and clinical events
+- **Multi-Format Support**: Handles diverse waveform formats (EDF, WFDB, CSV, proprietary formats)
+- **Signal Provenance**: Tracks data lineage from raw acquisition through feature extraction
+- **OMOP Integration**: Native compatibility with OMOP vocabularies and analytics tools
+- **Privacy Protection**: Supports de-identified analysis workflows
+- **Feature Engineering**: Standardized storage for both traditional and AI-derived features
+
+<br>
+
+## **Goals**
+
+The OHDSI Waveform Working Group carries out work in support of its mission by pursuing the following goals:
+
+ - Develop and maintain the OMOP CDM Waveform Extension
+ - Support OHDSI studies that use waveform data
+ - Create implementation guidance and best practices
+ - Develop ETL pipelines and reference implementations
+ - Advance vocabulary standards for waveform concepts
+ - Foster collaboration between clinical researchers and data engineers
+
+<br>
+
+## **Use Cases**
+
+The Waveform Extension supports diverse research applications:
+
+### **Critical Care Research**
+- Predict adverse events using ICU telemetry and EHR data
+- Analyze hemodynamic stability using arterial blood pressure waveforms
+- Study cardiac arrhythmias with continuous ECG monitoring
+
+### **Neurological Studies**
+- Seizure detection and prediction using EEG data
+- Sleep disorder research with polysomnography
+- Brain-computer interface development
+
+### **Cardiology Research**
+- QT interval prolongation risk assessment
+- Heart rate variability analysis
+- Diagnostic ECG interpretation
+
+### **AI Model Development**
+- Multi-modal predictive modeling combining waveforms and EHR
+- Transfer learning across institutions using standardized data
+- Model validation using federated datasets
+
+<br>
+
+## **Roadmap**
+
+Current development priorities:
+
+- **ETL Tools**: Reference implementations for common waveform formats
+- **Vocabulary Expansion**: OMOP concepts for waveform types, channels, and features
+- **Validation Framework**: Data quality checks and conformance testing
+- **Integration Examples**: Jupyter notebooks demonstrating common analyses
+- **Documentation**: Implementation guides, video tutorials, and best practices
+
+See our [GitHub Issues](https://github.com/OHDSI/WaveformWG/issues) for detailed work items and progress tracking.
+
+<br>
+
+## **Publications & Presentations**
+
+**2025 Presentations**:
+- Multimodal Data in OMOP (OHDSI Europe 2025)
+- Implementation of OMOP CDM Waveform Extension SOP (CHoRUS Office Hours, June 2025)
+
+**Related Work**:
+- [Multimodal Linkage SOP](https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/) (CHoRUS)
+- Waveform Extension Report (OHDSI Symposium 2024)
+
+See [Presentations](presentations.html) for complete list with slides and recordings.
+
+<br>
+
+## **Get Involved**
+
+### **Researchers**
+- Use the Waveform Extension in your studies
+- Share use cases and requirements
+- Participate in validation efforts
+
+### **Developers**
+- Contribute ETL tools and converters
+- Improve documentation
+- Build visualization and analysis tools
+
+### **Data Engineers**
+- Implement the extension at your institution
+- Share implementation patterns
+- Provide feedback on specifications
+
+### **Vocabulary Experts**
+- Help standardize waveform concepts
+- Map device-specific terminology
+- Contribute to OMOP vocabulary extensions
+
+<br>
+
+## **Contact**
+
+- **GitHub**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+- **Email**: Jared Houghtaling (jared.houghtaling@tuftsmedicine.org)
+- **Teams**: OHDSI Waveform Working Group channel
+
+<br>

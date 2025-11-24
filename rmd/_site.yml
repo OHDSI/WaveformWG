@@ -1,0 +1,42 @@
+name: "OHDSI Waveform"
+output_dir: "../docs"
+output:
+  html_document:
+    theme: cosmo
+    css: style.css
+    includes:
+      in_header: "favicon.html"
+exclude: ["extras"]
+navbar:
+  title: '<div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div>'
+  right:
+    - icon: fa-github
+      href: https://github.com/OHDSI/WaveformWG
+  left:
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+    - text: "Get Started"
+      icon: fa-play
+      href: get-started.html
+    - text: "Waveform Extension"
+      icon: fa-heartbeat
+      menu:
+        - text: "Overview"
+          href: waveform-extension-overview.html
+        - text: "Implementation Guide"
+          href: waveform-extension.html
+        - text: "Table Specifications"
+          href: waveform-tables.html
+    - text: "Resources"
+      icon: fa-book
+      menu:
+        - text: "Working Group Proposal"
+          href: working-group-proposal.html
+        - text: "Office Hours"
+          href: office-hours.html
+        - text: "Presentations"
+          href: presentations.html
+    - text: "Project Management"
+      icon: fa-tasks
+      href: project-management.html

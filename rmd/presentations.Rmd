@@ -1,0 +1,153 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Publications & Presentations**
+
+<br>
+
+## **2025 Presentations**
+
+### **Multimodal Data in OMOP (OHDSI Europe 2025)**
+
+**Presenter**: Jared Houghtaling
+
+**Abstract**: Presentation on integrating multimodal data including physiological waveforms into the OMOP Common Data Model.
+
+**Resources**:
+- Slides: [Houghtaling_MultimodalData_Europe2025.docx](https://drive.google.com/file/d/1VLcTFWob12En8JeYDSGqmXK6mEBsiV-s/view)
+
+<br>
+
+## **2024 Reports & Documentation**
+
+### **Waveform Extension Report (OHDSI Symposium 2024)**
+
+**Authors**: Jared Houghtaling, Polina Talapova, Brian Gow
+
+**Abstract**: Comprehensive report on the design and implementation of the OMOP CDM Waveform Extension.
+
+**Resources**:
+- Report: [Waveform Extension at 2025 OHDSI Gloabl](https://www.ohdsi.org/2025showcase-602/)
+
+<br>
+
+## **Related Publications**
+
+### **CHoRUS Multimodal Linkage SOP**
+
+**Publication**: CHoRUS Bridge2AI Standards Office
+
+**Description**: Standard Operating Procedure for linking multimodal data (including waveforms) with electronic health records. This SOP introduced the waveform_registry table concept, which was later expanded into the 4-table Waveform Extension.
+
+**Link**: [https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/](https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/)
+
+<br>
+
+## **Office Hours Sessions**
+
+Multiple recorded sessions discussing waveform extension implementation, available on the [Office Hours](office-hours.html) page:
+
+- **[03-13-25]** Linking waveform and EHR data - Part 1
+- **[03-20-25]** Linking waveform and EHR data - Part 2
+- **[04-17-25]** Waveform linkage and site updates
+- **[06-26-25]** Implementation of OMOP CDM Waveform Extension SOP
+- **[10-16-25]** CHoRUS Bridge2AI Standards Office Hours Continued
+- **[11-20-25]** CHoRUS Bridge2AI Standards Office Hours Continued
+
+See [Office Hours](office-hours.html) for full details and links to recordings.
+
+<br>
+
+## **Related OHDSI Publications**
+
+### **OMOP CDM Documentation**
+
+- [OMOP CDM v5.4 Specification](https://ohdsi.github.io/CommonDataModel/)
+- [OMOP Standardized Vocabularies](https://www.ohdsi.org/analytic-tools/athena-standardized-vocabularies/)
+
+### **OHDSI GIS Working Group**
+
+The GIS Working Group has developed similar extensions for geospatial data integration with OMOP:
+
+- [OHDSI GIS Website](https://ohdsi.github.io/GIS/)
+- [GIS Schema Extensions](https://ohdsi.github.io/GIS/schema-extensions.html)
+
+<br>
+
+## **External Resources**
+
+### **PhysioNet**
+
+PhysioNet provides open-access physiological data and waveform processing tools:
+
+- [PhysioNet Database](https://physionet.org/)
+- [WFDB Software Package](https://physionet.org/content/wfdb/)
+- [MIMIC-IV Waveform Database](https://physionet.org/content/mimic4wdb/)
+
+### **Waveform Standards**
+
+- **EDF/EDF+**: [European Data Format Specification](https://www.edfplus.info/)
+- **HL7 aECG**: [HL7 Annotated ECG Standard](https://www.hl7.org/implement/standards/product_brief.cfm?product_id=30)
+- **DICOM Waveform**: [DICOM Standard Part 3](https://dicom.nema.org/medical/dicom/current/output/chtml/part03/sect_C.10.9.html)
+
+<br>
+
+## **Cite This Work**
+
+If you use the OMOP CDM Waveform Extension in your research, please cite:
+
+**Houghtaling J, Talapova P, Gow B.** "OMOP CDM Waveform Extension: Standardizing Physiological Waveform Data for Observational Research." OHDSI Symposium 2024.
+
+**BibTeX**:
+```
+@techreport{houghtaling2024waveform,
+  title={OMOP CDM Waveform Extension: Standardizing Physiological Waveform Data for Observational Research},
+  author={Houghtaling, Jared and Talapova, Polina and Gow, Brian},
+  year={2024},
+  institution={OHDSI},
+  url={https://github.com/OHDSI/WaveformWG}
+}
+```
+
+<br>
+
+## **Upcoming Presentations**
+
+The working group welcomes opportunities to present at OHDSI symposia, conferences, and community calls. If you'd like to invite the team to present, please contact:
+
+- **Email**: jared.houghtaling@tuftsmedicine.org
+- **GitHub**: [@OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+
+<br>
+
+## **Community Contributions**
+
+We encourage community members to share their work using the Waveform Extension:
+
+- **Implementation case studies**: Share your ETL approach and lessons learned
+- **Tool development**: Present utilities, converters, or analysis pipelines
+- **Research applications**: Showcase studies using integrated waveform + EHR data
+- **Validation studies**: Report data quality metrics and conformance testing
+
+Submit presentation proposals via:
+- **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues) with the "presentation" label
+- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Teams**: Post in the Waveform Working Group channel
+
+<br>
+
+## **Stay Updated**
+
+- **GitHub**: Watch the [WaveformWG repository](https://github.com/OHDSI/WaveformWG) for announcements
+- **Teams**: Join the OHDSI Waveform Working Group channel
+- **OHDSI Forums**: [Developer section](http://forums.ohdsi.org/c/developers)
+- **Twitter/X**: Follow [@OHDSI](https://twitter.com/OHDSI) for community updates
+
+<br>

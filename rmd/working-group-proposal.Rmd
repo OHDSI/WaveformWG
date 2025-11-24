@@ -1,0 +1,295 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Working Group Proposal**
+
+<br>
+
+## **Overview**
+
+This page summarizes the formal proposal to launch the OHDSI Waveform Working Group. The complete proposal document is available in the Resources section of this repository.
+
+<br>
+
+## **Mission Statement**
+
+To enable integration of physiological waveform data (e.g., ECG, EEG, arterial blood pressure) with electronic health records in the OMOP Common Data Model, supporting observational research, AI model development, and clinical decision support.
+
+<br>
+
+## **Background & Motivation**
+
+### **The Challenge**
+
+Physiological waveform data represents a rich source of information about patient health status, yet this data remains largely siloed from electronic health records used in observational research. Current challenges include:
+
+- **Format Heterogeneity**: Dozens of proprietary and open formats make data sharing difficult
+- **Temporal Misalignment**: Synchronizing continuous waveform data with discrete clinical events
+- **Metadata Loss**: Signal characteristics often not preserved during data transfers
+- **Limited Integration**: Waveform data typically stored separately from EHR systems
+- **Reproducibility Gaps**: Lack of standardized feature definitions across institutions
+
+### **The Opportunity**
+
+The OMOP Common Data Model has successfully standardized clinical data across hundreds of institutions worldwide. Extending OMOP to include physiological waveforms would enable:
+
+- **Multi-Site Studies**: Federated research using harmonized waveform representations
+- **Integrated Analytics**: Seamless analysis combining waveforms with diagnoses, medications, procedures, and outcomes
+- **AI/ML Development**: Training and validation of predictive models across institutions
+- **Reproducible Science**: Standardized feature definitions enable cross-institution validation
+
+<br>
+
+## **Proposed Scope**
+
+### **In Scope**
+
+The working group will focus on:
+
+1. **Schema Development**
+   - Define OMOP CDM extensions for waveform data
+   - Specify table schemas, relationships, and constraints
+   - Ensure compatibility with core OMOP principles
+
+2. **Vocabulary Development**
+   - Develop concepts for waveform types (ECG, EEG, ABP, etc.)
+   - Map signal channels and derived features
+   - Coordinate with OMOP vocabulary team
+
+3. **Implementation Guidance**
+   - Create ETL specifications and best practices
+   - Develop reference implementations for common formats
+   - Provide data quality and validation frameworks
+
+4. **Tool Development**
+   - Build ETL utilities and converters
+   - Create visualization and analysis tools
+   - Integrate with OHDSI HADES packages
+
+5. **Community Support**
+   - Support institutions implementing the extension
+   - Facilitate use case development
+   - Enable multi-site collaborative studies
+
+### **Out of Scope**
+
+The working group will NOT:
+
+- Develop new waveform file formats
+- Provide clinical interpretation services
+- Maintain proprietary device integrations
+- Offer individualized consulting services
+
+<br>
+
+## **Deliverables**
+
+### **Phase 1: Foundation (Months 1-6)**
+
+- [ ] Formalize working group structure and governance
+- [ ] Finalize 4-table waveform extension specification
+- [ ] Develop initial vocabulary concepts
+- [ ] Create implementation guide and documentation website
+- [ ] Establish GitHub repository and collaboration infrastructure
+
+### **Phase 2: Implementation (Months 7-12)**
+
+- [ ] Develop reference ETL for common formats (EDF, WFDB)
+- [ ] Create data quality validation tools
+- [ ] Build sample datasets with documentation
+- [ ] Publish Jupyter notebook examples
+- [ ] Support early adopter implementations
+
+### **Phase 3: Adoption (Months 13-18)**
+
+- [ ] Conduct multi-site validation study
+- [ ] Present at OHDSI symposium and publish results
+- [ ] Integrate waveform concepts into core OMOP vocabulary
+- [ ] Expand tool ecosystem
+- [ ] Enable federated network studies
+
+<br>
+
+## **Governance Structure**
+
+### **Leadership Team**
+
+- **Working Group Lead**: Responsible for overall direction and coordination
+- **Co-Leads**: Support specific workstreams (vocabulary, tools, implementation)
+- **Technical Advisory Board**: Provide expertise on standards and integration
+
+### **Collaboration Model**
+
+- **Open Participation**: All OHDSI community members welcome
+- **Consensus-Based Decisions**: Major changes require community discussion
+- **Transparency**: All work conducted in public forums (GitHub, Teams)
+- **Use-Case Driven**: Development priorities guided by research needs
+
+### **Meeting Cadence**
+
+- **Monthly Working Group Calls**: Progress updates and technical discussions
+- **Office Hours**: Ad-hoc support for implementers
+- **Annual Symposium Presentations**: Share results with broader OHDSI community
+
+<br>
+
+## **Resource Requirements**
+
+### **Personnel**
+
+- **Working Group Leadership**: 20% FTE (coordination, specification development)
+- **Technical Contributors**: Variable (community volunteers + funded developers)
+- **Vocabulary Experts**: 10% FTE (concept development and mapping)
+
+### **Infrastructure**
+
+- **GitHub Repository**: Provided by OHDSI
+- **Microsoft Teams**: Provided by OHDSI
+- **Documentation Hosting**: GitHub Pages (free)
+- **Compute Resources**: Minimal (static website, code repositories)
+
+### **Funding**
+
+- **Initial Development**: Supported by CHoRUS Bridge2AI
+- **Ongoing Maintenance**: Community volunteers + grant-supported developers
+- **Travel**: Conference attendance for presentations (seek funding as available)
+
+<br>
+
+## **Success Metrics**
+
+### **Year 1**
+
+- [ ] 5+ institutions actively implementing the waveform extension
+- [ ] 1000+ GitHub repository stars/forks
+- [ ] 50+ active working group participants
+- [ ] 3+ presentations at OHDSI events
+- [ ] 1+ peer-reviewed publication
+
+### **Year 2**
+
+- [ ] 15+ institutions with production implementations
+- [ ] 3+ multi-site network studies using waveform data
+- [ ] Integration with 2+ OHDSI HADES packages
+- [ ] 10+ contributed ETL tools and converters
+- [ ] Waveform concepts integrated into core OMOP vocabulary
+
+### **Year 3**
+
+- [ ] 30+ institutions in waveform network
+- [ ] Federated learning infrastructure operational
+- [ ] 10+ published studies using standardized waveform data
+- [ ] Automated data quality monitoring across network
+- [ ] Real-time waveform ingestion support
+
+<br>
+
+## **Risk Mitigation**
+
+### **Risk: Low Adoption**
+
+**Mitigation**:
+- Focus on high-impact use cases (ICU, cardiology)
+- Provide comprehensive implementation support
+- Demonstrate value through multi-site studies
+- Build easy-to-use tools and templates
+
+### **Risk: Technical Complexity**
+
+**Mitigation**:
+- Develop reference implementations
+- Provide step-by-step guides and video tutorials
+- Offer office hours and implementation support
+- Start simple and iterate based on feedback
+
+### **Risk: Vocabulary Challenges**
+
+**Mitigation**:
+- Engage OMOP vocabulary team early
+- Leverage existing standards (LOINC, SNOMED)
+- Use 2-billion concept range for waveform-specific terms
+- Plan for gradual vocabulary maturation
+
+### **Risk: Data Privacy Concerns**
+
+**Mitigation**:
+- Provide clear de-identification guidance
+- Support aggregated feature sharing (not raw waveforms)
+- Align with OHDSI's existing privacy frameworks
+- Develop privacy-preserving analysis methods
+
+<br>
+
+## **Alignment with OHDSI Strategy**
+
+The Waveform Working Group aligns with OHDSI's strategic priorities:
+
+### **1. Expand Data Coverage**
+
+Waveform data complements existing OMOP tables, enabling more comprehensive observational research.
+
+### **2. Enable New Research**
+
+Integration of waveforms with EHR data enables novel research questions in critical care, cardiology, neurology, and AI/ML.
+
+### **3. Foster Collaboration**
+
+The working group brings together data engineers, clinicians, researchers, and standards experts.
+
+### **4. Maintain Standards Excellence**
+
+The extension follows OMOP CDM principles and integrates with existing vocabulary and tools.
+
+### **5. Support Global Health**
+
+Standardized waveform data can improve care delivery worldwide, especially in resource-limited settings.
+
+<br>
+
+## **Next Steps**
+
+### **Immediate (Month 1)**
+
+1. **Formalize Working Group**: Announce formation to OHDSI community
+2. **Establish GitHub**: Set up repository and initial documentation
+3. **Recruit Participants**: Invite interested community members
+4. **Schedule Meetings**: Set up regular working group calls
+
+### **Short-Term (Months 2-3)**
+
+1. **Finalize Specification**: Complete 4-table schema based on community feedback
+2. **Launch Website**: Publish documentation and implementation guides
+3. **Develop Vocabulary**: Submit initial concept proposals
+4. **Identify Early Adopters**: Support first implementations
+
+### **Medium-Term (Months 4-6)**
+
+1. **Build Tools**: Develop reference ETL and validation utilities
+2. **Create Examples**: Publish sample datasets and analysis notebooks
+3. **Present at Symposium**: Share progress with OHDSI community
+4. **Expand Participation**: Grow working group membership
+
+<br>
+
+## **Conclusion**
+
+The OHDSI Waveform Working Group represents a natural evolution of the OMOP CDM to encompass multimodal physiological data. By standardizing waveform integration, we can unlock new research opportunities, enable multi-site collaboration, and ultimately improve patient care through better evidence generation.
+
+We invite the OHDSI community to join us in this exciting effort.
+
+<br>
+
+## **Contact & More Information**
+
+- **Email**: houghtaling@ohdsi.org
+- **GitHub**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+- **Teams**: OHDSI Waveform Working Group channel
+
+<br>

@@ -1,0 +1,241 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Office Hours & Recorded Sessions**
+
+<br>
+
+## **CHoRUS Bridge2AI Standards Office Hours**
+
+The Waveform Extension has been discussed extensively in CHoRUS Bridge2AI Standards Office Hours. These sessions provide valuable implementation context, live demonstrations, and Q&A with the development team.
+
+<br>
+
+## **Recorded Sessions**
+
+### **[03-13-25] Linking waveform and EHR data - Part 1**
+
+**Focus**: Introduction to waveform and EHR data linkage methodology
+
+**Topics Covered**:
+- Overview of challenges in linking multimodal data
+- Introduction to the waveform_registry concept
+- Temporal alignment strategies
+- Patient privacy considerations
+
+**Resources**:
+- [Video Recording](https://drive.google.com/file/d/1u11084E3psVNx1KsFj0m7cpis-l_WAwd/view?usp=share_link)
+- [Transcript](https://docs.google.com/document/d/1noFYSDrtOZYg-fiHE2bHgMpxTBHWXVL9/edit?usp=share_link&ouid=104468275537210259794&rtpof=true&sd=true)
+
+<br>
+
+### **[03-20-25] Linking waveform and EHR data - Part 2**
+
+**Focus**: Continued discussion on waveform-EHR data integration
+
+**Topics Covered**:
+- Deep dive into linkage table schemas
+- Handling multi-file waveform sessions
+- File format considerations
+- Metadata extraction best practices
+
+**Resources**:
+- [Video Recording](https://drive.google.com/file/d/1mbPZ35yuJrOSWiLYEuz7YrEieXodmd00/view?usp=share_link)
+- [Transcript](https://docs.google.com/document/d/1-Dfaxd_D18b1U6VstUEffJvhH89mE-Lb/edit?usp=share_link&ouid=104468275537210259794&rtpof=true&sd=true)
+
+<br>
+
+### **[04-17-25] Waveform linkage and site updates**
+
+**Focus**: Updates on waveform linkage implementation across sites
+
+**Topics Covered**:
+- Implementation progress at CHoRUS sites
+- Lessons learned from early implementations
+- Common pitfalls and solutions
+- Site-specific challenges and adaptations
+
+**Resources**:
+- [Video Recording](https://drive.google.com/file/d/1K2uF-pPrnutbxjh7LRm6pE4dkIK3rZtY/view?usp=share_link)
+- [Transcript](https://docs.google.com/document/d/1tsCTXEsxDw4TGkieQu7CZmjXlgxAzvJk/edit?usp=share_link&ouid=104468275537210259794&rtpof=true&sd=true)
+
+<br>
+
+### **[06-26-25] Implementation of OMOP CDM Waveform Extension SOP**
+
+**Focus**: Comprehensive session on implementing the 4-table waveform extension
+
+**Topics Covered**:
+- Complete walkthrough of the 4-table schema
+- Table population order and rationale
+- Field-by-field implementation guidance
+- ETL pipeline architecture
+- Quality assurance and validation
+- Common edge cases and solutions
+
+**Resources**:
+- [Video Recording](https://drive.google.com/file/d/15faSgQDdpkZP6Wz-J1dKoEqul6XUKcgR/view?usp=share_link)
+- [Transcript](https://docs.google.com/document/d/1fX5VCTc7z9lZZJNuMo60OJcuwGb7aEPM/edit?usp=share_link&ouid=104468275537210259794&rtpof=true&sd=true)
+
+**Highly Recommended**: This session provides the most comprehensive overview of the current Waveform Extension specification.
+
+<br>
+
+### **[10-16-25] CHoRUS Bridge2AI Standards Office Hours Continued**
+
+**Focus**: Continued discussions on waveform standards and implementation
+
+**Topics Covered**:
+- Updates on vocabulary development
+- Feature extraction standardization
+- Multi-site data quality comparison
+- Integration with AI/ML pipelines
+
+**Resources**:
+- [Transcript](https://drive.google.com/drive/folders/11XKKa_YOOK7E7YWo1VkqnYzNfpWzcwPU?usp=sharing)
+
+<br>
+
+### **[11-20-25] CHoRUS Bridge2AI Standards Office Hours Continued**
+
+**Focus**: Recent discussions on waveform extension updates and implementation challenges
+
+**Topics Covered**:
+- Latest schema refinements
+- Community feedback integration
+- Real-world implementation examples
+- Future roadmap discussion
+
+**Resources**:
+- [Transcript](https://drive.google.com/drive/folders/1BOUJKOy584wKhHlOMAfR1RgAGJeTbqcI?usp=sharing)
+
+<br>
+
+## **Key Themes Across Sessions**
+
+### **Temporal Alignment**
+
+A recurring theme across sessions is the challenge of temporal alignment between waveform data and EHR data:
+- Clock synchronization between acquisition devices and EHR systems
+- Timezone handling and UTC standardization
+- Handling daylight saving time transitions
+- Temporal precision requirements (second vs. millisecond)
+
+### **File Management**
+
+Multiple sessions discuss practical file management considerations:
+- Storage location strategies (filesystem, object storage, database BLOBs)
+- Naming conventions for traceability
+- Handling large file volumes
+- De-identification of file metadata
+
+### **Metadata Extraction**
+
+Signal metadata extraction is critical and discussed extensively:
+- Parsing diverse file formats (EDF, WFDB, vendor-specific)
+- Handling missing or inconsistent metadata
+- Standardizing channel names across devices
+- Sampling rate and calibration factor preservation
+
+### **Vocabulary Mapping**
+
+Developing and maintaining vocabulary mappings:
+- Waveform type concepts (ECG, EEG, ABP, etc.)
+- Channel/lead concepts (Lead II, FP1-FP2, etc.)
+- Feature algorithm concepts (Bazett's formula, SDNN, etc.)
+- Device concepts (Phillips IntelliVue, GE CARESCAPE)
+
+### **Feature Derivation**
+
+Best practices for extracting features from waveforms:
+- Selecting appropriate time windows
+- Handling artifacts and low-quality segments
+- Standardizing algorithm implementations
+- Linking features to MEASUREMENT/OBSERVATION tables
+
+<br>
+
+## **Implementation Examples**
+
+Several sessions include live demonstrations and code walkthroughs:
+
+- **ETL Pipeline Architecture** (06-26-25): Step-by-step walkthrough of a Python-based ETL pipeline
+- **EDF Parsing** (03-20-25): Example code for extracting metadata from EDF files
+- **Temporal Joins** (03-13-25): SQL examples for joining waveform features with clinical events
+
+<br>
+
+## **Community Q&A Highlights**
+
+### **Q: How do we handle waveform files that span multiple visits?**
+
+**A**: This is a known edge case. The recommended approach is to:
+1. Split the file into visit-specific segments if possible
+2. If splitting is not feasible, link to the primary visit where most of the acquisition occurred
+3. Use `visit_detail_id` to capture sub-visit granularity if available
+4. Document the decision in your ETL documentation
+
+### **Q: What if our device doesn't provide sampling rate metadata?**
+
+**A**: You have several options:
+1. Use the manufacturer's specification if the device model is known
+2. Infer from the signal (count samples over a known time period)
+3. Flag as "unknown" with a quality indicator
+4. Reach out to the vendor for technical specifications
+
+### **Q: Should we store raw waveforms or just features?**
+
+**A**: This depends on your use case and storage constraints:
+- **Raw waveforms**: Required for exploratory analyses, novel feature development, reprocessing
+- **Features only**: Sufficient for many observational studies if features are well-defined
+- **Hybrid**: Store raw for a subset (e.g., recent data, interesting cases) and features for all
+
+The Waveform Extension supports both approaches.
+
+### **Q: How do we handle continuous vs. intermittent monitoring?**
+
+**A**: Use the `waveform_occurrence_start_datetime` and `waveform_occurrence_end_datetime` fields:
+- **Continuous monitoring**: One occurrence spanning the entire monitoring period
+- **Intermittent**: Multiple occurrences with gaps in between
+- Use `preceding_waveform_occurrence_id` to link sequential monitoring sessions
+
+<br>
+
+## **Upcoming Sessions**
+
+The working group continues to hold regular meetings and office hours. To join:
+
+- **Teams**: Request access to the OHDSI Waveform Working Group channel
+- **Email**: jared.houghtaling@tuftsmedicine.org for meeting invitations
+- **GitHub**: Watch the [WaveformWG repository](https://github.com/OHDSI/WaveformWG) for announcements
+
+<br>
+
+## **Contributing to Office Hours**
+
+We welcome presentations and demos from the community:
+
+- **Share your implementation**: Present your ETL approach and lessons learned
+- **Demo your tools**: Show off ETL utilities, visualization tools, or analysis pipelines
+- **Propose topics**: Suggest discussion topics or specific challenges to address
+- **Ask questions**: Submit questions in advance for dedicated Q&A sessions
+
+Contact jared.houghtaling@tuftsmedicine.org to schedule a presentation.
+
+<br>
+
+## **Additional Resources**
+
+- [Waveform Extension Implementation Guide](waveform-extension.html)
+- [Getting Started](get-started.html)
+- [Table Specifications](waveform-tables.html)
+- [CHoRUS Multimodal SOP](https://chorus-ai.github.io/Chorus_SOP/docs/Multimodal-Linkage/)
+
+<br>

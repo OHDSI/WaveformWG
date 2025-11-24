@@ -1,0 +1,309 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Waveform Extension Overview**
+
+<br>
+
+## **Introduction**
+
+The OMOP CDM Waveform Extension provides a standardized framework for integrating physiological waveform data with electronic health records in observational research. By extending the OMOP Common Data Model with four interconnected tables, the extension enables researchers to combine high-resolution time-series data (ECG, EEG, arterial blood pressure, etc.) with structured clinical data for population-level analyses.
+
+<br>
+
+## **Why Standardize Waveform Data?**
+
+### **Current Challenges**
+
+- **Format Heterogeneity**: Waveforms exist in dozens of proprietary and open formats (EDF, WFDB, HL7 aECG, DICOM, vendor-specific)
+- **Limited Integration**: Waveform data typically stored separately from EHR systems, making integrated analyses difficult
+- **Temporal Misalignment**: Clock drift, timezone issues, and asynchronous acquisition complicate temporal joins with clinical events
+- **Metadata Loss**: Signal characteristics (sampling rate, gain, calibration) often not preserved during data transfers
+- **Reproducibility Gaps**: Lack of standardized feature definitions prevents cross-institution validation
+
+### **Benefits of Standardization**
+
+- **Multi-Site Studies**: Enables federated research using harmonized waveform representations
+- **Integrated Analytics**: Seamless joining of waveform features with medications, diagnoses, procedures, and outcomes
+- **AI/ML Readiness**: Standardized data enables training and validation of predictive models across institutions
+- **Temporal Precision**: Explicit temporal alignment of waveform events with clinical documentation
+- **Data Provenance**: Complete tracking from raw acquisition through feature derivation
+
+<br>
+
+## **Architecture**
+
+The Waveform Extension consists of four tables that work together to represent the complete lifecycle of waveform data:
+
+```
+┌─────────────────────────┐
+│  waveform_occurrence    │  ← Clinical & temporal context
+│  (acquisition session)  │
+└───────────┬─────────────┘
+            │
+            │ 1:N
+            ▼
+┌─────────────────────────┐
+│   waveform_registry     │  ← Individual files
+│   (file metadata)       │
+└───────┬─────────────────┘
+        │
+        │ 1:N
+        ▼
+┌─────────────────────────┐
+│ waveform_channel_       │  ← Per-signal metadata
+│    metadata             │
+└───────┬─────────────────┘
+        │
+        │ 1:N
+        ▼
+┌─────────────────────────┐
+│   waveform_feature      │  ← Derived measurements
+│                         │
+└─────────────────────────┘
+```
+
+<br>
+
+## **Table Descriptions**
+
+### **1. waveform_occurrence**
+
+**Purpose**: Establishes the clinical and temporal context for a waveform recording session.
+
+**Key Concepts**:
+- One occurrence = one clinical acquisition event (e.g., "12-lead diagnostic ECG" or "ICU telemetry session")
+- Links to PERSON and VISIT_OCCURRENCE to establish who/when/where
+- May contain one or many files
+- Defines the temporal boundaries for the entire acquisition
+
+**Example**: An ICU patient has continuous bedside monitoring from 8:00 AM to 8:00 PM on 2025-01-15. This entire 12-hour session is one waveform_occurrence, even if the data is split across multiple files.
+
+### **2. waveform_registry**
+
+**Purpose**: Registers individual waveform files with their storage locations and temporal boundaries.
+
+**Key Concepts**:
+- One row per file
+- Links to waveform_occurrence (many files can belong to one occurrence)
+- Stores both source (original) and target (standardized) file paths
+- Captures file-level timestamps (may be subset of occurrence timestamps)
+- Records file format/extension
+
+**Example**: The 12-hour ICU telemetry session is split into 12 hourly files. Each file gets one row in waveform_registry, all linked to the same waveform_occurrence.
+
+### **3. waveform_channel_metadata**
+
+**Purpose**: Describes per-channel signal characteristics needed to interpret raw waveform data.
+
+**Key Concepts**:
+- One row per metadata attribute per channel per file
+- Captures sampling rate, gain, calibration, units, signal quality
+- Links signals to devices and procedures when known
+- Supports both numeric metadata (sampling_rate = 500 Hz) and categorical (filter_type = "High Pass")
+
+**Example**: For a 12-lead ECG file with leads I, II, III, aVR, aVL, aVF, V1-V6, there would be at least 12 rows (one per channel) describing each lead's sampling rate. Additional rows capture gain, units, etc.
+
+### **4. waveform_feature**
+
+**Purpose**: Stores measurements and features derived from waveform signals.
+
+**Key Concepts**:
+- Links back to specific files, channels, and time windows
+- Supports both traditional features (HR, QT interval, HRV) and AI-derived embeddings
+- Can optionally link to MEASUREMENT or OBSERVATION tables for vocabulary integration
+- Records the algorithm/method used for feature derivation
+- Supports both scalar values and file-based features (spectrograms, embeddings)
+
+**Example**: From Lead II of an ECG, derive: mean heart rate (75 bpm), QTc interval (412 ms), SDNN (45 ms), PVC count (3). Each derived measure gets one row in waveform_feature.
+
+<br>
+
+## **Data Flow**
+
+### **Typical ETL Pipeline**
+
+```
+Raw Waveform Files
+        ↓
+   [File Discovery]
+        ↓
+   [Extract Metadata from Headers]
+        ↓
+   [Link to Patient/Visit]
+        ↓
+┌───────────────────────────┐
+│ Populate                  │
+│ waveform_occurrence       │
+└───────────┬───────────────┘
+            ↓
+┌───────────────────────────┐
+│ Populate                  │
+│ waveform_registry         │
+└───────────┬───────────────┘
+            ↓
+┌───────────────────────────┐
+│ Populate                  │
+│ waveform_channel_metadata │
+└───────────┬───────────────┘
+            ↓
+   [Apply Feature Extraction]
+            ↓
+┌───────────────────────────┐
+│ Populate                  │
+│ waveform_feature          │
+└───────────────────────────┘
+            ↓
+   [Join with OMOP Clinical Tables]
+```
+
+See the [Implementation Guide](waveform-extension.html) for detailed ETL specifications.
+
+<br>
+
+## **Integration with OMOP CDM**
+
+The Waveform Extension connects to core OMOP tables:
+
+### **Core Linkages**
+
+- **PERSON**: Every waveform links to a person_id
+- **VISIT_OCCURRENCE**: Acquisitions occur during clinical encounters
+- **VISIT_DETAIL**: Granular location context (e.g., ICU bed)
+- **PROCEDURE_OCCURRENCE**: Links diagnostic procedures (e.g., "12-lead ECG ordered")
+- **DEVICE_EXPOSURE**: Tracks acquisition devices (monitors, EEG caps)
+
+### **Feature Integration**
+
+- **MEASUREMENT**: Derived features can link to standard measurements (e.g., heart rate)
+- **OBSERVATION**: Qualitative findings can link to observations (e.g., "artifact detected")
+
+### **Vocabulary Support**
+
+- Standard OMOP concepts used where available
+- Custom concepts (2-billion range) for waveform-specific terminology
+- Extensible to accommodate new signal types and features
+
+<br>
+
+## **Use Case Examples**
+
+### **Adverse Event Prediction**
+
+**Scenario**: Predict hemodynamic instability in ICU patients
+
+**Data Integration**:
+- **Waveforms**: Continuous arterial blood pressure, ECG
+- **Clinical**: Vasopressor doses, fluid administration, lab results
+- **Outcomes**: MAP < 65 mmHg for > 15 minutes
+
+**Analysis**:
+1. Extract HRV, BP variability, and trend features from waveforms
+2. Join with medication timing and lab values
+3. Train prediction model using combined features
+4. Validate across multiple sites using standardized data
+
+### **Medication Safety Surveillance**
+
+**Scenario**: Detect QT prolongation associated with specific medications
+
+**Data Integration**:
+- **Waveforms**: Serial 12-lead ECGs
+- **Clinical**: Medication exposures, electrolyte levels, comorbidities
+- **Outcomes**: QTc > 500 ms or increase > 60 ms from baseline
+
+**Analysis**:
+1. Extract QT intervals from ECG Lead II
+2. Calculate QTc using Bazett's or Fridericia formula
+3. Link to DRUG_EXPOSURE within temporal window
+4. Adjust for confounders (electrolytes, renal function)
+
+### **Seizure Prediction**
+
+**Scenario**: Predict seizure onset in epilepsy patients
+
+**Data Integration**:
+- **Waveforms**: Continuous EEG monitoring
+- **Clinical**: Antiepileptic medication levels, sleep patterns, triggers
+- **Outcomes**: Clinically documented seizures
+
+**Analysis**:
+1. Extract power spectral features and entropy from EEG
+2. Detect interictal spikes and slow-wave patterns
+3. Align with medication timing and sleep stages
+4. Train LSTM model to predict seizures 30 minutes in advance
+
+<br>
+
+## **Standards & Compatibility**
+
+### **Supported Waveform Formats**
+
+- **EDF/EDF+**: European Data Format (common for EEG, polysomnography)
+- **WFDB**: WaveForm DataBase format (PhysioNet standard)
+- **HL7 aECG**: Annotated ECG XML format
+- **DICOM Waveform**: Medical imaging standard for waveforms
+- **CSV/TSV**: Simple text formats with timestamps
+- **Vendor formats**: GE MUSE, Philips, etc. (via converters)
+
+### **Interoperability**
+
+- **FHIR**: Waveform Extension can be mapped to FHIR Observation resources
+- **BIDS**: Neuroimaging data structure for EEG/MEG
+- **PhysioNet**: Compatible with WFDB tools and datasets
+- **HL7 V2**: ADT and result messages for acquisition context
+
+<br>
+
+## **Implementation Considerations**
+
+### **Storage Strategy**
+
+- **File-based**: Store waveforms in object storage (S3, Azure Blob), reference via URI in waveform_registry
+- **Database**: Small waveforms (<1MB) can be stored as BLOBs
+- **Hybrid**: Metadata in database, files in object storage
+- **De-identification**: Scrub timestamps, remove device identifiers, truncate precision
+
+### **Performance Optimization**
+
+- **Indexing**: Create indexes on person_id, visit_occurrence_id, waveform_occurrence_id
+- **Partitioning**: Partition tables by date for large datasets
+- **Caching**: Pre-compute common features to avoid repeated signal processing
+- **Compression**: Use efficient formats (HDF5, Parquet) for large-scale storage
+
+### **Quality Assurance**
+
+- **Temporal validation**: Ensure timestamps are consistent across tables
+- **Referential integrity**: Validate all foreign keys
+- **Completeness**: Track missing metadata or failed extractions
+- **Signal quality**: Flag low-quality segments or artifacts
+
+See [Table Specifications](waveform-tables.html) for complete schema details.
+
+<br>
+
+## **Getting Started**
+
+Ready to implement the Waveform Extension?
+
+1. **Review the [Implementation Guide](waveform-extension.html)** for detailed ETL specifications
+2. **Read [Getting Started](get-started.html)** for step-by-step implementation instructions
+3. **Join the working group** to ask questions and share your experience
+4. **Review [Office Hours](office-hours.html)** recordings for implementation examples
+
+<br>
+
+## **Questions?**
+
+- **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues)
+- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Teams**: OHDSI Waveform Working Group channel
+
+<br>

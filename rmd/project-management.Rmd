@@ -1,0 +1,341 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Project Management**
+
+<br>
+
+## **Working Group Structure**
+
+### **Leadership**
+
+- **Lead**: Jared Houghtaling (Tufts Medicine) - jared.houghtaling@tuftsmedicine.org
+- **Co-Leads**: Polina Talapova (Tufts Medicine), Brian Gow (MIT)
+
+### **Contributors**
+
+The Waveform Working Group welcomes contributions from:
+- Data engineers implementing the extension
+- Clinical researchers using waveform data
+- Vocabulary experts mapping concepts
+- Software developers building tools
+- Standards experts ensuring compliance
+
+<br>
+
+## **Collaboration Platforms**
+
+### **GitHub**
+
+Primary platform for code, documentation, and issue tracking:
+
+- **Repository**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+- **Issues**: Track bugs, feature requests, and discussions
+- **Pull Requests**: Contribute documentation and code
+- **Discussions**: Community Q&A and design conversations
+
+### **Microsoft Teams**
+
+Real-time communication and meeting coordination:
+
+- **Channel**: OHDSI Waveform Working Group
+- **Meetings**: Working group calls and office hours
+- **File Sharing**: Meeting notes, slides, and drafts
+
+### **OHDSI Forums**
+
+Broader community discussions:
+
+- **Forums**: [http://forums.ohdsi.org/c/developers](http://forums.ohdsi.org/c/developers)
+- **Topics**: Implementation questions, use case discussions
+
+<br>
+
+## **Meeting Schedule**
+
+### **Working Group Calls**
+
+- **Frequency**: Regular meetings (schedule varies based on activity)
+- **Platform**: Microsoft Teams
+- **Contact**: jared.houghtaling@tuftsmedicine.org for meeting invitations
+
+### **Meeting Format**
+
+Typical agenda (60 minutes):
+
+1. **Introductions** (5 min)
+   - New members introduce themselves
+   - Share background and interests
+
+2. **GitHub Issue Review** (10-15 min)
+   - Review open issues and pull requests
+   - Prioritize upcoming work
+   - Identify blockers
+
+3. **Project Updates** (2 min per person)
+   - What I completed since last meeting
+   - What I'm working on now
+   - What's blocking me
+
+4. **Discussion Topics** (25-30 min)
+   - Technical design decisions
+   - Use case presentations
+   - Implementation challenges
+   - Vocabulary development
+
+5. **Action Items** (5 min)
+   - Assign tasks for next sprint
+   - Schedule follow-up meetings
+   - Document decisions
+
+### **CHoRUS Office Hours**
+
+The working group also participates in CHoRUS Bridge2AI Standards Office Hours:
+
+- **Focus**: Multimodal data standards including waveforms
+- **Resources**: See [Office Hours](office-hours.html) for recordings
+
+<br>
+
+## **Issue Tracking**
+
+### **Issue Types**
+
+We use GitHub labels to categorize work:
+
+- **`enhancement`**: New feature requests
+- **`bug`**: Software defects or specification errors
+- **`documentation`**: Documentation improvements
+- **`question`**: Questions from community
+- **`use-case`**: Research use case proposals
+- **`vocabulary`**: Vocabulary mapping work
+- **`good first issue`**: Beginner-friendly tasks
+
+### **Issue Lifecycle**
+
+```
+┌────────┐
+│  New   │  ← Issue created
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│ Triage │  ← Leadership reviews and labels
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│  Open  │  ← Ready for work
+└───┬────┘
+    │
+    ▼
+┌─────────────┐
+│ In Progress │  ← Assigned to contributor
+└───┬─────────┘
+    │
+    ▼
+┌────────┐
+│ Review │  ← Pull request submitted
+└───┬────┘
+    │
+    ▼
+┌────────┐
+│ Closed │  ← Merged or resolved
+└────────┘
+```
+
+### **Creating Issues**
+
+When creating an issue, please include:
+
+- **Clear title**: Concise description of the issue
+- **Context**: Background information and motivation
+- **Specifics**: Detailed description of the problem or request
+- **Examples**: Code snippets, error messages, or use cases
+- **Environment**: Relevant system information (if applicable)
+
+<br>
+
+## **Contributing**
+
+### **How to Contribute**
+
+1. **Browse open issues**: Find something that interests you
+2. **Comment on the issue**: Express interest and ask questions
+3. **Fork the repository**: Create your own copy
+4. **Make changes**: Implement the fix or feature
+5. **Submit a pull request**: Describe your changes
+6. **Respond to feedback**: Work with reviewers to refine
+
+### **Contribution Guidelines**
+
+- **Documentation**: All RMarkdown files should be clear and well-structured
+- **Code Style**: Follow OMOP CDM conventions for table and field names
+- **Testing**: Validate changes with example data
+- **Communication**: Keep the community informed of your progress
+
+### **What to Contribute**
+
+**Documentation**:
+- Implementation guides and tutorials
+- Example queries and analyses
+- FAQ entries
+- Glossary definitions
+
+**Specifications**:
+- Table schema refinements
+- Vocabulary concept proposals
+- Data quality checks
+- Constraint definitions
+
+**Tools & Code**:
+- ETL utilities (parsers, converters)
+- Validation scripts
+- Visualization tools
+- Example notebooks
+
+**Use Cases**:
+- Research applications
+- Implementation case studies
+- Best practices
+- Lessons learned
+
+<br>
+
+## **Roadmap**
+
+### **Current Priorities**
+
+#### **Q1 2026: Specification Finalization**
+
+- [ ] Finalize table schemas based on community feedback
+- [ ] Develop comprehensive data quality framework
+- [ ] Create vocabulary concept proposals for OMOP vocabulary team
+- [ ] Publish formal specification document
+
+#### **Q2 2026: Reference Implementations**
+
+- [ ] Develop reference ETL for common formats (EDF, WFDB)
+- [ ] Create sample datasets with documentation
+- [ ] Build validation tools
+- [ ] Publish Jupyter notebook examples
+
+#### **Q3 2026: Community Adoption**
+
+- [ ] Support early adopter institutions
+- [ ] Host implementation workshops
+- [ ] Gather feedback from real-world implementations
+- [ ] Refine specifications based on lessons learned
+
+#### **Q4 2026: Integration & Scaling**
+
+- [ ] Integrate with OHDSI HADES packages
+- [ ] Develop performance optimization guidance
+- [ ] Create multi-site study templates
+- [ ] Publish validation study results
+
+### **Long-Term Goals**
+
+- **Vocabulary Integration**: Incorporate waveform concepts into core OMOP vocabulary
+- **Tool Ecosystem**: Comprehensive suite of ETL, validation, and analysis tools
+- **Multi-Site Studies**: Enable federated research across institutions
+- **AI/ML Integration**: Support standardized feature extraction for machine learning
+- **Real-Time Capabilities**: Extend to support streaming waveform data
+
+<br>
+
+## **Decision-Making Process**
+
+### **Proposal Process**
+
+For significant changes (schema modifications, new tables, etc.):
+
+1. **Create RFC Issue**: Propose change with detailed rationale
+2. **Community Discussion**: Gather feedback and alternatives
+3. **Working Group Review**: Discuss at meeting
+4. **Consensus Building**: Address concerns and refine proposal
+5. **Decision**: Leadership makes final decision based on consensus
+6. **Implementation**: Assign work and track progress
+
+### **Consensus Principles**
+
+- **Transparency**: All discussions happen in public forums
+- **Inclusivity**: All voices are heard and considered
+- **Evidence-Based**: Decisions grounded in use cases and data
+- **Reversibility**: Willing to revise based on new information
+- **Documentation**: All decisions are documented
+
+<br>
+
+## **Communication Guidelines**
+
+### **Best Practices**
+
+- **Be respectful**: Treat all community members with respect
+- **Be constructive**: Offer solutions, not just criticism
+- **Be clear**: Use plain language and provide examples
+- **Be patient**: Remember that contributors are volunteers
+- **Be responsive**: Reply to questions and feedback promptly
+
+### **Where to Ask Questions**
+
+- **GitHub Issues**: Specific technical questions about the specification
+- **GitHub Discussions**: General questions and brainstorming
+- **Teams**: Real-time questions during meetings
+- **OHDSI Forums**: Questions for the broader OHDSI community
+- **Email**: Direct questions to working group leadership
+
+<br>
+
+## **Resources for New Contributors**
+
+### **Getting Started**
+
+1. **Read the documentation**: Start with [Getting Started](get-started.html)
+2. **Join Teams**: Get access to the Waveform WG channel
+3. **Attend a meeting**: Introduce yourself and learn about current work
+4. **Pick an issue**: Find a `good first issue` to work on
+5. **Ask for help**: Don't hesitate to reach out with questions
+
+### **Learning Resources**
+
+**OMOP CDM**:
+- [OMOP CDM Documentation](https://ohdsi.github.io/CommonDataModel/)
+- [The Book of OHDSI](https://ohdsi.github.io/TheBookOfOhdsi/)
+
+**Waveform Processing**:
+- [PhysioNet Tutorials](https://physionet.org/about/tutorials/)
+- [WFDB Applications Guide](https://physionet.org/content/wfdb/10.7.0/)
+
+**Standards**:
+- [EDF/EDF+ Specification](https://www.edfplus.info/)
+- [HL7 Standards](https://www.hl7.org/)
+
+<br>
+
+## **Acknowledgments**
+
+The OHDSI Waveform Working Group is grateful for:
+
+- **CHoRUS Bridge2AI**: Supporting multimodal data standards development
+- **OHDSI Community**: Providing the foundation and ecosystem
+- **Early Adopters**: Sites implementing and providing feedback
+- **Contributors**: Everyone who has contributed time and expertise
+
+<br>
+
+## **Contact**
+
+- **Email**: jared.houghtaling@tuftsmedicine.org
+- **GitHub**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
+- **Teams**: OHDSI Waveform Working Group channel
+- **Forums**: [OHDSI Forums - Developers](http://forums.ohdsi.org/c/developers)
+
+<br>
