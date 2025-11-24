@@ -122,7 +122,7 @@ If you use the OMOP CDM Waveform Extension in your research, please cite:
 
 The working group welcomes opportunities to present at OHDSI symposia, conferences, and community calls. If you'd like to invite the team to present, please contact:
 
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **GitHub**: [@OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
 
 <br>
@@ -138,7 +138,7 @@ We encourage community members to share their work using the Waveform Extension:
 
 Submit presentation proposals via:
 - **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues) with the "presentation" label
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **Teams**: Post in the Waveform Working Group channel
 
 <br>

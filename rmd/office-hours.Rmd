@@ -213,7 +213,7 @@ The Waveform Extension supports both approaches.
 The working group continues to hold regular meetings and office hours. To join:
 
 - **Teams**: Request access to the OHDSI Waveform Working Group channel
-- **Email**: jared.houghtaling@tuftsmedicine.org for meeting invitations
+- **Email**: houghtaling@ohdsi.org for meeting invitations
 - **GitHub**: Watch the [WaveformWG repository](https://github.com/OHDSI/WaveformWG) for announcements
 
 <br>
@@ -227,7 +227,7 @@ We welcome presentations and demos from the community:
 - **Propose topics**: Suggest discussion topics or specific challenges to address
 - **Ask questions**: Submit questions in advance for dedicated Q&A sessions
 
-Contact jared.houghtaling@tuftsmedicine.org to schedule a presentation.
+Contact houghtaling@ohdsi.org to schedule a presentation.
 
 <br>
 

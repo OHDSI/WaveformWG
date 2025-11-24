@@ -16,7 +16,7 @@ output:
 
 ### **Leadership**
 
-- **Lead**: Jared Houghtaling (Tufts Medicine) - jared.houghtaling@tuftsmedicine.org
+- **Lead**: Jared Houghtaling (Tufts Medicine) - houghtaling@ohdsi.org
 - **Co-Leads**: Polina Talapova (Tufts Medicine), Brian Gow (MIT)
 
 ### **Contributors**
@@ -64,7 +64,7 @@ Broader community discussions:
 
 - **Frequency**: Regular meetings (schedule varies based on activity)
 - **Platform**: Microsoft Teams
-- **Contact**: jared.houghtaling@tuftsmedicine.org for meeting invitations
+- **Contact**: houghtaling@ohdsi.org for meeting invitations
 
 ### **Meeting Format**
 
@@ -333,7 +333,7 @@ The OHDSI Waveform Working Group is grateful for:
 
 ## **Contact**
 
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **GitHub**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
 - **Teams**: OHDSI Waveform Working Group channel
 - **Forums**: [OHDSI Forums - Developers](http://forums.ohdsi.org/c/developers)

@@ -154,4 +154,4 @@ For automated builds on every commit, you can set up a GitHub Actions workflow. 
 
 For questions about building the website:
 - **GitHub Issues**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues)
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org

@@ -155,7 +155,7 @@ See [Presentations](presentations.html) for complete list with slides and record
 ## **Contact**
 
 - **GitHub**: [OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
-- **Email**: Jared Houghtaling (jared.houghtaling@tuftsmedicine.org)
+- **Email**: Jared Houghtaling (houghtaling@ohdsi.org)
 - **Teams**: OHDSI Waveform Working Group channel
 
 <br>

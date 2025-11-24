@@ -55,7 +55,7 @@ See the [Waveform Extension Implementation Guide](waveform-extension.html) for d
 
 3. **Attend Working Group Meetings**
    - **Format**: Use case presentations, technical discussions, implementation Q&A
-   - **Contact**: jared.houghtaling@tuftsmedicine.org for meeting schedule
+   - **Contact**: houghtaling@ohdsi.org for meeting schedule
 
 4. **Introduce Yourself**
    - Share your background (clinical, data engineering, research, etc.)
@@ -232,7 +232,7 @@ Follow the [Waveform Extension Implementation Guide](waveform-extension.html) to
 
 - **Teams**: Post in the Waveform Working Group channel
 - **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues) or discussion
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 
 ### **Technical Support**
 
@@ -253,7 +253,7 @@ Welcome! We support all skill levels:
 
 ## **Contact**
 
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **Teams**: OHDSI Waveform Working Group channel
 - **GitHub**: [@OHDSI/WaveformWG](https://github.com/OHDSI/WaveformWG)
 

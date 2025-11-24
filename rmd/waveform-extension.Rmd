@@ -274,9 +274,9 @@ Relies on:
 
 ## 16. Contact Information
 
-- **Email**: Jared Houghtaling (jared.houghtaling@tuftsmedicine.org)
-- **Email**: Polina Talapova (ptalapova@tuftsmedicine.org)
-- **Email**: Brian Gow (briangow@mit.edu)
+- **Email**: Jared Houghtaling (houghtaling@ohdsi.org)
+- **Email**: Polina Talapova (talapova@ohdsi.org)
+- **Email**: Brian Gow (gow@ohdsi.org)
 
 <br>
 

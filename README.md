@@ -101,7 +101,7 @@ WaveformWG/
 
 ## Contact
 
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **GitHub Issues**: [Report bugs or request features](https://github.com/OHDSI/WaveformWG/issues)
 - **Teams**: OHDSI Waveform Working Group channel
 

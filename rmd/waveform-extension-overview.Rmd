@@ -303,7 +303,7 @@ Ready to implement the Waveform Extension?
 ## **Questions?**
 
 - **GitHub**: [Open an issue](https://github.com/OHDSI/WaveformWG/issues)
-- **Email**: jared.houghtaling@tuftsmedicine.org
+- **Email**: houghtaling@ohdsi.org
 - **Teams**: OHDSI Waveform Working Group channel
 
 <br>
