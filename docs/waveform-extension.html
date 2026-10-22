@@ -13,7 +13,7 @@
 
 <title> OHDSI Waveform WG</title>
 
-<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -989,8 +989,19 @@ improves auditability.</td>
 </tbody>
 </table>
 </div>
+<div id="common-issues-solutions-1" class="section level3">
+<h3>6.3 Common Issues &amp; Solutions</h3>
+<ul>
+<li><strong>Sample Amplitude Units</strong> -&gt; Set
+<code>metadata_source_value</code> = ‘AMPLITUDE’ (and use the
+corresponding <code>metadata_concept_id</code> from <a
+href="https://github.com/TuftsCTSI/CVB/tree/main/WAVEFORM">WAVEFORM</a>),
+and all <code>value_as</code> fields to NULL. Fill in the unit columns
+with the unit for the sample amplitude for the channel.</li>
+</ul>
+</div>
 <div id="handling-conflicts" class="section level3">
-<h3>6.3 Handling Conflicts</h3>
+<h3>6.4 Handling Conflicts</h3>
 <ul>
 <li><strong>Multiple labels per channel</strong> → Standardize via
 channel index</li>

@@ -153,7 +153,11 @@ Iterate over each file's signal channels and extract per-channel metadata.
 | 12    | unit_concept_id                 | int       | Recommended         | Populate for physical values (e.g., Hz, mmHg, mV) using OMOP standard units. Use unit lookup table or join against raw units found in header.                                                      |
 | 13    | unit_source_value               | string    | Recommended         | Raw unit string as it appeared in the source (e.g., "Hz", "mmHg", "uV"). Helps track unusual or non-standard units and improves auditability.                                                      |
 
-### 6.3 Handling Conflicts
+### 6.3 Common Issues & Solutions
+
+- **Sample Amplitude Units** -> Set `metadata_source_value` = 'AMPLITUDE' (and use the corresponding `metadata_concept_id` from [WAVEFORM](https://github.com/TuftsCTSI/CVB/tree/main/WAVEFORM)), and all `value_as` fields to NULL. Fill in the unit columns with the unit for the sample amplitude for the channel.
+
+### 6.4 Handling Conflicts
 
 - **Multiple labels per channel** → Standardize via channel index
 - **Conflicting sampling rates** → Default to most frequent or highest resolution
