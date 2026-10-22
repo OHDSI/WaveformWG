@@ -1,0 +1,58 @@
+name: Use Case
+description: Proposal for a new OHDSI GIS WG Use Case.
+title: "[Use Case]: <Add your project's name here>"
+labels: ["Use Case"]
+projects: "OHDSI/49"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # OHDSI Waveform WG Use Case
+        ## Project Deliverable
+        Please provide the following information about your project's deliverable:
+  - type: textarea
+    id: deliverable
+    attributes:
+      label: Description - What evidence do you want generate?
+      description: "What evidence based on a combination of waveform data and EHR data do you want generate?"
+      placeholder: "Give a description of your deliverable here. Provide enough information so that all parties can form a mental image of the final product and will be able to align their work towards a single goal."
+  - type: textarea
+    id: infrastructure
+    attributes:
+      label: Infrastructure - Can this be delivered with existing Infrastructure?
+      description: "If no, what needs to be added?"
+      placeholder: "Can this be delivered with existing infrastructure?"
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timeline - What is your desired timeline for completing this work?
+      description: "What is your desired timeline for completing this work?"
+      placeholder: "Explain your desired timeline here"
+  - type: textarea
+    id: credit
+    attributes:
+      label: Credit - How would you and your team like to receive credit for this work?
+      description: "How would you and your team like to receive credit for this work?"
+      placeholder: "Explain how you would like to collaborate (publish, present, develop software, etc.)"
+  - type: textarea
+    id: support
+    attributes:
+      label: Support - What kind of support does your team need from the workgroup?
+      description: "What kind of support does your team need from the workgroup?"
+      placeholder: "Describe the type of support you will need"
+  - type: textarea
+    id: datasets
+    attributes:
+      label: Datasets of Interest
+      description: "Provide a list of waveform signals that your project is interested in using."
+      placeholder: "List the signals your project is interested in using"
+  - type: markdown
+    attributes:
+      value: |
+        # Use Case Work Orders
+  - type: textarea
+    id: depends
+    attributes:
+      label: Depends On
+      description: "Work orders that are associated with this Use Case."
+      placeholder: "Issue task list goes here. This can be filled out after "
