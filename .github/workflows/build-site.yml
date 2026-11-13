@@ -47,17 +47,10 @@ jobs:
           libxml2-dev \
           pandoc
 
-    - name: Cache R packages
-      uses: actions/cache@v3
-      with:
-        path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-r-${{ hashFiles('**/DESCRIPTION') }}-${{ hashFiles('.github/workflows/build-site.yml') }}
-        restore-keys: |
-          ${{ runner.os }}-r-
-
     - name: Install R packages
-      run: |
-        Rscript -e 'install.packages("rmarkdown", repos="https://cloud.r-project.org")'
+      uses: r-lib/actions/setup-r-dependencies@v2
+      with:
+        packages: any::rmarkdown
 
     - name: Cache Pandoc
       uses: actions/cache@v3
