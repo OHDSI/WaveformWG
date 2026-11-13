@@ -1,0 +1,6 @@
+A0000474 3 250 2500 10:55:00 09/12/2024
+A0000474.dat 16 1000(0)/mV 16 0 -46 11561 0 I
+A0000474.dat 16 1000(0)/mV 16 0 -30 42223 0 II
+A0000474.dat 16 1000(0)/mV 16 0 16 30662 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000474

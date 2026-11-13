@@ -1,0 +1,6 @@
+A0000177 3 250 2500 19:25:00 14/08/2024
+A0000177.dat 16 1000(0)/mV 16 0 43 36300 0 I
+A0000177.dat 16 1000(0)/mV 16 0 38 44649 0 II
+A0000177.dat 16 1000(0)/mV 16 0 -5 8349 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000177

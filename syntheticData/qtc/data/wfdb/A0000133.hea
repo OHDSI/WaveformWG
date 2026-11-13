@@ -1,0 +1,6 @@
+A0000133 3 250 2500 11:18:00 11/12/2024
+A0000133.dat 16 1000(0)/mV 16 0 -25 12171 0 I
+A0000133.dat 16 1000(0)/mV 16 0 -33 41737 0 II
+A0000133.dat 16 1000(0)/mV 16 0 -8 29566 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000133

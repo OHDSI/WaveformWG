@@ -1,0 +1,6 @@
+A0000278 3 250 2500 07:42:00 09/02/2025
+A0000278.dat 16 1000(0)/mV 16 0 -15 63007 0 I
+A0000278.dat 16 1000(0)/mV 16 0 -31 17849 0 II
+A0000278.dat 16 1000(0)/mV 16 0 -16 20378 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000278

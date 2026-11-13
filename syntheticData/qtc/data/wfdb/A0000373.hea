@@ -1,0 +1,6 @@
+A0000373 3 250 2500 16:56:00 27/02/2025
+A0000373.dat 16 1000(0)/mV 16 0 -40 1624 0 I
+A0000373.dat 16 1000(0)/mV 16 0 -28 21287 0 II
+A0000373.dat 16 1000(0)/mV 16 0 12 19663 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000373

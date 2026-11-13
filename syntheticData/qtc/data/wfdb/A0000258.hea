@@ -1,0 +1,6 @@
+A0000258 3 250 2500 15:45:00 19/06/2024
+A0000258.dat 16 1000(0)/mV 16 0 17 43750 0 I
+A0000258.dat 16 1000(0)/mV 16 0 8 55639 0 II
+A0000258.dat 16 1000(0)/mV 16 0 -9 11889 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000258

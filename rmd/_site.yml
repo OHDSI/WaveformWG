@@ -16,6 +16,9 @@ navbar:
     - text: "Home"
       icon: fa-home
       href: index.html
+    - text: "Updates"
+      icon: fa-bullhorn
+      href: updates.html
     - text: "Get Started"
       icon: fa-play
       href: get-started.html
@@ -28,6 +31,21 @@ navbar:
           href: waveform-extension.html
         - text: "Table Specifications"
           href: waveform-tables.html
+    - text: "Tutorial"
+      icon: fa-graduation-cap
+      menu:
+        - text: "Overview"
+          href: tutorial.html
+        - text: "Dataset Description"
+          href: tutorial-data-description.html
+        - text: "Exercise 1: Explore WFDB"
+          href: tutorial-exercise-1.html
+        - text: "Exercise 2: Waveform Extension ETL"
+          href: tutorial-exercise-2.html
+        - text: "Exercise 3: Derive Features"
+          href: tutorial-exercise-3.html
+        - text: "Exercise 4: Effect Estimation"
+          href: tutorial-exercise-4.html
     - text: "Resources"
       icon: fa-book
       menu:

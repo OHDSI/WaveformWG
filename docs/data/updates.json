@@ -1,0 +1,32 @@
+{
+ "_readme": "Add one object per update. 'date' (YYYY-MM-DD) is required; the site sorts newest first and the home page shows the three most recent. 'body' is plain text. 'links' is a list of {label, url}; urls are absolute https:// or relative site paths.",
+ "updates": [
+  {
+   "date": "2026-11-13",
+   "title": "New meeting schedule: alternating Thursdays and Fridays",
+   "body": "The working group now meets every week on Microsoft Teams, alternating between two slots: Thursdays at 10:00 CET and Fridays at 16:00 CET. Ask for the Teams invite if you do not have it yet.",
+   "links": [
+    {"label": "Meeting schedule", "url": "project-management.html#meeting-schedule"},
+    {"label": "How to join", "url": "get-started.html#join-the-working-group"}
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "title": "Tutorial: from raw ECG files to an effect estimate",
+   "body": "A new four-part, hands-on tutorial walks one research question (does a QT-prolonging antiemetic lengthen QTc compared with a comparator?) from real WFDB files, through the Waveform Extension, to crude and adjusted effect estimates. It includes exercises with worked answers, SQL, Python and R, and every estimate can be checked against the answer key of the synthetic data.",
+   "links": [
+    {"label": "Tutorial overview", "url": "tutorial.html"},
+    {"label": "Exercise 4: Effect estimation", "url": "tutorial-exercise-4.html"}
+   ]
+  },
+  {
+   "date": "2026-11-13",
+   "title": "Synthetic WFDB dataset with an answer key published",
+   "body": "The repository now contains 542 synthetic three-lead ECG recordings in WFDB format for 300 synthetic inpatients, together with the OMOP tables they link to, the Waveform Extension tables built from them (occurrence, registry, channel metadata, feature), and an answer key with the true intervals and treatment effect. The whole set is rebuilt deterministically by one script.",
+   "links": [
+    {"label": "Dataset description", "url": "tutorial-data-description.html"},
+    {"label": "Dataset and generator on GitHub", "url": "https://github.com/OHDSI/WaveformWG/tree/main/syntheticData/qtc"}
+   ]
+  }
+ ]
+}

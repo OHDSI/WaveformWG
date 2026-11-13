@@ -1,0 +1,6 @@
+A0000503 3 250 2500 06:30:00 25/03/2025
+A0000503.dat 16 1000(0)/mV 16 0 -18 8873 0 I
+A0000503.dat 16 1000(0)/mV 16 0 -20 34851 0 II
+A0000503.dat 16 1000(0)/mV 16 0 -2 25978 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000503

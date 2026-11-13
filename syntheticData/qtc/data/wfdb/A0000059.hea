@@ -1,0 +1,6 @@
+A0000059 3 250 2500 14:44:00 17/12/2024
+A0000059.dat 16 1000(0)/mV 16 0 -19 64589 0 I
+A0000059.dat 16 1000(0)/mV 16 0 -24 19526 0 II
+A0000059.dat 16 1000(0)/mV 16 0 -5 20473 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000059

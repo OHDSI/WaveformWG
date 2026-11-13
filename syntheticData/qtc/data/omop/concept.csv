@@ -1,0 +1,38 @@
+concept_id,concept_name,domain_id,vocabulary_id
+8507,MALE,Gender,OMOP
+8532,FEMALE,Gender,OMOP
+8753,millimole per liter,Unit,OMOP
+9201,Inpatient Visit,Visit,OMOP
+9484,ADU/mV,Unit,OMOP
+201826,Type 2 diabetes mellitus,Condition,OMOP
+316139,Heart failure,Condition,OMOP
+320128,Essential hypertension,Condition,OMOP
+3023103,Potassium [Moles/volume] in Serum or Plasma,Measurement,OMOP
+44818702,Lab result,Type Concept,OMOP
+2082499947,III,WFE Lead,WAVEFORM
+2082499961,HEA,WFE File Format,WAVEFORM
+2082499965,DAT,WFE File Format,WAVEFORM
+2082499966,II,WFE Lead,WAVEFORM
+2082499968,SAMPLERATE,WFE Lead,WAVEFORM
+2082499969,RESOLUTION,WFE Lead,WAVEFORM
+2082499971,Low signal quality,Qualifier Value,WAVEFORM
+2082499972,sps,Unit,WAVEFORM
+2082499974,Diagnostic ECG,Procedure,WAVEFORM
+2082499975,WFDB,WFE File Format,WAVEFORM
+2082499990,I,WFE Lead,WAVEFORM
+2082599101,"QTc interval, Fridericia",Measurement,TutorialLocal
+2082599102,"QTc interval, Bazett",Measurement,TutorialLocal
+2082599103,QT interval,Measurement,TutorialLocal
+2082599104,Heart rate from ECG,Measurement,TutorialLocal
+2082599105,QRS duration,Measurement,TutorialLocal
+2082599106,RR interval,Measurement,TutorialLocal
+2082599107,ECG high-frequency noise level,Measurement,TutorialLocal
+2082599201,Tutorial threshold ECG interval detector v1,Metadata,TutorialLocal
+2082599202,Bazett correction applied to detector output,Metadata,TutorialLocal
+2082599203,Fridericia correction applied to detector output,Metadata,TutorialLocal
+2082599301,millisecond,Unit,TutorialLocal
+2082599302,beats per minute,Unit,TutorialLocal
+2082599303,millivolt,Unit,TutorialLocal
+2082599310,Derived from waveform feature,Type Concept,TutorialLocal
+2082599401,Synthetic antiemetic A (QT-prolonging),Drug,TutorialLocal
+2082599402,"Synthetic antiemetic B (comparator, no QT effect)",Drug,TutorialLocal

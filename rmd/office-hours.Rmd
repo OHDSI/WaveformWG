@@ -210,7 +210,7 @@ The Waveform Extension supports both approaches.
 
 ## **Upcoming Sessions**
 
-The working group continues to hold regular meetings and office hours. To join:
+The working group meets every week, alternating Thursdays at 10:00 CET and Fridays at 16:00 CET (see the [meeting schedule](project-management.html#meeting-schedule)). To join:
 
 - **Teams**: Request access to the OHDSI Waveform Working Group channel
 - **Email**: houghtaling@ohdsi.org for meeting invitations

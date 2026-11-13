@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="updates.html">
+    <span class="fa fa-bullhorn"></span>
+     
+    Updates
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial.html">Overview</a>
+    </li>
+    <li>
+      <a href="tutorial-data-description.html">Dataset Description</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-1.html">Exercise 1: Explore WFDB</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-2.html">Exercise 2: Waveform Extension ETL</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-3.html">Exercise 3: Derive Features</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-4.html">Exercise 4: Effect Estimation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="exercise-2-transform-to-the-waveform-extension"
+class="section level1">
+<h1><strong>Exercise 2: Transform to the Waveform
+Extension</strong></h1>
+<div id="goal" class="section level2">
+<h2><strong>Goal</strong></h2>
+<p>Build <code>waveform_occurrence</code>,
+<code>waveform_registry</code> and
+<code>waveform_channel_metadata</code> for all 542 recordings from the
+WFDB headers and the export manifest, then validate your tables with the
+data quality checks from the <a
+href="waveform-tables.html#data-quality-checks">table
+specifications</a>.</p>
+</div>
+<div id="background" class="section level2">
+<h2><strong>Background</strong></h2>
+<p>The <a href="waveform-extension-overview.html">Waveform Extension</a>
+separates <em>what happened</em> (an occurrence: this person, this
+visit, this time span), <em>where the bytes are</em> (the registry: one
+row per file), and <em>how to read them</em> (channel metadata: one row
+per channel and property). Features derived from the signal come later
+(Exercise 3).</p>
+<p>The ETL in this exercise is deliberately small, but it has the shape
+of a real one: read what the files themselves say, join in what only the
+source system knows, and map labels to concepts.</p>
+</div>
+<div id="learning-outcomes" class="section level2">
+<h2><strong>Learning Outcomes</strong></h2>
+<ol style="list-style-type: decimal">
+<li>Map one WFDB record to rows in the three tables</li>
+<li>Resolve <code>person_id</code> and <code>visit_occurrence_id</code>
+from source values</li>
+<li>Choose concept ids for file types, leads and metadata
+properties</li>
+<li>Validate referential integrity and temporal consistency</li>
+<li>Explain why each design choice of the extension (separate registry
+rows, per-channel metadata, preceding occurrence) exists</li>
+</ol>
+</div>
+<div id="materials" class="section level2">
+<h2><strong>Materials</strong></h2>
+<ul>
+<li><code>data/wfdb/</code>, <code>data/source/ecg_manifest.csv</code>,
+<code>data/omop/person.csv</code>,
+<code>data/omop/visit_occurrence.csv</code></li>
+<li>Concept ids: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/data/omop/concept.csv"><code>data/omop/concept.csv</code></a></li>
+<li>Reference solution (the transformation): <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/etl_waveform.py"><code>src/etl_waveform.py</code></a>.
+Reference checks: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex2_waveform_etl.py"><code>tutorial/solutions/ex2_waveform_etl.py</code></a></li>
+</ul>
+<p><strong>Try it yourself first.</strong> Write your own version in a
+scratch file, writing to a folder such as <code>my_tables/</code>,
+before you read <code>src/etl_waveform.py</code>.</p>
+</div>
+<div id="steps" class="section level2">
+<h2><strong>Steps</strong></h2>
+<div id="link-each-ecg-to-a-person-and-a-visit" class="section level3">
+<h3>2.1 Link each ECG to a person and a visit</h3>
+<p>The manifest has an MRN and an encounter id.
+<code>PERSON.person_source_value</code> and
+<code>VISIT_OCCURRENCE.visit_source_value</code> hold the same
+values.</p>
+<pre class="python"><code>import pandas as pd
+man = pd.read_csv(&quot;data/source/ecg_manifest.csv&quot;, parse_dates=[&quot;acquisition_datetime&quot;])
+person = pd.read_csv(&quot;data/omop/person.csv&quot;, usecols=[&quot;person_id&quot;, &quot;person_source_value&quot;])
+visit = pd.read_csv(&quot;data/omop/visit_occurrence.csv&quot;, usecols=[&quot;visit_occurrence_id&quot;, &quot;visit_source_value&quot;])
+man = (man.merge(person, left_on=&quot;mrn&quot;, right_on=&quot;person_source_value&quot;, how=&quot;left&quot;, validate=&quot;m:1&quot;)
+          .merge(visit, left_on=&quot;encounter&quot;, right_on=&quot;visit_source_value&quot;, how=&quot;left&quot;, validate=&quot;m:1&quot;))
+assert man.person_id.notna().all() and man.visit_occurrence_id.notna().all()</code></pre>
+<p><strong>Question 2.1.</strong> Why <code>validate="m:1"</code> and
+the assertion? What would you do in a real ETL if some ECGs did not
+link?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Many ECGs per person is expected (many-to-one), but two persons sharing
+one MRN would silently duplicate rows. The assertion turns “some ECGs
+have no patient” into a loud failure. In a real ETL you would not drop
+unlinked ECGs silently: write them to a reject table with the reason,
+report the count, and decide with the data owner whether they can be
+linked later (a late-arriving encounter, a merged MRN).
+</details>
+</div>
+<div id="waveform_occurrence" class="section level3">
+<h3>2.2 <code>waveform_occurrence</code></h3>
+<p>Use the header for the time span: start = <code>base_date</code> +
+<code>base_time</code>, end = start + <code>sig_len / fs</code>
+seconds.</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>waveform_occurrence_id</code></td>
+<td>a new sequential id</td>
+</tr>
+<tr class="even">
+<td><code>waveform_occurrence_concept_id</code></td>
+<td>2082499974, <em>Diagnostic ECG</em></td>
+</tr>
+<tr class="odd">
+<td><code>waveform_format_concept_id</code></td>
+<td>2082499975, <em>WFDB</em></td>
+</tr>
+<tr class="even">
+<td><code>waveform_occurrence_source_value</code></td>
+<td>the accession number</td>
+</tr>
+<tr class="odd">
+<td><code>num_of_files</code></td>
+<td>2 (<code>.hea</code> and <code>.dat</code>)</td>
+</tr>
+<tr class="even">
+<td><code>preceding_waveform_occurrence_id</code></td>
+<td>the same person’s previous ECG, if any</td>
+</tr>
+</tbody>
+</table>
+<pre class="python"><code>import datetime as dt, wfdb
+hdr = wfdb.rdheader(&quot;data/wfdb/A0000001&quot;)
+start = dt.datetime.combine(hdr.base_date, hdr.base_time)
+end = start + dt.timedelta(seconds=hdr.sig_len / hdr.fs)</code></pre>
+<p>Before you write any rows, cross-check the header time with the
+manifest time.</p>
+<p><strong>Question 2.2.</strong> What did the cross-check give? Why is
+it worth doing even when both come from the same system?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+They agree for all 542 records, which is what the reference ETL asserts.
+In real data they often do not: time zones, daylight-saving shifts,
+device clocks that were never set, or a header date that was
+de-identified (shifted) while the manifest was not. Every downstream
+analysis that anchors on time (here, “an ECG before the first dose” and
+“an ECG 12-72 hours after”) inherits that error, so it is cheaper to
+catch it at the ETL.
+</details>
+</div>
+<div id="waveform_registry" class="section level3">
+<h3>2.3 <code>waveform_registry</code></h3>
+<p>Make <strong>two rows per occurrence</strong>, one for the
+<code>.hea</code> file (concept 2082499961) and one for the
+<code>.dat</code> file (2082499965). Keep the exporter’s path in
+<code>waveform_source_file_uri</code> and the standardized location in
+<code>waveform_target_file_uri</code>
+(<code>wfdb/A0000001.hea</code>).</p>
+<p><strong>Question 2.3.</strong> Why does the extension register the
+header and the signal file separately instead of one row per record?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The registry is file-level, so it works for formats that are a single
+file (EDF), a pair (WFDB), or many segments (a continuous ICU monitor
+split into hourly files). Each file has its own time span, location and
+extension, and each may be moved or archived independently. Channel
+metadata attaches to the signal file (<code>.dat</code>), not the
+header, which is why Step 2.4 only uses the <code>.dat</code> rows.
+</details>
+</div>
+<div id="waveform_channel_metadata" class="section level3">
+<h3>2.4 <code>waveform_channel_metadata</code></h3>
+<p>For every <code>.dat</code> file, every lead and each of two
+properties (sampling rate, resolution) write a row. Take the values from
+the header, not from constants.</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>metadata_source_value</code></th>
+<th><code>metadata_concept_id</code></th>
+<th>value</th>
+<th>unit concept</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sampling_rate</code></td>
+<td>2082499968 (<em>SAMPLERATE</em>)</td>
+<td><code>hdr.fs</code></td>
+<td>2082499972 (<em>sps</em>)</td>
+</tr>
+<tr class="even">
+<td><code>resolution</code></td>
+<td>2082499969 (<em>RESOLUTION</em>)</td>
+<td><code>hdr.adc_gain[ch]</code></td>
+<td>9484 (<em>ADU/mV</em>)</td>
+</tr>
+</tbody>
+</table>
+<p>The channel concepts are 2082499990 (I), 2082499966 (II) and
+2082499947 (III).</p>
+<p><strong>Question 2.4.</strong> Your table should have 542 x 3 leads x
+2 properties = 3,252 rows. Is that a good table design for a 12-lead,
+500 Hz, 24-hour recording? What would you change?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The <em>shape</em> is right: one fact per row makes it easy to add
+properties (filter settings, electrode impedance) without changing the
+schema. But when every channel in every file repeats the same sampling
+rate, the table is dominated by redundancy. Options are to store only
+values that differ from a device-level default, or to keep the rows and
+rely on compression. Either way the analyst-facing rule stays the same:
+always read the rate from channel metadata rather than assuming it.
+</details>
+</div>
+<div id="validate" class="section level3">
+<h3>2.5 Validate</h3>
+<p>Run the reference checks against your tables (edit <code>WFE</code>
+at the top to point to your folder), or write your own versions of
+these:</p>
+<pre class="sh"><code>python3 tutorial/solutions/ex2_waveform_etl.py</code></pre>
+<pre><code>PASS  occurrence -&gt; person
+PASS  occurrence -&gt; visit
+PASS  registry -&gt; occurrence
+PASS  channel_metadata -&gt; registry
+PASS  feature -&gt; registry
+PASS  feature -&gt; channel_metadata
+PASS  occurrence end &gt;= start
+PASS  registry end &gt;= start
+PASS  num_of_files matches registry
+PASS  every registry target file exists
+PASS  ECG falls inside its visit (plausibility)
+PASS  feature has a value</code></pre>
+<p><strong>Question 2.5.</strong> Which of these checks would have
+caught (a) a registry row for a file that was never copied, (b) an ECG
+linked to the wrong person?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+For (a), “every registry target file exists”. For (b), none of the
+referential checks. Referential integrity only proves that the person
+<em>exists</em>, not that it is the <em>right</em> one. What can catch a
+wrong link is a plausibility check, such as “the ECG falls inside its
+visit”, which the reference script includes, or “the ECG is inside the
+person’s observation period”. Write one more of your own and run it.
+</details>
+</div>
+</div>
+<div id="deliverable" class="section level2">
+<h2><strong>Deliverable</strong></h2>
+<ul>
+<li>Three CSV files (occurrence, registry, channel metadata) with 542,
+1,084 and 3,252 rows</li>
+<li>The output of the validation script, plus one plausibility check of
+your own</li>
+</ul>
+</div>
+<div id="check-your-work" class="section level2">
+<h2><strong>Check Your Work</strong></h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Row counts match the reference
+tables in <code>data/waveform_extension/</code></label></li>
+<li><label><input type="checkbox" /><code>person_id</code> and
+<code>visit_occurrence_id</code> are resolved from source values, not
+generated</label></li>
+<li><label><input type="checkbox" />Gain and sampling rate come from the
+header</label></li>
+<li><label><input type="checkbox" />Follow-up ECGs point to the baseline
+ECG through <code>preceding_waveform_occurrence_id</code></label></li>
+<li><label><input type="checkbox" />All validation checks
+pass</label></li>
+</ul>
+<p><br></p>
+<p><strong>Bridge to Exercise 3:</strong> the registry tells you where
+each <code>.dat</code> file is, and channel metadata tells you which
+lead is which. Feature extraction needs both.</p>
+<p><br></p>
+<p>Next: <a href="tutorial-exercise-3.html">Exercise 3</a></p>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+A0000376 3 250 2500 08:53:00 26/11/2024
+A0000376.dat 16 1000(0)/mV 16 0 -22 42064 0 I
+A0000376.dat 16 1000(0)/mV 16 0 -17 43288 0 II
+A0000376.dat 16 1000(0)/mV 16 0 5 1224 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000376

@@ -1,0 +1,6 @@
+A0000482 3 250 2500 14:16:00 13/05/2024
+A0000482.dat 16 1000(0)/mV 16 0 -182 1630 0 I
+A0000482.dat 16 1000(0)/mV 16 0 -876 13254 0 II
+A0000482.dat 16 1000(0)/mV 16 0 -694 11624 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000482

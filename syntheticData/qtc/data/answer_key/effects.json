@@ -1,0 +1,17 @@
+{
+  "note": "Sample-level truths from the simulated potential outcomes. Synthetic and exaggerated; do not quote.",
+  "n_persons": 300,
+  "n_cohort": 242,
+  "n_treated_A": 95,
+  "n_comparator_B": 147,
+  "true_effect_on_qtcf_ms": {
+    "ATE": 9.7,
+    "ATT": 10.29,
+    "by_sex": {
+      "female": 14.0,
+      "male": 6.0
+    }
+  },
+  "true_effect_on_qrs_ms": 0.0,
+  "true_effect_on_heart_rate_bpm": 0.0
+}

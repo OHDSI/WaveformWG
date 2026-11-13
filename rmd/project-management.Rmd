@@ -62,9 +62,10 @@ Broader community discussions:
 
 ### **Working Group Calls**
 
-- **Frequency**: Regular meetings (schedule varies based on activity)
+- **Frequency**: Every week, alternating between two slots
+- **Slots**: **Thursdays at 10:00 CET** and **Fridays at 16:00 CET** (Central European time)
 - **Platform**: Microsoft Teams
-- **Contact**: houghtaling@ohdsi.org for meeting invitations
+- **Contact**: houghtaling@ohdsi.org for meeting invitations and to find out which slot is next
 
 ### **Meeting Format**
 

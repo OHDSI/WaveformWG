@@ -1,0 +1,6 @@
+A0000473 3 250 2500 04:50:00 16/12/2024
+A0000473.dat 16 1000(0)/mV 16 0 -23 56028 0 I
+A0000473.dat 16 1000(0)/mV 16 0 291 42402 0 II
+A0000473.dat 16 1000(0)/mV 16 0 314 51910 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000473

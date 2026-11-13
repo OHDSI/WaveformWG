@@ -18,6 +18,16 @@ To enable integration of physiological waveform data (e.g., ECG, EEG, arterial b
 
 <br>
 
+## **Updates**
+
+<div data-updates="3"></div>
+
+[All updates](updates.html)
+
+<script src="assets/updates.js"></script>
+
+<br>
+
 ## **Collaboration Approach**
 
 Like most of OHDSI, we use GitHub and MS Teams for collaboration, version control, and project management. We review progress and discuss technical challenges at regular working group meetings. Leaders of specific projects within the Waveform Working Group schedule subgroup meetings for focused development work.
@@ -28,7 +38,16 @@ New to OHDSI? First sign up for an OHDSI MS Teams account [here](https://forms.o
 
 Already have an OHDSI Teams account? Great. Just reach out to join the Waveform Working Group channel.
 
-The main workgroup calls are scheduled regularly on MS Teams. Please reach out for the current meeting schedule and Teams link.
+### **Meeting Schedule**
+
+The working group meets every week on Microsoft Teams, alternating between two slots:
+
+<div class="meeting-slots">
+<div class="meeting-slot"><div class="when">Thursdays, 10:00 CET</div><div class="sub">every other week</div></div>
+<div class="meeting-slot"><div class="when">Fridays, 16:00 CET</div><div class="sub">every other week</div></div>
+</div>
+
+Times are Central European time. Reach out for the Teams link and to find out which slot is next (see [Get Started](get-started.html#join-the-working-group)).
 
 <br>
 
@@ -107,7 +126,7 @@ Current development priorities:
 - **ETL Tools**: Reference implementations for common waveform formats
 - **Vocabulary Expansion**: OMOP concepts for waveform types, channels, and features
 - **Validation Framework**: Data quality checks and conformance testing
-- **Integration Examples**: Jupyter notebooks demonstrating common analyses
+- **Integration Examples**: a hands-on [tutorial](tutorial.html) with a synthetic WFDB dataset, from ECG files to an effect estimate; more notebooks to come
 - **Documentation**: Implementation guides, video tutorials, and best practices
 
 See our [GitHub Issues](https://github.com/OHDSI/WaveformWG/issues) for detailed work items and progress tracking.

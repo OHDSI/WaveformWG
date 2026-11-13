@@ -25,7 +25,20 @@ The OMOP CDM Waveform Extension consists of four interconnected tables:
 - **[Waveform Extension Overview](https://ohdsi.github.io/WaveformWG/waveform-extension-overview.html)** - High-level architecture
 - **[Implementation Guide](https://ohdsi.github.io/WaveformWG/waveform-extension.html)** - Detailed ETL specifications
 - **[Table Specifications](https://ohdsi.github.io/WaveformWG/waveform-tables.html)** - Complete schema reference
+- **[Tutorial](https://ohdsi.github.io/WaveformWG/tutorial.html)** - ECG files to effect estimate, with exercises
 - **[Office Hours](https://ohdsi.github.io/WaveformWG/office-hours.html)** - Recorded implementation discussions
+
+## Tutorial and Synthetic Data
+
+A hands-on [tutorial](https://ohdsi.github.io/WaveformWG/tutorial.html) takes one question (does a QT-prolonging antiemetic lengthen QTc?) from raw WFDB files, through the Waveform Extension, to an effect estimate. It runs on a small synthetic dataset in this repository, [`syntheticData/qtc/`](syntheticData/qtc/README.md), with 542 real WFDB ECG records, the OMOP and Waveform Extension tables, and an answer key with the true effect.
+
+## Updates
+
+News from the working group is on the [Updates page](https://ohdsi.github.io/WaveformWG/updates.html).
+
+## Meetings
+
+The working group meets every week on Microsoft Teams, alternating between **Thursdays at 10:00 CET** and **Fridays at 16:00 CET**. Reach out for the Teams link and to find out which slot is next.
 
 ## Get Involved
 
@@ -34,7 +47,7 @@ The OMOP CDM Waveform Extension consists of four interconnected tables:
 1. [Sign up for OHDSI Teams](https://forms.office.com/Pages/ResponsePage.aspx?id=lAAPoyCRq0q6TOVQkCOy1ZyG6Ud_r2tKuS0HcGnqiQZUQ05MOU9BSzEwOThZVjNQVVFGTDNZRENONiQlQCN0PWcu)
 2. Request access to the Waveform Working Group channel
 3. Introduce yourself and share your interests
-4. Attend working group meetings
+4. Attend working group meetings (alternating Thursdays 10:00 CET and Fridays 16:00 CET)
 
 ### Contribute
 

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="updates.html">
+    <span class="fa fa-bullhorn"></span>
+     
+    Updates
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial.html">Overview</a>
+    </li>
+    <li>
+      <a href="tutorial-data-description.html">Dataset Description</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-1.html">Exercise 1: Explore WFDB</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-2.html">Exercise 2: Waveform Extension ETL</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-3.html">Exercise 3: Derive Features</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-4.html">Exercise 4: Effect Estimation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="exercise-3-derive-features" class="section level1">
+<h1><strong>Exercise 3: Derive features</strong></h1>
+<div id="goal" class="section level2">
+<h2><strong>Goal</strong></h2>
+<p>Extract heart rate and the QT interval from the signal, store them as
+<code>waveform_feature</code> rows linked to <code>MEASUREMENT</code>
+rows, and check the result against the answer key.</p>
+</div>
+<div id="background" class="section level2">
+<h2><strong>Background</strong></h2>
+<p>Analysts rarely work with samples. They work with
+<strong>features</strong>: numbers derived from a window of signal. For
+this tutorial the feature of interest is the <strong>QTc</strong>: the
+time from the start of the QRS complex to the end of the T wave (QT),
+corrected for heart rate because QT shortens when the heart beats
+faster. Two common corrections are</p>
+<ul>
+<li><strong>Bazett</strong>: QTcB = QT / sqrt(RR)</li>
+<li><strong>Fridericia</strong>: QTcF = QT / RR^(1/3)</li>
+</ul>
+<p>with QT and RR in the same unit (seconds in the formulas, reported in
+ms).</p>
+<p>In the Waveform Extension a derived value takes two forms. The
+<strong><code>MEASUREMENT</code></strong> row is the standard OMOP fact
+that cohort and covariate tooling understands. The
+<strong><code>waveform_feature</code></strong> row is the provenance:
+which occurrence, file and channel it came from, which algorithm
+produced it, and over which time window. They are linked by
+<code>measurement_id</code>.</p>
+</div>
+<div id="learning-outcomes" class="section level2">
+<h2><strong>Learning Outcomes</strong></h2>
+<ol style="list-style-type: decimal">
+<li>Run an interval detector on a WFDB signal and read its output</li>
+<li>Quantify detector error against a known truth, separately for clean
+and noisy recordings</li>
+<li>Store features with provenance in <code>waveform_feature</code> and
+<code>MEASUREMENT</code></li>
+<li>Use a signal-quality flag to exclude recordings</li>
+<li>Explain why Bazett and Fridericia give different answers at
+different heart rates</li>
+</ol>
+</div>
+<div id="materials" class="section level2">
+<h2><strong>Materials</strong></h2>
+<ul>
+<li>The detector: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/qtcdetect.py"><code>src/qtcdetect.py</code></a>.
+It filters lead II, finds R peaks, finds QRS onset from the steepest
+slope, and calls the T-wave end the point where the smoothed signal
+returns to within 5% of the T-wave height. It is a teaching detector,
+not a clinical one.</li>
+<li>Feature writer: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/extract_features.py"><code>src/extract_features.py</code></a></li>
+<li>Reference solution: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex3_feature_extraction.py"><code>tutorial/solutions/ex3_feature_extraction.py</code></a></li>
+<li>Answer key: <code>data/answer_key/records_truth.csv</code></li>
+</ul>
+</div>
+<div id="steps" class="section level2">
+<h2><strong>Steps</strong></h2>
+<div id="one-record-by-hand" class="section level3">
+<h3>3.1 One record by hand</h3>
+<pre class="python"><code>import sys, wfdb, pandas as pd
+sys.path.insert(0, &quot;src&quot;)
+from qtcdetect import analyze
+
+rec = wfdb.rdrecord(&quot;data/wfdb/A0000001&quot;)
+f = analyze(rec.p_signal[:, rec.sig_name.index(&quot;II&quot;)], rec.fs)
+truth = pd.read_csv(&quot;data/answer_key/records_truth.csv&quot;)
+print(f)
+print(truth[truth.accession == &quot;A0000001&quot;].T)</code></pre>
+<p>You should get a heart rate of 69.9 bpm (exactly the truth), a QT of
+about 368 ms against a true 373 ms, and a QTcF of about 389 ms against a
+true 393 ms.</p>
+<p><strong>Question 3.1.</strong> The detector’s QT is a few
+milliseconds <em>short</em> of the truth. Why would a threshold-based
+T-end detector be biased in that direction?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The T wave tails off slowly towards the baseline. A detector that
+declares the end when the signal first falls within 5% of the T-wave
+height stops slightly before the true end, so QT is underestimated. Real
+tangent-method and threshold detectors have their own known biases too,
+which is why QT values from different devices and algorithms are not
+interchangeable. That is the reason <code>waveform_feature</code>
+carries the algorithm.
+</details>
+</div>
+<div id="all-542-records-against-the-truth" class="section level3">
+<h3>3.2 All 542 records against the truth</h3>
+<pre class="python"><code>import numpy as np
+rows = [analyze(wfdb.rdrecord(f&quot;data/wfdb/{a}&quot;).p_signal[:, 1], 250) for a in truth.accession]
+est = pd.concat([truth, pd.DataFrame(rows)], axis=1)
+est[&quot;err_qtcf&quot;] = est.qtcf_ms - est.true_qtcf_ms
+print(est.groupby(est.low_quality.astype(int)).err_qtcf.agg([&quot;count&quot;, &quot;mean&quot;, &quot;std&quot;, lambda x: x.abs().max()]))</code></pre>
+<p>You should see about this:</p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>detector flagged low quality</th>
+<th>records</th>
+<th>mean error (ms)</th>
+<th>SD of error (ms)</th>
+<th>largest error (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>no</td>
+<td>496</td>
+<td>-3.5</td>
+<td>2.3</td>
+<td>12.2</td>
+</tr>
+<tr class="even">
+<td>yes</td>
+<td>46</td>
+<td>-8.9</td>
+<td>13.1</td>
+<td>28.9</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 3.2.</strong> A systematic error of about -3.5 ms
+and a random error of about 2 ms. Which of the two matters more when you
+compare <em>two groups</em>?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+For a difference between groups, a systematic bias that is the same in
+both groups cancels. The random error does not cancel: it adds noise and
+widens confidence intervals, but if it is unrelated to treatment it does
+not bias the comparison. The thing to fear is <em>differential</em>
+error, for example a device used only in the treated group, or lower
+signal quality in one arm. Exercise 4 shows the effect of measuring QTc
+with and without the noisy records.
+</details>
+</div>
+<div id="the-quality-flag" class="section level3">
+<h3>3.3 The quality flag</h3>
+<p>The detector reports <code>noise_mv</code>, the SD of the 60-100 Hz
+band (far from the 50 Hz powerline), and flags records above 0.05 mV.
+Compare the flag with the answer key’s <code>noisy</code> column.</p>
+<pre class="python"><code>print(pd.crosstab(est.noisy, est.low_quality))</code></pre>
+<p><strong>Question 3.3.</strong> The flag agrees with the truth for
+every record. Why would you not expect that on real data, and what does
+that mean for how you would choose the threshold?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Here clean and noisy records are two well-separated populations (about
+0.004 mV versus 0.10 mV), so any threshold between them works. Real
+noise is a continuum and some artifacts (a few bad beats, baseline
+jumps) do not show in a band-power measure. In practice you choose a
+threshold by looking at the distribution, check a sample of records by
+eye on both sides of it, and treat the threshold as an analysis
+parameter whose effect you report, which is exactly what Exercise 4 does
+with a sensitivity analysis.
+</details>
+</div>
+<div id="store-the-features" class="section level3">
+<h3>3.4 Store the features</h3>
+<p><code>src/extract_features.py</code> does the writing. For each ECG
+and each feature it adds</p>
+<ul>
+<li>a <code>MEASUREMENT</code> row: <code>measurement_concept_id</code>
+(for example <em>QTc interval, Fridericia</em>),
+<code>value_as_number</code>, unit, and the visit</li>
+<li>a <code>waveform_feature</code> row: the occurrence, the registry
+row of the <code>.dat</code> file, the <strong>lead II</strong> channel
+metadata row, <code>measurement_id</code>,
+<code>algorithm_concept_id</code>, the time window, and, when the
+detector flagged the record, <code>value_as_concept_id</code> = <em>Low
+signal quality</em></li>
+</ul>
+<p>Look at the output for one ECG:</p>
+<pre class="sql"><code>SELECT wf.waveform_feature_id, m.measurement_source_value, wf.value_as_number, wf.unit_source_value,
+       wf.algorithm_source_value, wf.value_as_concept_id
+FROM waveform_feature wf JOIN measurement m ON m.measurement_id = wf.measurement_id
+WHERE wf.waveform_occurrence_id = 1;</code></pre>
+<p><strong>Question 3.4.</strong> The same QT value could be stored as a
+<code>MEASUREMENT</code> row only. What would you lose?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Provenance. From the <code>MEASUREMENT</code> row alone you cannot tell
+which file, which lead or which algorithm produced the number, so you
+cannot re-derive it when a better algorithm arrives, audit an outlier by
+looking at the signal, or restrict an analysis to one algorithm.
+Conversely, with only the <code>waveform_feature</code> row, standard
+OHDSI tooling that looks in <code>MEASUREMENT</code> would not see the
+value. The extension deliberately keeps both and links them.
+</details>
+</div>
+<div id="bazett-versus-fridericia" class="section level3">
+<h3>3.5 Bazett versus Fridericia</h3>
+<p>In this dataset the truth follows Fridericia. Check how each
+correction’s error depends on heart rate:</p>
+<pre class="python"><code>ok = est[~est.low_quality]
+print(np.corrcoef(ok.hr_bpm, ok.qtcb_ms - ok.true_qtcf_ms)[0, 1],
+      np.corrcoef(ok.hr_bpm, ok.qtcf_ms - ok.true_qtcf_ms)[0, 1])</code></pre>
+<p>The correlations are about 0.97 for Bazett and 0.34 for
+Fridericia.</p>
+<p><strong>Question 3.5.</strong> Why is a correction that depends on
+heart rate a threat in a drug comparison, even though both arms use the
+same formula?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+If heart rate differs between the groups, or is related to who gets the
+drug (through age, heart failure or the indication), a formula that
+over-corrects at fast rates produces a QTc difference that is partly a
+heart rate difference. Adjusting for heart rate helps, but choosing the
+formula <em>before</em> looking at results, and showing results under
+both, is better practice. Exercise 4 compares both outcomes.
+</details>
+</div>
+</div>
+<div id="deliverable" class="section level2">
+<h2><strong>Deliverable</strong></h2>
+<ul>
+<li>A table of detector error by quality flag for your run</li>
+<li>One paragraph: which feature(s) you would store for the analysis,
+with which algorithm concepts, and why</li>
+</ul>
+</div>
+<div id="check-your-work" class="section level2">
+<h2><strong>Check Your Work</strong></h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Your error table matches the one
+above (within rounding)</label></li>
+<li><label><input type="checkbox" />Every <code>waveform_feature</code>
+row has a <code>measurement_id</code> that exists in
+<code>MEASUREMENT</code></label></li>
+<li><label><input type="checkbox" />Flagged records carry the <em>Low
+signal quality</em> concept</label></li>
+<li><label><input type="checkbox" />You can explain the
+Bazett/Fridericia difference in one sentence</label></li>
+</ul>
+<p><br></p>
+<p><strong>Bridge to Exercise 4:</strong> the <code>MEASUREMENT</code>
+rows and their quality flags are the outcome variable of the effect
+estimation.</p>
+<p><br></p>
+<p>Next: <a href="tutorial-exercise-4.html">Exercise 4</a></p>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

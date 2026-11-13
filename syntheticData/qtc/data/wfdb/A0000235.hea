@@ -1,0 +1,6 @@
+A0000235 3 250 2500 14:22:00 09/04/2025
+A0000235.dat 16 1000(0)/mV 16 0 31 54730 0 I
+A0000235.dat 16 1000(0)/mV 16 0 34 7605 0 II
+A0000235.dat 16 1000(0)/mV 16 0 3 18411 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000235

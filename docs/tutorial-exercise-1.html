@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="updates.html">
+    <span class="fa fa-bullhorn"></span>
+     
+    Updates
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial.html">Overview</a>
+    </li>
+    <li>
+      <a href="tutorial-data-description.html">Dataset Description</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-1.html">Exercise 1: Explore WFDB</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-2.html">Exercise 2: Waveform Extension ETL</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-3.html">Exercise 3: Derive Features</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-4.html">Exercise 4: Effect Estimation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="exercise-1-explore-wfdb-recordings" class="section level1">
+<h1><strong>Exercise 1: Explore WFDB recordings</strong></h1>
+<div id="goal" class="section level2">
+<h2><strong>Goal</strong></h2>
+<p>Open a WFDB record, convert its stored integers to physical units,
+and decide what has to come from <em>outside</em> the file before it can
+be used in an OMOP analysis.</p>
+</div>
+<div id="background" class="section level2">
+<h2><strong>Background</strong></h2>
+<p><a href="https://physionet.org/content/wfdb/">WFDB</a> is the format
+used by PhysioNet. A record is a small text header (<code>.hea</code>)
+plus one or more binary signal files (<code>.dat</code>). The header
+says how to read the bytes: sampling frequency, number of samples, one
+line per channel with its format, gain, baseline and label, and
+optionally the acquisition date and time. Signals are stored as integers
+(<strong>digital</strong> values); the gain converts them to
+<strong>physical</strong> units such as millivolts.</p>
+<p>The header is <em>deliberately</em> free of patient identifiers. That
+is good for privacy, but it means the file cannot tell you whose ECG it
+is, or which hospital encounter it belongs to. In real life the link
+comes from the export system, and it has to be carried into the OMOP
+tables.</p>
+</div>
+<div id="learning-outcomes" class="section level2">
+<h2><strong>Learning Outcomes</strong></h2>
+<ol style="list-style-type: decimal">
+<li>Read a WFDB header and signal with the <code>wfdb</code> Python
+package</li>
+<li>Convert digital samples to millivolts and explain the role of gain
+and baseline</li>
+<li>Check a signal for internal consistency (Einthoven’s relation)</li>
+<li>List the facts the Waveform Extension needs that the file does not
+contain</li>
+<li>Recognize a poor-quality recording and say how you would record
+that</li>
+</ol>
+</div>
+<div id="materials" class="section level2">
+<h2><strong>Materials</strong></h2>
+<ul>
+<li>The records in <a
+href="https://github.com/OHDSI/WaveformWG/tree/main/syntheticData/qtc/data/wfdb"><code>data/wfdb/</code></a>
+and the export list <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/data/source/ecg_manifest.csv"><code>data/source/ecg_manifest.csv</code></a></li>
+<li>Reference solution: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex1_explore_wfdb.py"><code>tutorial/solutions/ex1_explore_wfdb.py</code></a></li>
+</ul>
+</div>
+<div id="steps" class="section level2">
+<h2><strong>Steps</strong></h2>
+<p>Run the code from <code>syntheticData/qtc</code>.</p>
+<div id="read-the-header" class="section level3">
+<h3>1.1 Read the header</h3>
+<pre class="python"><code>import wfdb
+hdr = wfdb.rdheader(&quot;data/wfdb/A0000001&quot;)
+print(hdr.fs, hdr.sig_len, hdr.sig_name, hdr.units, hdr.adc_gain, hdr.baseline)
+print(hdr.base_date, hdr.base_time, hdr.comments)</code></pre>
+<p>Also open <code>data/wfdb/A0000001.hea</code> in a text editor and
+match each field to what you printed.</p>
+<p><strong>Question 1.1.</strong> How long is the recording in seconds?
+How many bytes should the <code>.dat</code> file have (16-bit samples)?
+Check with <code>ls -l</code>.</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+2,500 samples at 250 Hz is 10 s. Three channels x 2,500 samples x 2
+bytes = 15,000 bytes, and the <code>.dat</code> file is exactly that
+(the header is a few hundred bytes). A header-versus-file size check is
+a cheap integrity test for an ETL.
+</details>
+</div>
+<div id="digital-versus-physical" class="section level3">
+<h3>1.2 Digital versus physical</h3>
+<pre class="python"><code>rec = wfdb.rdrecord(&quot;data/wfdb/A0000001&quot;)                          # physical (mV)
+raw = wfdb.rdrecord(&quot;data/wfdb/A0000001&quot;, physical=False).d_signal  # stored integers
+print(raw[:3, 1], rec.p_signal[:3, 1])</code></pre>
+<p><strong>Question 1.2.</strong> The first three lead II integers are
+24, 11 and 2. What are they in millivolts? What would go wrong if an ETL
+recorded the gain as 200 instead of 1000?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+physical = (digital - baseline) / gain, so 24 / 1000 = 0.024 mV, 11 /
+1000 = 0.011 mV and 2 / 1000 = 0.002 mV. With a wrong gain of 200 every
+amplitude would be five times too large (R waves of about 6 mV instead
+of 1.2 mV). Interval measures such as QT would survive, but any
+amplitude-based feature would not. That is why the extension stores
+<em>resolution</em> as channel metadata: the gain is part of the
+provenance of every feature.
+</details>
+</div>
+<div id="is-the-signal-internally-consistent" class="section level3">
+<h3>1.3 Is the signal internally consistent?</h3>
+<p>Lead III should equal lead II minus lead I (Einthoven’s
+relation).</p>
+<pre class="python"><code>import numpy as np
+mv = rec.p_signal
+print(np.abs(mv[:, 2] - (mv[:, 1] - mv[:, 0])).max())</code></pre>
+<p><strong>Question 1.3.</strong> Why is the difference not exactly zero
+in a real recording, and why is it (almost) zero here?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+In a real ECG, leads I, II and III are derived from the same electrodes,
+so the relation holds up to amplifier differences and quantization; a
+large violation signals a lead-off, swapped electrodes or a processing
+error, which makes this a useful automatic quality check. Here lead III
+was computed from the other two in integer arithmetic, so the difference
+is zero up to floating point rounding.
+</details>
+</div>
+<div id="plot-it" class="section level3">
+<h3>1.4 Plot it</h3>
+<pre class="python"><code>import matplotlib.pyplot as plt
+wfdb.plot_wfdb(record=rec, title=&quot;A0000001&quot;, figsize=(10, 5))</code></pre>
+<p>Find the R peaks (the tall spikes) and count them. Estimate the heart
+rate as beats per minute from the count and the duration. Then compare
+with the <code>true_hr_bpm</code> column for <code>A0000001</code> in
+the answer key.</p>
+</div>
+<div id="who-is-this" class="section level3">
+<h3>1.5 Who is this?</h3>
+<pre class="python"><code>import pandas as pd
+manifest = pd.read_csv(&quot;data/source/ecg_manifest.csv&quot;)
+print(manifest[manifest.accession == &quot;A0000001&quot;].T)</code></pre>
+<p><strong>Question 1.5.</strong> List everything the Waveform Extension
+needs for this recording that is <em>not</em> in the <code>.hea</code>
+file, and where you would get each item.</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Four things. First, the patient: <code>person_id</code>, resolved from
+the MRN in the export manifest through
+<code>PERSON.person_source_value</code>. Second, the clinical context:
+<code>visit_occurrence_id</code>, resolved from the encounter id through
+<code>VISIT_OCCURRENCE.visit_source_value</code>. Third, the meaning of
+the labels: channel names such as “II” become standard
+<code>channel_concept_id</code> values from the vocabulary. Fourth,
+where the file lives now (<code>waveform_target_file_uri</code>) and
+where it came from (<code>waveform_source_file_uri</code>). The
+acquisition time <em>is</em> in the header here, but real headers often
+omit it or carry a local-time/time zone ambiguity, so cross-check it
+against the manifest, which Exercise 2 does.
+</details>
+</div>
+<div id="clean-versus-noisy" class="section level3">
+<h3>1.6 Clean versus noisy</h3>
+<p>Records <code>A0000001</code> and <code>A0000002</code> differ in
+quality. Plot both, then measure how noisy each is by taking the
+standard deviation of the signal after subtracting a short moving
+average:</p>
+<pre class="python"><code>s = wfdb.rdrecord(&quot;data/wfdb/A0000002&quot;).p_signal[:, 1]
+hf = s - np.convolve(s, np.ones(5) / 5, mode=&quot;same&quot;)
+print(hf.std())</code></pre>
+<p><strong>Question 1.6.</strong> Which record is noisy? Where in the
+Waveform Extension would you record that, so an analyst can exclude it
+later without re-reading the signal?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+<code>A0000002</code> has a high-frequency SD of about 0.17 mV against
+about 0.013 mV for <code>A0000001</code>. The extension has two natural
+places: a <code>waveform_channel_metadata</code> row (a signal-quality
+metadata type with <code>value_as_concept_id</code> = <em>Low signal
+quality</em>, as the existing synthetic set does) or a quality flag on
+the <code>waveform_feature</code> rows derived from the record. This
+tutorial uses the second, because it travels with the numbers an analyst
+actually uses (Exercise 3).
+</details>
+</div>
+</div>
+<div id="deliverable" class="section level2">
+<h2><strong>Deliverable</strong></h2>
+<ul>
+<li>The header facts of one record (rate, duration, leads, gain, start
+time) written out as a small table</li>
+<li>Your list from Question 1.5 and a one-sentence quality decision for
+<code>A0000001</code> and <code>A0000002</code></li>
+</ul>
+</div>
+<div id="check-your-work" class="section level2">
+<h2><strong>Check Your Work</strong></h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />You can state the duration and byte
+size of the <code>.dat</code> file from the header alone</label></li>
+<li><label><input type="checkbox" />You converted digital to physical
+values with the gain, not by guessing</label></li>
+<li><label><input type="checkbox" />Your list of missing facts includes
+patient, encounter and concept mapping</label></li>
+<li><label><input type="checkbox" />You identified <code>A0000002</code>
+as the noisy record</label></li>
+</ul>
+<p><br></p>
+<p><strong>Bridge to Exercise 2:</strong> your list of missing facts is
+the specification of the transformation you build next.</p>
+<p><br></p>
+<p>Next: <a href="tutorial-exercise-2.html">Exercise 2</a></p>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

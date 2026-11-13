@@ -1,0 +1,6 @@
+A0000215 3 250 2500 08:19:00 22/06/2024
+A0000215.dat 16 1000(0)/mV 16 0 -289 6579 0 I
+A0000215.dat 16 1000(0)/mV 16 0 -134 33786 0 II
+A0000215.dat 16 1000(0)/mV 16 0 155 27207 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000215

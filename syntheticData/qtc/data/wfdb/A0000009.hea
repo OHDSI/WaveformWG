@@ -1,0 +1,6 @@
+A0000009 3 250 2500 12:06:00 01/02/2025
+A0000009.dat 16 1000(0)/mV 16 0 -40 40967 0 I
+A0000009.dat 16 1000(0)/mV 16 0 -28 44301 0 II
+A0000009.dat 16 1000(0)/mV 16 0 12 3334 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000009

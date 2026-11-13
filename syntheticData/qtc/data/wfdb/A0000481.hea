@@ -1,0 +1,6 @@
+A0000481 3 250 2500 22:46:00 21/02/2024
+A0000481.dat 16 1000(0)/mV 16 0 343 56513 0 I
+A0000481.dat 16 1000(0)/mV 16 0 210 18721 0 II
+A0000481.dat 16 1000(0)/mV 16 0 -133 27744 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000481

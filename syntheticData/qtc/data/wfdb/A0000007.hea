@@ -1,0 +1,6 @@
+A0000007 3 250 2500 23:24:00 07/05/2025
+A0000007.dat 16 1000(0)/mV 16 0 9 54131 0 I
+A0000007.dat 16 1000(0)/mV 16 0 18 4806 0 II
+A0000007.dat 16 1000(0)/mV 16 0 9 16211 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000007

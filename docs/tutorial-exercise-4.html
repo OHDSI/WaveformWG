@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title> OHDSI Waveform WG</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<link rel='shortcut icon' type='image/x-icon' href='favicon.ico' />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"><div><img src="ohdsi16x16.png"></img> OHDSI Waveform </div></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="updates.html">
+    <span class="fa fa-bullhorn"></span>
+     
+    Updates
+  </a>
+</li>
+<li>
+  <a href="get-started.html">
+    <span class="fa fa-play"></span>
+     
+    Get Started
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-heartbeat"></span>
+     
+    Waveform Extension
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="waveform-extension-overview.html">Overview</a>
+    </li>
+    <li>
+      <a href="waveform-extension.html">Implementation Guide</a>
+    </li>
+    <li>
+      <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial.html">Overview</a>
+    </li>
+    <li>
+      <a href="tutorial-data-description.html">Dataset Description</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-1.html">Exercise 1: Explore WFDB</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-2.html">Exercise 2: Waveform Extension ETL</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-3.html">Exercise 3: Derive Features</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-4.html">Exercise 4: Effect Estimation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="working-group-proposal.html">Working Group Proposal</a>
+    </li>
+    <li>
+      <a href="office-hours.html">Office Hours</a>
+    </li>
+    <li>
+      <a href="presentations.html">Presentations</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="project-management.html">
+    <span class="fa fa-tasks"></span>
+     
+    Project Management
+  </a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/OHDSI/WaveformWG">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><img src="ohdsi40x40.png"></img> OHDSI
+Waveform WG</h1>
+
+</div>
+
+
+<div id="exercise-4-effect-estimation" class="section level1">
+<h1><strong>Exercise 4: Effect estimation</strong></h1>
+<div id="goal" class="section level2">
+<h2><strong>Goal</strong></h2>
+<p>Estimate the effect of antiemetic A versus antiemetic B on QTc using
+features derived from ECG waveforms, compare crude and adjusted
+estimates, test them with negative controls, see what measurement
+choices do to the answer, and check everything against the answer
+key.</p>
+</div>
+<div id="background" class="section level2">
+<h2><strong>Background</strong></h2>
+<p>The target is a causal contrast in an observational dataset. Patients
+were not randomized: who received A depended on age, sex, heart failure
+and potassium, and age and potassium also move the QTc. A naive
+comparison is therefore confounded. The waveform features (Exercise 3)
+supply the outcome <em>and</em> a powerful covariate: the patient’s own
+baseline QTc from the ECG taken before the first dose.</p>
+<p>The design is an <strong>active-comparator new-user
+cohort</strong>:</p>
+<ul>
+<li><strong>Target</strong>: first exposure to drug A.
+<strong>Comparator</strong>: first exposure to drug B. <strong>Index
+date</strong>: the first dose.</li>
+<li><strong>Baseline ECG</strong>: the latest ECG before the index time.
+<strong>Outcome ECG</strong>: the first ECG 12 to 72 hours after the
+index time.</li>
+<li><strong>Outcome</strong>: QTcF (Fridericia) from lead II, in ms.
+<strong>Estimand</strong>: the average difference in outcome QTcF
+between A and B (the ATE).</li>
+<li><strong>Covariates</strong>: age, sex, heart failure, hypertension,
+type 2 diabetes, potassium, baseline QTcF.</li>
+</ul>
+</div>
+<div id="learning-outcomes" class="section level2">
+<h2><strong>Learning Outcomes</strong></h2>
+<ol style="list-style-type: decimal">
+<li>Build an analytic table from OMOP and Waveform Extension tables in
+SQL</li>
+<li>Report cohort attrition, including attrition caused by waveform
+quality</li>
+<li>Compare crude, regression-adjusted, propensity score weighted and
+matched estimates</li>
+<li>Use negative control outcomes to diagnose residual bias</li>
+<li>Quantify the effect of measurement choices (formula, quality filter,
+detector error)</li>
+<li>Compare estimates to a known truth and describe the threats to
+validity that remain</li>
+</ol>
+</div>
+<div id="materials" class="section level2">
+<h2><strong>Materials</strong></h2>
+<ul>
+<li>SQL: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/sql/ex4_analytic_dataset.sql"><code>tutorial/sql/ex4_analytic_dataset.sql</code></a>
+(DuckDB, which reads the CSV files directly; PostgreSQL works if you
+load the CSVs into tables)</li>
+<li>Python solution: <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex4_effect_estimation.py"><code>tutorial/solutions/ex4_effect_estimation.py</code></a></li>
+<li>R solution (base R only): <a
+href="https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex4_effect_estimation.R"><code>tutorial/solutions/ex4_effect_estimation.R</code></a></li>
+<li>Answer key: <code>data/answer_key/effects.json</code>. <strong>Do
+not open it until Step 4.8.</strong></li>
+</ul>
+</div>
+<div id="steps" class="section level2">
+<h2><strong>Steps</strong></h2>
+<div id="build-the-cohort-in-sql" class="section level3">
+<h3>4.1 Build the cohort in SQL</h3>
+<p>The SQL file does four things: it finds each person’s first A or B
+exposure (the index), pivots the ECG features to one row per ECG through
+<code>waveform_feature</code> joined to <code>MEASUREMENT</code>, picks
+the baseline and outcome ECGs relative to the index, and adds the
+covariates. The key join is the one that makes this a <em>waveform</em>
+analysis:</p>
+<pre class="sql"><code>SELECT wo.person_id, wo.waveform_occurrence_id,
+       wo.waveform_occurrence_start_datetime AS ecg_datetime,
+       MAX(CASE WHEN m.measurement_concept_id = 2082599101 THEN wf.value_as_number END) AS qtcf,
+       MAX(CASE WHEN wf.value_as_concept_id = 2082499971 THEN 1 ELSE 0 END)             AS low_quality
+FROM waveform_occurrence wo
+JOIN waveform_feature wf ON wf.waveform_occurrence_id = wo.waveform_occurrence_id
+JOIN measurement m       ON m.measurement_id = wf.measurement_id
+GROUP BY wo.person_id, wo.waveform_occurrence_id, wo.waveform_occurrence_start_datetime;</code></pre>
+<p>Run the whole thing and look at the attrition:</p>
+<pre class="sh"><code>python3 tutorial/solutions/ex4_effect_estimation.py</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Persons</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>New users of A or B</td>
+<td>262</td>
+</tr>
+<tr class="even">
+<td>… with a baseline ECG</td>
+<td>262</td>
+</tr>
+<tr class="odd">
+<td>… and an outcome ECG 12-72 h after index</td>
+<td>242</td>
+</tr>
+<tr class="even">
+<td>… both ECGs of acceptable signal quality</td>
+<td>199 (A: 82, B: 117)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 4.1.</strong> 300 persons are in the database but
+262 are in the cohort. Who are the other 38? Is the loss of 43 persons
+for poor signal quality a problem for validity?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The 38 never received A or B, so they have no index date and cannot be
+in a new-user cohort. The 43 lost to signal quality are a potential
+problem only if the loss is related to treatment and outcome. In this
+simulation noise is random, so it costs precision, not validity. In real
+data, poor contact or motion during illness could be more common in the
+sicker patients, who are also more likely to get an antiemetic; so
+report the attrition by arm and check it.
+</details>
+</div>
+<div id="describe-the-groups" class="section level3">
+<h3>4.2 Describe the groups</h3>
+<pre class="python"><code>print(pd.Series({c: smd(d[c], d.treated) for c in covs}))</code></pre>
+<p>The standardized mean differences (A minus B) are: age 0.55, female
+0.22, heart failure 0.08, hypertension -0.07, type 2 diabetes 0.06,
+potassium -0.61, baseline QTcF 0.44, baseline heart rate -0.20.</p>
+<p><strong>Question 4.2.</strong> Which covariates are
+<em>confounders</em> of the A-versus-QTc relationship? Which direction
+would you expect the confounding to push the crude estimate?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Age and potassium. They differ between the groups (older, lower
+potassium in A) and both affect QTc (older raises it, lower potassium
+raises it), so A patients would have longer QTc even without the drug
+and the crude estimate should be too high. Baseline QTcF is also
+imbalanced (0.44) but it is measured before the drug and summarizes the
+person’s own QT physiology, which makes it an excellent adjustment
+variable.
+</details>
+</div>
+<div id="crude-versus-adjusted" class="section level3">
+<h3>4.3 Crude versus adjusted</h3>
+<pre class="python"><code>crude = smf.ols(&quot;out_qtcf ~ treated&quot;, d).fit(cov_type=&quot;HC3&quot;)
+adj   = smf.ols(&quot;out_qtcf ~ treated + age + female + heart_failure + hypertension + t2dm + potassium&quot;, d).fit(cov_type=&quot;HC3&quot;)
+adj_base = smf.ols(&quot;out_qtcf ~ treated + age + female + heart_failure + hypertension + t2dm + potassium + base_qtcf&quot;, d).fit(cov_type=&quot;HC3&quot;)
+chg = smf.ols(&quot;change ~ treated&quot;, d.assign(change=d.out_qtcf - d.base_qtcf)).fit(cov_type=&quot;HC3&quot;)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Estimate</th>
+<th>Effect (ms)</th>
+<th>95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Crude difference in follow-up QTcF</td>
+<td>16.8</td>
+<td>12.0 to 21.6</td>
+</tr>
+<tr class="even">
+<td>Adjusted for baseline covariates</td>
+<td>8.5</td>
+<td>4.4 to 12.5</td>
+</tr>
+<tr class="odd">
+<td>… plus baseline QTcF</td>
+<td>9.8</td>
+<td>7.9 to 11.7</td>
+</tr>
+<tr class="even">
+<td>Change from baseline, crude</td>
+<td>10.3</td>
+<td>8.4 to 12.1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 4.3.</strong> Adding baseline QTcF barely moves the
+estimate but the interval gets much narrower. Why? Why is the “change
+from baseline” estimate close to the adjusted one even without
+covariates?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Baseline QTcF is strongly correlated with follow-up QTcF <em>within a
+person</em>, so conditioning on it removes most of the between-person
+variation: more precision, and it also absorbs part of the confounding
+by age and potassium, whose effects are already in each person’s
+baseline. The change score does the same thing by differencing, which is
+why it is close. A waveform-specific advantage: a pre-exposure ECG is
+often available because ECGs are routinely recorded, and this is the
+kind of covariate that is hard to get from tabular EHR data alone.
+</details>
+</div>
+<div id="propensity-scores" class="section level3">
+<h3>4.4 Propensity scores</h3>
+<pre class="python"><code>ps = smf.logit(&quot;treated ~ age + female + heart_failure + hypertension + t2dm + potassium + base_qtcf&quot;, d).fit(disp=0)
+d[&quot;ps&quot;] = ps.predict(d)
+d[&quot;w&quot;]  = np.where(d.treated == 1, 1 / d.ps, 1 / (1 - d.ps))             # ATE weights
+ipw = smf.wls(&quot;out_qtcf ~ treated&quot;, d, weights=d.w).fit(cov_type=&quot;HC3&quot;)</code></pre>
+<p>Check <strong>overlap</strong> (treated: PS 0.08 to 0.88, comparator:
+0.03 to 0.84) and <strong>balance after weighting</strong> (the largest
+absolute SMD falls from 0.61 to 0.10). The weighted estimate is 9.6 ms
+(3.3 to 15.9). The script also does 1:1 caliper matching on the logit of
+the PS (57 of 82 treated matched, ATT 11.5 ms, 6.0 to 16.9).</p>
+<p><strong>Question 4.4.</strong> The IPW interval (3.3 to 15.9) is far
+wider than the regression interval (7.9 to 11.7) although the point
+estimates agree. Is that a flaw?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+No. IPW weights <em>only</em> use the treatment model, so it throws away
+the information in the strong baseline QTcF-outcome relationship that
+the outcome regression exploits. Weighting also inflates variance when a
+few persons have extreme weights. A doubly robust estimator (weights
+plus an outcome model) would combine both. Also, the printed intervals
+treat the estimated propensity score as known; a bootstrap that
+re-estimates it is the honest interval, and is a good extension to try.
+</details>
+</div>
+<div id="effect-modification" class="section level3">
+<h3>4.5 Effect modification</h3>
+<pre class="python"><code>sex = smf.ols(&quot;out_qtcf ~ treated*female + age + heart_failure + hypertension + t2dm + potassium + base_qtcf&quot;, d).fit()</code></pre>
+<p>You should find about <strong>5.2 ms in men and 14.7 ms in
+women</strong>.</p>
+<p><strong>Question 4.5.</strong> Why is one overall number misleading
+here, and what does it mean for a federated study that pools sites with
+different proportions of women?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The effect really differs by sex (the simulation uses +6 and +14 ms), so
+the average depends on the sex mix of the population: a site with more
+women gets a larger estimate. In a network study that is a source of
+between-site heterogeneity that is not a data-quality problem. Report
+the stratified estimates (or an interaction) and a standardized average.
+</details>
+</div>
+<div id="negative-control-outcomes" class="section level3">
+<h3>4.6 Negative control outcomes</h3>
+<p>QRS duration and heart rate have <em>no</em> true effect of drug A in
+this dataset. If the analysis is working, the estimate should be near
+zero.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Outcome</th>
+<th>Crude</th>
+<th>Adjusted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>QRS duration (ms)</td>
+<td>1.4 (-0.4 to 3.2)</td>
+<td>0.4 (0.0 to 0.9)</td>
+</tr>
+<tr class="even">
+<td>Heart rate (bpm)</td>
+<td>-2.8 (-5.6 to -0.1)</td>
+<td>-1.0 (-2.6 to 0.6)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 4.6.</strong> What do the crude and the adjusted
+results tell you? What would you conclude if the adjusted estimate for
+QRS were 5 ms with a narrow interval?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+The crude estimates are off zero, which shows that the confounding is
+real and is not specific to QTc; after adjustment both intervals are
+consistent with zero, which is what you want from a working analysis. A
+confidently non-zero adjusted result on an outcome the drug cannot
+affect would mean residual bias (an unmeasured confounder, a wrong
+model, a timing error) and the QTc estimate should not be trusted
+either. Negative controls do not prove an estimate right, but they can
+show it is wrong.
+</details>
+</div>
+<div id="measurement-choices" class="section level3">
+<h3>4.7 Measurement choices</h3>
+<p>The same adjusted model with different outcomes:</p>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Outcome used</th>
+<th>Effect (ms)</th>
+<th>95% CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>QTcF from the detector, signal quality filter on</td>
+<td>9.8</td>
+<td>7.9 to 11.7</td>
+</tr>
+<tr class="even">
+<td>QTcF from the detector, <strong>no</strong> quality filter (n =
+242)</td>
+<td>8.8</td>
+<td>6.6 to 11.0</td>
+</tr>
+<tr class="odd">
+<td>Bazett QTcB (with baseline QTcB)</td>
+<td>9.2</td>
+<td>6.8 to 11.7</td>
+</tr>
+<tr class="even">
+<td>The <strong>true</strong> QTcF (answer key)</td>
+<td>10.1</td>
+<td>8.1 to 12.2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Question 4.7.</strong> The quality filter made the estimate
+closer to the true-QTcF result, but not by much. Does that mean quality
+filtering is unnecessary?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+No. In this dataset noise is random and affects 8.5% of recordings, so
+it mostly adds variance, and one simulation shows one draw. If noise
+were more common in one arm, or made the detector fail in one direction,
+it would bias the estimate. Quality filtering is cheap insurance, and
+the attrition it causes should always be reported. Try changing the
+noise rate in <code>src/simulate.py</code> and re-running
+<code>./build.sh</code> to see how the two estimates diverge.
+</details>
+</div>
+<div id="compare-with-the-truth" class="section level3">
+<h3>4.8 Compare with the truth</h3>
+<p>Now open <code>data/answer_key/effects.json</code>:</p>
+<ul>
+<li>True ATE in the 242-person cohort: <strong>9.7 ms</strong>; ATT:
+<strong>10.3 ms</strong>; women 14 ms, men 6 ms.</li>
+</ul>
+<div class="float">
+<img src="images/qtc-effect-estimates.png"
+alt="All estimates against the true effect." />
+<div class="figcaption">All estimates against the true effect.</div>
+</div>
+<p><strong>Question 4.8.</strong> Which estimates are close to the truth
+and which are not? Which of them could you have <em>known</em> to be
+unreliable without the answer key?</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Everything that adjusts for the confounders is within about 2 ms of the
+ATE, with intervals that cover it; the crude estimate (16.8 ms) is far
+off. You could know the crude estimate was unreliable without the key:
+the groups were visibly imbalanced on known QTc determinants (Step 4.2)
+and the negative controls were off zero (Step 4.6). That is the
+real-world workflow: you never get to open the answer key, so the
+diagnostics are what you have.
+</details>
+</div>
+<div id="threats-to-validity-that-remain" class="section level3">
+<h3>4.9 Threats to validity that remain</h3>
+<p><strong>Question 4.9.</strong> Name three ways this analysis could be
+wrong in a <em>real</em> study that the simulation does not include.</p>
+<details class="answer">
+<summary>
+Answer
+</summary>
+Examples: <strong>Unmeasured confounding</strong> (the reason for the
+antiemetic, such as chemotherapy or surgery, and concomitant
+QT-prolonging drugs; the reason is the strongest confounder in
+practice). <strong>Time-varying exposure and timing</strong>: a dose
+given hours before the ECG versus days, and ECGs ordered
+<em>because</em> of a symptom (informative ordering). <strong>Device and
+algorithm heterogeneity</strong>: ECGs from different carts with
+different filters and different measurement algorithms. <strong>Immortal
+time</strong> if the baseline ECG were required <em>after</em> the
+index. <strong>Informative missingness</strong>: patients with a
+follow-up ECG are those a clinician worried about.
+<strong>Transport</strong>: the effect in a hospital population may not
+carry over to outpatients.
+</details>
+</div>
+</div>
+<div id="r-track" class="section level2">
+<h2><strong>R track</strong></h2>
+<p>The estimation part (4.3 to 4.6) also runs in base R, with no
+packages installed. First run the Python script once, because it runs
+the SQL cohort build and writes
+<code>data/derived/analytic_dataset.csv</code>; then, from
+<code>syntheticData/qtc</code>:</p>
+<pre class="sh"><code>Rscript tutorial/solutions/ex4_effect_estimation.R</code></pre>
+<pre class="r"><code>d   &lt;- subset(df, !is.na(base_qtcf) &amp; !is.na(out_qtcf) &amp; base_low_quality == 0 &amp; out_low_quality == 0)
+adj &lt;- lm(out_qtcf ~ treated + age + female + heart_failure + hypertension + t2dm + potassium + base_qtcf, d)
+ps  &lt;- glm(treated ~ age + female + heart_failure + hypertension + t2dm + potassium + base_qtcf, binomial, d)
+d$w &lt;- ifelse(d$treated == 1, 1 / fitted(ps), 1 / (1 - fitted(ps)))
+ipw &lt;- lm(out_qtcf ~ treated, d, weights = w)</code></pre>
+<p>The R estimates agree with the Python ones (crude 16.8, adjusted 9.8,
+IPW 9.6; QRS negative control 0.4).</p>
+</div>
+<div id="deliverable" class="section level2">
+<h2><strong>Deliverable</strong></h2>
+<ul>
+<li>The attrition table and the covariate balance table before and after
+weighting</li>
+<li>A table of at least six estimates (crude, adjusted, IPW, matched,
+change-from-baseline, and one measurement-choice variant) with
+intervals</li>
+<li>Your answers to Questions 4.6 and 4.9 in two or three sentences
+each</li>
+</ul>
+</div>
+<div id="check-your-work" class="section level2">
+<h2><strong>Check Your Work</strong></h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />You report attrition at every step,
+including signal quality</label></li>
+<li><label><input type="checkbox" />You adjusted for baseline QTcF and
+explained why it helps</label></li>
+<li><label><input type="checkbox" />Your propensity score model has
+acceptable overlap and balance (all |SMD| below 0.1 or
+close)</label></li>
+<li><label><input type="checkbox" />You ran at least one negative
+control outcome</label></li>
+<li><label><input type="checkbox" />You compared to the answer key only
+at the end</label></li>
+</ul>
+<p><br></p>
+<p><strong>Where next:</strong> change a parameter in
+<code>src/simulate.py</code> (the effect size, the strength of
+confounding, the noise rate), rebuild with <code>./build.sh</code>, and
+see which of your conclusions survive. Then bring a question, or a data
+format, to the <a
+href="project-management.html#meeting-schedule">working group
+meeting</a>.</p>
+<p><br></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

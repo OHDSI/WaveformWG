@@ -1,0 +1,6 @@
+A0000536 3 250 2500 15:44:00 28/02/2024
+A0000536.dat 16 1000(0)/mV 16 0 22 53556 0 I
+A0000536.dat 16 1000(0)/mV 16 0 7 9753 0 II
+A0000536.dat 16 1000(0)/mV 16 0 -15 21733 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000536

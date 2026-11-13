@@ -1,0 +1,6 @@
+A0000435 3 250 2500 06:08:00 06/02/2024
+A0000435.dat 16 1000(0)/mV 16 0 -31 48985 0 I
+A0000435.dat 16 1000(0)/mV 16 0 -21 58358 0 II
+A0000435.dat 16 1000(0)/mV 16 0 10 9373 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000435

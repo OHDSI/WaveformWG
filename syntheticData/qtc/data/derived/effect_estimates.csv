@@ -1,0 +1,10 @@
+estimate,effect_ms,ci_low,ci_high
+Crude difference in follow-up QTcF,16.8,12.0,21.6
+Adjusted for baseline covariates,8.5,4.4,12.5
+... plus baseline QTcF,9.8,7.9,11.7
+"Change from baseline, crude",10.3,8.4,12.1
+IPW (ATE),9.6,3.3,15.9
+"PS matching, 1:1 caliper (ATT)",11.5,6.0,16.9
+"Adjusted, no signal-quality exclusion",8.8,6.6,11.0
+"Adjusted, outcome = Bazett QTcB",9.2,6.8,11.7
+"Adjusted, outcome = TRUE QTcF (answer key)",10.1,8.1,12.2

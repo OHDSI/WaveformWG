@@ -1,0 +1,6 @@
+A0000363 3 250 2500 08:54:00 19/10/2024
+A0000363.dat 16 1000(0)/mV 16 0 -154 52100 0 I
+A0000363.dat 16 1000(0)/mV 16 0 397 46932 0 II
+A0000363.dat 16 1000(0)/mV 16 0 551 60368 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000363

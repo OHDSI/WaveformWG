@@ -1,0 +1,164 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Exercise 3: Derive features**
+
+## **Goal**
+
+Extract heart rate and the QT interval from the signal, store them as `waveform_feature` rows linked to `MEASUREMENT` rows, and check the result against the answer key.
+
+## **Background**
+
+Analysts rarely work with samples. They work with **features**: numbers derived from a window of signal. For this tutorial the feature of interest is the **QTc**: the time from the start of the QRS complex to the end of the T wave (QT), corrected for heart rate because QT shortens when the heart beats faster. Two common corrections are
+
+- **Bazett**: QTcB = QT / sqrt(RR)
+- **Fridericia**: QTcF = QT / RR^(1/3)
+
+with QT and RR in the same unit (seconds in the formulas, reported in ms).
+
+In the Waveform Extension a derived value takes two forms. The **`MEASUREMENT`** row is the standard OMOP fact that cohort and covariate tooling understands. The **`waveform_feature`** row is the provenance: which occurrence, file and channel it came from, which algorithm produced it, and over which time window. They are linked by `measurement_id`.
+
+## **Learning Outcomes**
+
+1. Run an interval detector on a WFDB signal and read its output
+2. Quantify detector error against a known truth, separately for clean and noisy recordings
+3. Store features with provenance in `waveform_feature` and `MEASUREMENT`
+4. Use a signal-quality flag to exclude recordings
+5. Explain why Bazett and Fridericia give different answers at different heart rates
+
+## **Materials**
+
+- The detector: [`src/qtcdetect.py`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/qtcdetect.py). It filters lead II, finds R peaks, finds QRS onset from the steepest slope, and calls the T-wave end the point where the smoothed signal returns to within 5% of the T-wave height. It is a teaching detector, not a clinical one.
+- Feature writer: [`src/extract_features.py`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/extract_features.py)
+- Reference solution: [`tutorial/solutions/ex3_feature_extraction.py`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex3_feature_extraction.py)
+- Answer key: `data/answer_key/records_truth.csv`
+
+## **Steps**
+
+### 3.1 One record by hand
+
+```python
+import sys, wfdb, pandas as pd
+sys.path.insert(0, "src")
+from qtcdetect import analyze
+
+rec = wfdb.rdrecord("data/wfdb/A0000001")
+f = analyze(rec.p_signal[:, rec.sig_name.index("II")], rec.fs)
+truth = pd.read_csv("data/answer_key/records_truth.csv")
+print(f)
+print(truth[truth.accession == "A0000001"].T)
+```
+
+You should get a heart rate of 69.9 bpm (exactly the truth), a QT of about 368 ms against a true 373 ms, and a QTcF of about 389 ms against a true 393 ms.
+
+**Question 3.1.** The detector's QT is a few milliseconds *short* of the truth. Why would a threshold-based T-end detector be biased in that direction?
+
+<details class="answer"><summary>Answer</summary>
+The T wave tails off slowly towards the baseline. A detector that declares the end when the signal first falls within 5% of the T-wave height stops slightly before the true end, so QT is underestimated. Real tangent-method and threshold detectors have their own known biases too, which is why QT values from different devices and algorithms are not interchangeable. That is the reason `waveform_feature` carries the algorithm.
+</details>
+
+### 3.2 All 542 records against the truth
+
+```python
+import numpy as np
+rows = [analyze(wfdb.rdrecord(f"data/wfdb/{a}").p_signal[:, 1], 250) for a in truth.accession]
+est = pd.concat([truth, pd.DataFrame(rows)], axis=1)
+est["err_qtcf"] = est.qtcf_ms - est.true_qtcf_ms
+print(est.groupby(est.low_quality.astype(int)).err_qtcf.agg(["count", "mean", "std", lambda x: x.abs().max()]))
+```
+
+You should see about this:
+
+| detector flagged low quality | records | mean error (ms) | SD of error (ms) | largest error (ms) |
+|---|---|---|---|---|
+| no | 496 | -3.5 | 2.3 | 12.2 |
+| yes | 46 | -8.9 | 13.1 | 28.9 |
+
+**Question 3.2.** A systematic error of about -3.5 ms and a random error of about 2 ms. Which of the two matters more when you compare *two groups*?
+
+<details class="answer"><summary>Answer</summary>
+For a difference between groups, a systematic bias that is the same in both groups cancels. The random error does not cancel: it adds noise and widens confidence intervals, but if it is unrelated to treatment it does not bias the comparison. The thing to fear is *differential* error, for example a device used only in the treated group, or lower signal quality in one arm. Exercise 4 shows the effect of measuring QTc with and without the noisy records.
+</details>
+
+### 3.3 The quality flag
+
+The detector reports `noise_mv`, the SD of the 60-100 Hz band (far from the 50 Hz powerline), and flags records above 0.05 mV. Compare the flag with the answer key's `noisy` column.
+
+```python
+print(pd.crosstab(est.noisy, est.low_quality))
+```
+
+**Question 3.3.** The flag agrees with the truth for every record. Why would you not expect that on real data, and what does that mean for how you would choose the threshold?
+
+<details class="answer"><summary>Answer</summary>
+Here clean and noisy records are two well-separated populations (about 0.004 mV versus 0.10 mV), so any threshold between them works. Real noise is a continuum and some artifacts (a few bad beats, baseline jumps) do not show in a band-power measure. In practice you choose a threshold by looking at the distribution, check a sample of records by eye on both sides of it, and treat the threshold as an analysis parameter whose effect you report, which is exactly what Exercise 4 does with a sensitivity analysis.
+</details>
+
+### 3.4 Store the features
+
+`src/extract_features.py` does the writing. For each ECG and each feature it adds
+
+- a `MEASUREMENT` row: `measurement_concept_id` (for example *QTc interval, Fridericia*), `value_as_number`, unit, and the visit
+- a `waveform_feature` row: the occurrence, the registry row of the `.dat` file, the **lead II** channel metadata row, `measurement_id`, `algorithm_concept_id`, the time window, and, when the detector flagged the record, `value_as_concept_id` = *Low signal quality*
+
+Look at the output for one ECG:
+
+```sql
+SELECT wf.waveform_feature_id, m.measurement_source_value, wf.value_as_number, wf.unit_source_value,
+       wf.algorithm_source_value, wf.value_as_concept_id
+FROM waveform_feature wf JOIN measurement m ON m.measurement_id = wf.measurement_id
+WHERE wf.waveform_occurrence_id = 1;
+```
+
+**Question 3.4.** The same QT value could be stored as a `MEASUREMENT` row only. What would you lose?
+
+<details class="answer"><summary>Answer</summary>
+Provenance. From the `MEASUREMENT` row alone you cannot tell which file, which lead or which algorithm produced the number, so you cannot re-derive it when a better algorithm arrives, audit an outlier by looking at the signal, or restrict an analysis to one algorithm. Conversely, with only the `waveform_feature` row, standard OHDSI tooling that looks in `MEASUREMENT` would not see the value. The extension deliberately keeps both and links them.
+</details>
+
+### 3.5 Bazett versus Fridericia
+
+In this dataset the truth follows Fridericia. Check how each correction's error depends on heart rate:
+
+```python
+ok = est[~est.low_quality]
+print(np.corrcoef(ok.hr_bpm, ok.qtcb_ms - ok.true_qtcf_ms)[0, 1],
+      np.corrcoef(ok.hr_bpm, ok.qtcf_ms - ok.true_qtcf_ms)[0, 1])
+```
+
+The correlations are about 0.97 for Bazett and 0.34 for Fridericia.
+
+**Question 3.5.** Why is a correction that depends on heart rate a threat in a drug comparison, even though both arms use the same formula?
+
+<details class="answer"><summary>Answer</summary>
+If heart rate differs between the groups, or is related to who gets the drug (through age, heart failure or the indication), a formula that over-corrects at fast rates produces a QTc difference that is partly a heart rate difference. Adjusting for heart rate helps, but choosing the formula *before* looking at results, and showing results under both, is better practice. Exercise 4 compares both outcomes.
+</details>
+
+## **Deliverable**
+
+- A table of detector error by quality flag for your run
+- One paragraph: which feature(s) you would store for the analysis, with which algorithm concepts, and why
+
+## **Check Your Work**
+
+- [ ] Your error table matches the one above (within rounding)
+- [ ] Every `waveform_feature` row has a `measurement_id` that exists in `MEASUREMENT`
+- [ ] Flagged records carry the *Low signal quality* concept
+- [ ] You can explain the Bazett/Fridericia difference in one sentence
+
+<br>
+
+**Bridge to Exercise 4:** the `MEASUREMENT` rows and their quality flags are the outcome variable of the effect estimation.
+
+<br>
+
+Next: [Exercise 4](tutorial-exercise-4.html)
+
+<br>

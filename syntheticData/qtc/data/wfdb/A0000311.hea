@@ -1,0 +1,6 @@
+A0000311 3 250 2500 15:53:00 10/02/2024
+A0000311.dat 16 1000(0)/mV 16 0 -7 58530 0 I
+A0000311.dat 16 1000(0)/mV 16 0 3 5759 0 II
+A0000311.dat 16 1000(0)/mV 16 0 10 12765 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000311

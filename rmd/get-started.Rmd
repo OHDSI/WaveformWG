@@ -55,7 +55,8 @@ See the [Waveform Extension Implementation Guide](waveform-extension.html) for d
 
 3. **Attend Working Group Meetings**
    - **Format**: Use case presentations, technical discussions, implementation Q&A
-   - **Contact**: houghtaling@ohdsi.org for meeting schedule
+   - **Schedule**: every week, alternating Thursdays at 10:00 CET and Fridays at 16:00 CET (Microsoft Teams)
+   - **Contact**: houghtaling@ohdsi.org for the Teams link and to see which slot is next
 
 4. **Introduce Yourself**
    - Share your background (clinical, data engineering, research, etc.)

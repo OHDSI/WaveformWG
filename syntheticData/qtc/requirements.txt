@@ -1,0 +1,7 @@
+wfdb>=4.1
+numpy
+scipy
+pandas
+matplotlib
+duckdb
+statsmodels

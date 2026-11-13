@@ -1,0 +1,6 @@
+A0000087 3 250 2500 01:44:00 24/10/2024
+A0000087.dat 16 1000(0)/mV 16 0 -17 15099 0 I
+A0000087.dat 16 1000(0)/mV 16 0 -18 45808 0 II
+A0000087.dat 16 1000(0)/mV 16 0 -1 30709 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000087

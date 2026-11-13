@@ -1,0 +1,6 @@
+A0000075 3 250 2500 13:49:00 06/05/2024
+A0000075.dat 16 1000(0)/mV 16 0 -2 3196 0 I
+A0000075.dat 16 1000(0)/mV 16 0 12 25561 0 II
+A0000075.dat 16 1000(0)/mV 16 0 14 22365 0 III
+# Synthetic ECG, OHDSI Waveform WG tutorial. No real patient data.
+# Accession: A0000075

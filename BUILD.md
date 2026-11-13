@@ -93,6 +93,14 @@ WaveformWG/
 └── BUILD.md               # This file
 ```
 
+## Updates Feed
+
+The Updates page and the three most recent entries on the home page are rendered in the browser from `rmd/data/updates.json` by `rmd/assets/updates.js`. To post an update, add an object to the `updates` array (see [CONTRIBUTING.md](CONTRIBUTING.md)) and rebuild. Files under `rmd/data/`, `rmd/images/` and `rmd/assets/` are copied to `docs/` by the build.
+
+## Synthetic Dataset and Tutorial Figures
+
+The tutorial pages use figures and tables produced by `syntheticData/qtc/build.sh` (`rmd/images/qtc-*.png`, `rmd/data/qtc-dataset/`). The dataset itself is published from `syntheticData/qtc/data/`, and the tutorial pages link to it on GitHub. After changing the generator, run `syntheticData/qtc/build.sh` (needs Python, see `syntheticData/qtc/requirements.txt`), then update any numbers quoted in `rmd/tutorial-*.Rmd`.
+
 ## Adding New Pages
 
 1. Create a new `.Rmd` file in the `rmd/` directory

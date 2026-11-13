@@ -1,0 +1,166 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OHDSI Waveform WG </div>'
+output:
+   html_document:
+        toc: TRUE
+        toc_depth: 3
+        toc_float:
+          collapsed: false
+---
+
+# **Exercise 2: Transform to the Waveform Extension**
+
+## **Goal**
+
+Build `waveform_occurrence`, `waveform_registry` and `waveform_channel_metadata` for all 542 recordings from the WFDB headers and the export manifest, then validate your tables with the data quality checks from the [table specifications](waveform-tables.html#data-quality-checks).
+
+## **Background**
+
+The [Waveform Extension](waveform-extension-overview.html) separates *what happened* (an occurrence: this person, this visit, this time span), *where the bytes are* (the registry: one row per file), and *how to read them* (channel metadata: one row per channel and property). Features derived from the signal come later (Exercise 3).
+
+The ETL in this exercise is deliberately small, but it has the shape of a real one: read what the files themselves say, join in what only the source system knows, and map labels to concepts.
+
+## **Learning Outcomes**
+
+1. Map one WFDB record to rows in the three tables
+2. Resolve `person_id` and `visit_occurrence_id` from source values
+3. Choose concept ids for file types, leads and metadata properties
+4. Validate referential integrity and temporal consistency
+5. Explain why each design choice of the extension (separate registry rows, per-channel metadata, preceding occurrence) exists
+
+## **Materials**
+
+- `data/wfdb/`, `data/source/ecg_manifest.csv`, `data/omop/person.csv`, `data/omop/visit_occurrence.csv`
+- Concept ids: [`data/omop/concept.csv`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/data/omop/concept.csv)
+- Reference solution (the transformation): [`src/etl_waveform.py`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/src/etl_waveform.py). Reference checks: [`tutorial/solutions/ex2_waveform_etl.py`](https://github.com/OHDSI/WaveformWG/blob/main/syntheticData/qtc/tutorial/solutions/ex2_waveform_etl.py)
+
+**Try it yourself first.** Write your own version in a scratch file, writing to a folder such as `my_tables/`, before you read `src/etl_waveform.py`.
+
+## **Steps**
+
+### 2.1 Link each ECG to a person and a visit
+
+The manifest has an MRN and an encounter id. `PERSON.person_source_value` and `VISIT_OCCURRENCE.visit_source_value` hold the same values.
+
+```python
+import pandas as pd
+man = pd.read_csv("data/source/ecg_manifest.csv", parse_dates=["acquisition_datetime"])
+person = pd.read_csv("data/omop/person.csv", usecols=["person_id", "person_source_value"])
+visit = pd.read_csv("data/omop/visit_occurrence.csv", usecols=["visit_occurrence_id", "visit_source_value"])
+man = (man.merge(person, left_on="mrn", right_on="person_source_value", how="left", validate="m:1")
+          .merge(visit, left_on="encounter", right_on="visit_source_value", how="left", validate="m:1"))
+assert man.person_id.notna().all() and man.visit_occurrence_id.notna().all()
+```
+
+**Question 2.1.** Why `validate="m:1"` and the assertion? What would you do in a real ETL if some ECGs did not link?
+
+<details class="answer"><summary>Answer</summary>
+Many ECGs per person is expected (many-to-one), but two persons sharing one MRN would silently duplicate rows. The assertion turns "some ECGs have no patient" into a loud failure. In a real ETL you would not drop unlinked ECGs silently: write them to a reject table with the reason, report the count, and decide with the data owner whether they can be linked later (a late-arriving encounter, a merged MRN).
+</details>
+
+### 2.2 `waveform_occurrence`
+
+Use the header for the time span: start = `base_date` + `base_time`, end = start + `sig_len / fs` seconds.
+
+| Column | Value |
+|---|---|
+| `waveform_occurrence_id` | a new sequential id |
+| `waveform_occurrence_concept_id` | 2082499974, *Diagnostic ECG* |
+| `waveform_format_concept_id` | 2082499975, *WFDB* |
+| `waveform_occurrence_source_value` | the accession number |
+| `num_of_files` | 2 (`.hea` and `.dat`) |
+| `preceding_waveform_occurrence_id` | the same person's previous ECG, if any |
+
+```python
+import datetime as dt, wfdb
+hdr = wfdb.rdheader("data/wfdb/A0000001")
+start = dt.datetime.combine(hdr.base_date, hdr.base_time)
+end = start + dt.timedelta(seconds=hdr.sig_len / hdr.fs)
+```
+
+Before you write any rows, cross-check the header time with the manifest time.
+
+**Question 2.2.** What did the cross-check give? Why is it worth doing even when both come from the same system?
+
+<details class="answer"><summary>Answer</summary>
+They agree for all 542 records, which is what the reference ETL asserts. In real data they often do not: time zones, daylight-saving shifts, device clocks that were never set, or a header date that was de-identified (shifted) while the manifest was not. Every downstream analysis that anchors on time (here, "an ECG before the first dose" and "an ECG 12-72 hours after") inherits that error, so it is cheaper to catch it at the ETL.
+</details>
+
+### 2.3 `waveform_registry`
+
+Make **two rows per occurrence**, one for the `.hea` file (concept 2082499961) and one for the `.dat` file (2082499965). Keep the exporter's path in `waveform_source_file_uri` and the standardized location in `waveform_target_file_uri` (`wfdb/A0000001.hea`).
+
+**Question 2.3.** Why does the extension register the header and the signal file separately instead of one row per record?
+
+<details class="answer"><summary>Answer</summary>
+The registry is file-level, so it works for formats that are a single file (EDF), a pair (WFDB), or many segments (a continuous ICU monitor split into hourly files). Each file has its own time span, location and extension, and each may be moved or archived independently. Channel metadata attaches to the signal file (`.dat`), not the header, which is why Step 2.4 only uses the `.dat` rows.
+</details>
+
+### 2.4 `waveform_channel_metadata`
+
+For every `.dat` file, every lead and each of two properties (sampling rate, resolution) write a row. Take the values from the header, not from constants.
+
+| `metadata_source_value` | `metadata_concept_id` | value | unit concept |
+|---|---|---|---|
+| `sampling_rate` | 2082499968 (*SAMPLERATE*) | `hdr.fs` | 2082499972 (*sps*) |
+| `resolution` | 2082499969 (*RESOLUTION*) | `hdr.adc_gain[ch]` | 9484 (*ADU/mV*) |
+
+The channel concepts are 2082499990 (I), 2082499966 (II) and 2082499947 (III).
+
+**Question 2.4.** Your table should have 542 x 3 leads x 2 properties = 3,252 rows. Is that a good table design for a 12-lead, 500 Hz, 24-hour recording? What would you change?
+
+<details class="answer"><summary>Answer</summary>
+The *shape* is right: one fact per row makes it easy to add properties (filter settings, electrode impedance) without changing the schema. But when every channel in every file repeats the same sampling rate, the table is dominated by redundancy. Options are to store only values that differ from a device-level default, or to keep the rows and rely on compression. Either way the analyst-facing rule stays the same: always read the rate from channel metadata rather than assuming it.
+</details>
+
+### 2.5 Validate
+
+Run the reference checks against your tables (edit `WFE` at the top to point to your folder), or write your own versions of these:
+
+```sh
+python3 tutorial/solutions/ex2_waveform_etl.py
+```
+
+```
+PASS  occurrence -> person
+PASS  occurrence -> visit
+PASS  registry -> occurrence
+PASS  channel_metadata -> registry
+PASS  feature -> registry
+PASS  feature -> channel_metadata
+PASS  occurrence end >= start
+PASS  registry end >= start
+PASS  num_of_files matches registry
+PASS  every registry target file exists
+PASS  ECG falls inside its visit (plausibility)
+PASS  feature has a value
+```
+
+**Question 2.5.** Which of these checks would have caught (a) a registry row for a file that was never copied, (b) an ECG linked to the wrong person?
+
+<details class="answer"><summary>Answer</summary>
+For (a), "every registry target file exists". For (b), none of the referential checks. Referential integrity only proves that the person *exists*, not that it is the *right* one. What can catch a wrong link is a plausibility check, such as "the ECG falls inside its visit", which the reference script includes, or "the ECG is inside the person's observation period". Write one more of your own and run it.
+</details>
+
+## **Deliverable**
+
+- Three CSV files (occurrence, registry, channel metadata) with 542, 1,084 and 3,252 rows
+- The output of the validation script, plus one plausibility check of your own
+
+## **Check Your Work**
+
+- [ ] Row counts match the reference tables in `data/waveform_extension/`
+- [ ] `person_id` and `visit_occurrence_id` are resolved from source values, not generated
+- [ ] Gain and sampling rate come from the header
+- [ ] Follow-up ECGs point to the baseline ECG through `preceding_waveform_occurrence_id`
+- [ ] All validation checks pass
+
+<br>
+
+**Bridge to Exercise 3:** the registry tells you where each `.dat` file is, and channel metadata tells you which lead is which. Feature extraction needs both.
+
+<br>
+
+Next: [Exercise 3](tutorial-exercise-3.html)
+
+<br>

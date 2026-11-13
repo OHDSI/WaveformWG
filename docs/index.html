@@ -13,7 +13,7 @@
 
 <title> OHDSI Waveform WG</title>
 
-<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -336,6 +336,13 @@ div.tocify {
   </a>
 </li>
 <li>
+  <a href="updates.html">
+    <span class="fa fa-bullhorn"></span>
+     
+    Updates
+  </a>
+</li>
+<li>
   <a href="get-started.html">
     <span class="fa fa-play"></span>
      
@@ -359,6 +366,35 @@ div.tocify {
     </li>
     <li>
       <a href="waveform-tables.html">Table Specifications</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-graduation-cap"></span>
+     
+    Tutorial
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial.html">Overview</a>
+    </li>
+    <li>
+      <a href="tutorial-data-description.html">Dataset Description</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-1.html">Exercise 1: Explore WFDB</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-2.html">Exercise 2: Waveform Extension ETL</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-3.html">Exercise 3: Derive Features</a>
+    </li>
+    <li>
+      <a href="tutorial-exercise-4.html">Exercise 4: Effect Estimation</a>
     </li>
   </ul>
 </li>
@@ -423,6 +459,15 @@ Common Data Model, supporting observational research, AI model
 development, and clinical decision support.</p>
 <p><br></p>
 </div>
+<div id="updates" class="section level2">
+<h2><strong>Updates</strong></h2>
+<div data-updates="3">
+
+</div>
+<p><a href="updates.html">All updates</a></p>
+<script src="assets/updates.js"></script>
+<p><br></p>
+</div>
 <div id="collaboration-approach" class="section level2">
 <h2><strong>Collaboration Approach</strong></h2>
 <p>Like most of OHDSI, we use GitHub and MS Teams for collaboration,
@@ -438,9 +483,33 @@ out what manner of participation makes sense for you.</p>
 href="https://forms.office.com/Pages/ResponsePage.aspx?id=lAAPoyCRq0q6TOVQkCOy1ZyG6Ud_r2tKuS0HcGnqiQZUQ05MOU9BSzEwOThZVjNQVVFGTDNZRENONiQlQCN0PWcu">here</a>.</p>
 <p>Already have an OHDSI Teams account? Great. Just reach out to join
 the Waveform Working Group channel.</p>
-<p>The main workgroup calls are scheduled regularly on MS Teams. Please
-reach out for the current meeting schedule and Teams link.</p>
+<div id="meeting-schedule" class="section level3">
+<h3><strong>Meeting Schedule</strong></h3>
+<p>The working group meets every week on Microsoft Teams, alternating
+between two slots:</p>
+<div class="meeting-slots">
+<div class="meeting-slot">
+<div class="when">
+Thursdays, 10:00 CET
+</div>
+<div class="sub">
+every other week
+</div>
+</div>
+<div class="meeting-slot">
+<div class="when">
+Fridays, 16:00 CET
+</div>
+<div class="sub">
+every other week
+</div>
+</div>
+</div>
+<p>Times are Central European time. Reach out for the Teams link and to
+find out which slot is next (see <a
+href="get-started.html#join-the-working-group">Get Started</a>).</p>
 <p><br></p>
+</div>
 </div>
 <div id="waveform-extension-overview" class="section level2">
 <h2><strong>Waveform Extension Overview</strong></h2>
@@ -561,8 +630,9 @@ waveform formats</li>
 types, channels, and features</li>
 <li><strong>Validation Framework</strong>: Data quality checks and
 conformance testing</li>
-<li><strong>Integration Examples</strong>: Jupyter notebooks
-demonstrating common analyses</li>
+<li><strong>Integration Examples</strong>: a hands-on <a
+href="tutorial.html">tutorial</a> with a synthetic WFDB dataset, from
+ECG files to an effect estimate; more notebooks to come</li>
 <li><strong>Documentation</strong>: Implementation guides, video
 tutorials, and best practices</li>
 </ul>
